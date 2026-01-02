@@ -1,0 +1,144 @@
+/* =============================================== */
+/* BASIC SETUP  */
+/* =============================================== */
+@import url('https://fonts.googleapis.com/css2?family=AR+One+Sans:wght@400..700&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+
+:root {
+    line-height: 1.5;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+*::after,
+*::before,
+* {
+    box-sizing: border-box;
+}
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-size: 62.5%;
+    font-family: 'AR One Sans', 'Poppins', 'Roboto Mono', 'Roboto', Arial, Helvetica, sans-serif;
+
+    --black_color: #000;
+    --white_color: #fff;
+    --black_text: #333;
+    --white_text: #f5f5f5;
+    --snow_white_color: #fffafa;
+    --black_color: #000;
+    --white_color: #fff;
+    --black_text: #333;
+    --white_text: #f5f5f5;
+    --snow_white_color: #fffafa;
+    --gray_color: #d6d6d6;
+    --light_gray_color: #eee;
+    --dark_gray_color: #b3b3b3;
+    --light_green_color: #4ad66d;
+    --green_color: #2dc653;
+    --dark_green_color: #208b3a;
+    --light_red_color: #dd2c2f;
+    --red_color: #d02224;
+    --dark_red_color: #ac1c1e;
+    --yellow_color: #ffda3d;
+    --light_yellow_color: #ffe94e;
+    --dark_yellow_color: #fdb833;
+    --blue_color: #329cf4;
+    --light_blue_color: #64b5f6;
+    --dark_blue_color: #1976d2;
+
+    --fs_heading_xl: clamp(4rem, 2.6vw + 4rem, 5.6rem);
+    --fs_heading_lg: clamp(3.2rem, 2vw + 3.2rem, 4.2rem);
+    --fs_heading_md: clamp(2.8rem, 1.8vw + 2.8rem, 3.6rem);
+    --fs_heading_sm: clamp(2rem, 1.6vw + 1.8rem, 2.6rem);
+
+    --fs_normal_xl: clamp(1.9rem, 1.4vw + 1.8rem, 2.4rem);
+    --fs_normal_lg: clamp(1.66rem, 1vw + 1.7rem, 1.86rem);
+    --fs_normal_md: clamp(1.4rem, 0.6vw + 1.6rem, 1.66rem);
+    --fs_normal_sm: clamp(1.36rem, 0.6vw + 1.3rem, 1.4rem);
+    --fs_normal_ssm: clamp(1.16rem, 0.3vw + 1.16rem, 1.26rem);
+    --fs_normal_3sm: clamp(0.76rem, 0.1vw + 0.8rem, 0.86rem);
+    --fs_normal_4sm: clamp(0.66rem, 0.1vw + 0.7rem, 0.76rem);
+
+    --distance_xxxl: 24px;
+    --distance_xxl: 20px;
+    --distance_xl: 16px;
+    --distance_lg: 12px;
+    --distance_md: 8px;
+    --distance_sm: 6px;
+    --distance_ssm: 4px;
+
+    --scroll_bar_border_radius: 6px;
+}
+
+/* Smooth scrolling, prevent sudden pop  */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Reset CSS styles for some elements */
+a {
+    text-decoration: none;
+}
+
+ul,
+li {
+    list-style: none;
+}
+
+/* Make SVG elements works with current color */
+svg {
+    font-size: 1rem;
+    height: 3.6rem;
+    aspect-ratio: 1 / 1;
+    fill: currentColor;
+}
+
+svg path,
+svg line,
+svg polyline {
+    /* fill: currentColor; */
+    /* stroke: currentColor; */
+}
+
+/* Improve line wrapping + avoid text overflows */
+p {
+    overflow-wrap: break-word;
+    word-break: break-word;
+    text-wrap: pretty;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    overflow-wrap: break-word;
+    text-wrap: balance;
+}
+
+/* SCROLLBAR SET UP */
+::-webkit-scrollbar {
+    /* width: var(--scroll_bar_width); */
+    /* height: var(--scroll_bar_width); */
+}
+
+::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.36);
+    /* -webkit-border-radius: var(--scroll_bar_border_radius); */
+    /* border-radius: var(--scroll_bar_border_radius); */
+}
+
+::-webkit-scrollbar-thumb {
+    /* -webkit-border-radius: var(--scroll_bar_border_radius); */
+    /* border-radius: var(--scroll_bar_border_radius); */
+    /* background: var(--light_blue_color); */
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.36);
+}
+
+::-webkit-scrollbar-thumb:window-inactive {
+    /* background: var(--light_blue_color); */
+}

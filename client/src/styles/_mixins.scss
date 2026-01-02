@@ -1,0 +1,20 @@
+/* =============================================== */
+/* FUNCTIONS SETUP  */
+/* =============================================== */
+@mixin flexCenter {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1rem;
+}
+
+@mixin flexColumn {
+    display: flex;
+    flex-direction: column;
+    font-size: 1rem;
+}
+
+@mixin displayGrid {
+    display: grid;
+    font-size: 1rem;
+}

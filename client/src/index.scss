@@ -1,0 +1,95 @@
+/* =============================================== */
+/* BASIC SETUP  */
+/* =============================================== */
+@import url('https://fonts.googleapis.com/css2?family=AR+One+Sans:wght@400..700&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+
+:root {
+    line-height: 1.5;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+*::after,
+*::before,
+* {
+    box-sizing: border-box;
+}
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-size: 62.5%;
+    font-family: 'AR One Sans', 'Poppins', 'Roboto Mono', 'Roboto', Arial, Helvetica, sans-serif;
+}
+
+/* Smooth scrolling, prevent sudden pop  */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Reset CSS styles for some elements */
+a {
+    text-decoration: none;
+}
+
+ul,
+li {
+    list-style: none;
+}
+
+/* Make SVG elements work with current color */
+svg {
+    font-size: 1rem;
+    height: 3.6rem;
+    aspect-ratio: 1 / 1;
+    fill: currentColor;
+}
+
+svg path,
+svg line,
+svg polyline {
+    // fill: currentColor;
+    // stroke: currentColor;
+}
+
+/* Improve line wrapping + avoid text overflows */
+p {
+    overflow-wrap: break-word;
+    word-break: break-word;
+    text-wrap: pretty;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    overflow-wrap: break-word;
+    text-wrap: balance;
+}
+
+// SCROLLBAR SET UP
+// ::-webkit-scrollbar {
+//     width: $scroll_bar_width;
+//     height: $scroll_bar_width;
+// }
+
+// ::-webkit-scrollbar-track {
+//     -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.36);
+//     -webkit-border-radius: $scroll_bar_border_radius;
+//     border-radius: $scroll_bar_border_radius;
+// }
+
+// ::-webkit-scrollbar-thumb {
+//     -webkit-border-radius: $scroll_bar_border_radius;
+//     border-radius: $scroll_bar_border_radius;
+//     background: $light_blue_color;
+//     -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.36);
+// }
+
+// ::-webkit-scrollbar-thumb:window-inactive {
+//     background: $light_blue_color;
+// }
