@@ -1,0 +1,16 @@
+.logoWrapper {
+    @include flexCenter;
+    font-size: $fs_heading_md;
+    gap: 0.4em;
+    font-weight: 700;
+    color: var(--text_color);
+
+    svg {
+        height: $fs_heading_lg;
+    }
+
+    &:hover svg {
+        // transform: rotate(300deg);
+        animation: logo_spin 660ms ease-in-out;
+    }
+}

@@ -1,6 +1,7 @@
 /* =============================================== */
 /* BASIC SETUP  */
 /* =============================================== */
+@import './styles/globals';
 @import url('https://fonts.googleapis.com/css2?family=AR+One+Sans:wght@400..700&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
 
 :root {
@@ -40,18 +41,19 @@ li {
 }
 
 /* Make SVG elements work with current color */
-svg {
+svg,
+.svgIcon {
     font-size: 1rem;
     height: 3.6rem;
     aspect-ratio: 1 / 1;
-    fill: currentColor;
+    // fill: currentColor;
 }
 
 svg path,
 svg line,
 svg polyline {
-    // fill: currentColor;
-    // stroke: currentColor;
+    fill: currentColor;
+    stroke: currentColor;
 }
 
 /* Improve line wrapping + avoid text overflows */
@@ -93,3 +95,26 @@ h6 {
 // ::-webkit-scrollbar-thumb:window-inactive {
 //     background: $light_blue_color;
 // }
+
+/* =============================================== */
+/* WEB APP SETUP  */
+/* =============================================== */
+body {
+    width: 100%;
+    min-height: 100vh;
+    height: 100%;
+}
+
+[data-theme='light'] {
+    --bg_color: #{$snow_white_color};
+    --text_color: #{$black_text};
+    --out_focus_gray: #{$light_gray_color};
+    --in_focus_gray: #{$dark_gray_color};
+}
+
+[data-theme='dark'] {
+    --bg_color: #{$ebony_black_color};
+    --text_color: #{$white_text};
+    --out_focus_gray: #{$dark_gray_color};
+    --in_focus_gray: #{$light_gray_color};
+}
