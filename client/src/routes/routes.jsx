@@ -4,9 +4,9 @@ import ErrorPage from '../components/pages/ErrorPage/ErrorPage';
 const routes = [
     {
         path: '/',
-        // element: <App />,
+        element: <App />,
         errorElement: <ErrorPage />,
-        element: <ErrorPage />,
+        // element: <ErrorPage />,
     },
     {
         // path: '/profile/:name?',

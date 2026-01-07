@@ -8,7 +8,7 @@ const ErrorPage = () => {
     return (
         <>
             <PageLayout>
-                <h2>Content not found</h2>
+                <h2 className="pageTitle">Content not found</h2>
             </PageLayout>
         </>
     );

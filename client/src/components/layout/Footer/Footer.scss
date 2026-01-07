@@ -1,0 +1,33 @@
+footer {
+    background-color: var(--out_focus_gray);
+    transition: all 360ms ease-in-out;
+
+    a {
+        @include flexCenter;
+        font-size: $fs_normal_xl;
+        color: var(--text_color);
+
+        transition: all 360ms ease-in-out;
+
+        svg {
+            margin-right: clamp(4px, 0.6em, 8px);
+            height: $fs_normal_lg;
+        }
+
+        &:hover {
+            font-weight: 900;
+            color: $dark_blue_color;
+        }
+    }
+
+    &:hover {
+        background-color: var(--in_focus_gray);
+
+        a {
+            color: var(--hover_text_color);
+            &:hover {
+                color: $dark_blue_color;
+            }
+        }
+    }
+}

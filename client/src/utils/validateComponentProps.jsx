@@ -10,13 +10,13 @@ import React from 'react';
 const ValidatedComponent = (Component, schema) => {
     // PRODUCTION
     if (!import.meta.env.DEV) {
-        console.log('PRODUCTION render');
+        // console.log('PRODUCTION render');
         return Component;
     }
 
     // DEV
     const Wrapped = (rawProps) => {
-        console.log('DEVELOPMENT render');
+        // console.log('DEVELOPMENT render');
         const validationResult = schema.safeParse(rawProps);
 
         if (validationResult.success === false) {

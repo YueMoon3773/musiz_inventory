@@ -1,16 +1,95 @@
+.header {
+    &.showShadow {
+        background-color: var(--bg_color);
+        box-shadow: 6px 0 24px var(--in_focus_gray);
+    }
+}
+
 .logoWrapper {
     @include flexCenter;
-    font-size: $fs_heading_md;
+    font-size: $fs_heading_sm;
     gap: 0.4em;
     font-weight: 700;
     color: var(--text_color);
+    transition: all 360ms ease-in-out;
 
     svg {
-        height: $fs_heading_lg;
+        height: $fs_heading_md;
     }
 
     &:hover svg {
-        // transform: rotate(300deg);
         animation: logo_spin 660ms ease-in-out;
+    }
+}
+
+.headerLeft,
+.headerMid,
+.headerRight {
+    @include flexCenter;
+}
+
+.headerLeft {
+    justify-content: flex-start;
+}
+
+.headerMid {
+    justify-content: space-between;
+    gap: clamp(20px, 2.6rem, 30px);
+}
+
+.navLink {
+    @include flexCenter;
+    font-size: $fs_normal_md;
+    font-weight: 500;
+    gap: clamp(4px, 0.4em, 8px);
+    color: var(--text_color);
+    transition: all 360ms ease-in-out;
+
+    svg {
+        height: $fs_normal_lg;
+    }
+
+    &:hover {
+        font-weight: 600;
+        filter: drop-shadow(0 0 8px var(--in_focus_gray));
+        // filter: drop-shadow(0 0 8px $primary_color);
+        transform: translateY(-$distance_ssm);
+    }
+}
+
+.headerRight {
+    display: flex;
+    justify-content: space-between;
+    align-items: stretch;
+    font-size: 1rem;
+    gap: clamp(36px, 4.2rem, 46px);
+}
+
+.themeBtn {
+    @include flexCenter;
+    aspect-ratio: 1 / 1;
+    padding: 0.6em;
+    min-width: 4.2rem;
+
+    border: 2px solid $gray_color;
+    border-radius: $distance_lg;
+    background-color: transparent;
+
+    cursor: pointer;
+    transition: all 360ms ease-in-out;
+
+    svg {
+        height: $fs_heading_3sm;
+        transition: all 360ms ease-in-out;
+        color: var(--text_color);
+    }
+
+    &:hover {
+        background-color: var(--out_focus_gray);
+
+        svg {
+            color: var(--hover_text_color);
+            height: $fs_heading_sm;
+        }
     }
 }

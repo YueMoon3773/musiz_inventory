@@ -1,0 +1,70 @@
+.filtersWrapper {
+    align-self: flex-start;
+    @include flexCenter;
+    gap: clamp(40px, 4.6em, 56px);
+
+    label {
+        @include flexCenter;
+        font-size: $fs_normal_md;
+        color: var(--text_color);
+        font-weight: 500;
+        gap: clamp(6px, 0.6em, 10px);
+
+        transition: all 360ms ease-in-out;
+    }
+}
+
+.filter {
+    font-size: $fs_normal_md;
+    color: var(--text_color);
+    padding: 0.2em 0.8em;
+
+    border: 2px solid $gray_color;
+    border-radius: $distance_md;
+    background-color: transparent;
+    outline: none;
+
+    cursor: pointer;
+    transition: all 360ms ease-in-out;
+}
+
+.filterOpt {
+    font-size: $fs_normal_md;
+    font-weight: 600;
+    color: var(--text_color);
+    padding: 0.2em 0.8em;
+
+    border: 2px solid $gray_color;
+    border-radius: $distance_md;
+    background-color: var(--out_focus_gray);
+
+    transition: all 360ms ease-in-out;
+
+    &:hover {
+        color: var(--hover_text_color);
+        background-color: var(--in_focus_gray);
+    }
+}
+
+.displayTable {
+    thead {
+        cursor: default;
+
+        tr,
+        tr > * {
+            font-size: $fs_normal_xl;
+            font-weight: 600;
+            color: var(--text_color);
+            padding: 0.46em 0;
+            transition: all 360ms ease-in-out;
+        }
+    }
+
+    tr td:not(:first-child) {
+        border-left: 1px solid var(--text_color);
+    }
+
+    tr td:last-child {
+        border-right: 1px solid var(--text_color);
+    }
+}

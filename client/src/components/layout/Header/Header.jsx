@@ -1,28 +1,64 @@
 import { Link } from 'react-router-dom';
+import { z } from 'zod';
 
 import { useTheme } from '../../../hooks/useTheme';
+import ValidatedComponent from '../../../utils/validateComponentProps';
 
-import { LogoIcon, LightModeIcon, DarkModeIcon } from '../../../assets/svg/svgIcons';
+import {
+    LogoIcon,
+    LightModeIcon,
+    DarkModeIcon,
+    SongsListIcon,
+    GenresIcon,
+    ArtistsIcon,
+} from '../../../assets/svg/svgIcons';
 import SearchInp from '../../base/SearchInp/SearchInp';
 
 import pageStyles from '../../../styles/modules/basePageStyles.module.scss';
 import './Header.scss';
 
-const Header = () => {
+const headerSchema = z.object({
+    headerShadow: z.boolean(),
+});
+
+const Header = ({ headerShadow }) => {
+    console.log(headerShadow);
+
     const { theme, toggleTheme } = useTheme();
+
     return (
-        <div className={`${pageStyles.pageHeader}`}>
-            <Link to={'/'} className="logoWrapper">
-                The Musiz Inventory
-                <LogoIcon />
-            </Link>
-            <SearchInp searchInpId={'headerSearchInp'} searchInpPlaceholder={'Search song title, artist,...'} />
-            <button onClick={toggleTheme}>
-                {theme === 'light' && <LightModeIcon></LightModeIcon>}
-                {theme === 'dark' && <DarkModeIcon></DarkModeIcon>}
-            </button>
+        <div className={`header ${pageStyles.pageHeader} ${headerShadow === true ? 'showShadow' : ''}`}>
+            <div className="headerLeft">
+                <Link to={'/'} className="logoWrapper">
+                    The Musiz Inventory
+                    <LogoIcon />
+                </Link>
+            </div>
+
+            <div className="headerMid">
+                <Link to={'/'} className="navLink">
+                    <SongsListIcon className="navLinkIcon"></SongsListIcon>
+                    Songs
+                </Link>
+                <Link to={'/genres'} className="navLink">
+                    <GenresIcon className="navLinkIcon"></GenresIcon>
+                    Genres
+                </Link>
+                <Link to={'/artists'} className="navLink">
+                    <ArtistsIcon className="navLinkIcon"></ArtistsIcon>
+                    Artists
+                </Link>
+            </div>
+
+            <div className="headerRight">
+                <SearchInp searchInpId={'headerSearchInp'} searchInpPlaceholder={'Search song title, artist,...'} />
+                <button className="themeBtn" onClick={toggleTheme}>
+                    {theme === 'light' && <LightModeIcon></LightModeIcon>}
+                    {theme === 'dark' && <DarkModeIcon></DarkModeIcon>}
+                </button>
+            </div>
         </div>
     );
 };
 
-export default Header;
+export default ValidatedComponent(Header, headerSchema);
