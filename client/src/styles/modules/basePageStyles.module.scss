@@ -49,7 +49,7 @@
     @include flexCenter;
     font-size: $fs_normal_md;
     font-weight: 600;
-    padding: 0.3em 0.6em;
+    padding: 0.36em 0.6em;
     color: var(--text_color);
     gap: clamp(4px, 0.6em, 8px);
 
@@ -64,5 +64,10 @@
         height: $fs_normal_lg;
         transition: all 360ms ease-in-out;
         color: var(--text_color);
+    }
+
+    &:hover,
+    &:hover svg {
+        color: var(--hover_text_color);
     }
 }

@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { z } from 'zod';
 
@@ -22,9 +23,16 @@ const headerSchema = z.object({
 });
 
 const Header = ({ headerShadow }) => {
-    console.log(headerShadow);
-
     const { theme, toggleTheme } = useTheme();
+    const [searchText, setSearchText] = useState('');
+
+    const handleChangeSearchText = (searchInpVal) => {
+        setSearchText(searchInpVal);
+    };
+
+    const clearSearchInpHandler = () => {
+        setSearchText('');
+    };
 
     return (
         <div className={`header ${pageStyles.pageHeader} ${headerShadow === true ? 'showShadow' : ''}`}>
@@ -51,7 +59,13 @@ const Header = ({ headerShadow }) => {
             </div>
 
             <div className="headerRight">
-                <SearchInp searchInpId={'headerSearchInp'} searchInpPlaceholder={'Search song title, artist,...'} />
+                <SearchInp
+                    searchInpId={'headerSearchInp'}
+                    searchInpPlaceholder={'Search song title, artist,...'}
+                    searchInpState={searchText}
+                    searchInpOnChangeHandler={handleChangeSearchText}
+                    clearSearchInpHandler={clearSearchInpHandler}
+                />
                 <button className="themeBtn" onClick={toggleTheme}>
                     {theme === 'light' && <LightModeIcon></LightModeIcon>}
                     {theme === 'dark' && <DarkModeIcon></DarkModeIcon>}

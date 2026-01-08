@@ -1,5 +1,9 @@
-.filtersWrapper {
-    align-self: flex-start;
+.controllerWrapper {
+    @include flexCenter;
+    justify-content: space-between;
+}
+
+.leftController {
     @include flexCenter;
     gap: clamp(40px, 4.6em, 56px);
 
@@ -43,6 +47,14 @@
     &:hover {
         color: var(--hover_text_color);
         background-color: var(--in_focus_gray);
+    }
+}
+
+.rightController {
+    button {
+        &:hover {
+            background-color: $primary_color;
+        }
     }
 }
 

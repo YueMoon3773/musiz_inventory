@@ -1,0 +1,23 @@
+.selectionLabel {
+    @include flexCenter;
+    font-size: $fs_normal_md;
+    color: var(--text_color);
+    font-weight: 500;
+    gap: clamp(6px, 0.6em, 10px);
+
+    transition: all 360ms ease-in-out;
+
+    select.selection {
+        font-size: $fs_normal_md;
+        color: var(--text_color);
+        padding: 0.2em 0.8em;
+
+        border: 2px solid $gray_color;
+        border-radius: $distance_md;
+        background-color: transparent;
+        outline: none;
+
+        cursor: pointer;
+        transition: all 360ms ease-in-out;
+    }
+}

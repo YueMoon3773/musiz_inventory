@@ -12,11 +12,11 @@
     &:has(input:focus) {
         border-color: var(--in_focus_gray);
 
-        button:hover svg {
+        .searchBtn:hover .searchBtn > svg {
             height: $fs_heading_sm;
         }
 
-        button::before {
+        .searchBtn::before {
             border-color: var(--in_focus_gray);
         }
     }
@@ -34,12 +34,12 @@
 
         transition: all 360ms ease-in-out;
 
-        &:focus ~ button::before {
+        &:focus ~ button.searchBtn::before {
             height: 80%;
             border-color: var(--in_focus_gray);
         }
 
-        &:focus ~ button > svg {
+        &:focus ~ button.searchBtn > svg {
             height: $fs_heading_2sm;
         }
 
@@ -50,7 +50,29 @@
         }
     }
 
-    button {
+    .clearSearchBtn {
+        background-color: transparent;
+        outline: none;
+        border: none;
+        cursor: pointer;
+
+        margin: 0 clamp(4px, 0.6rem, 8px);
+
+        svg {
+            height: calc(($fs_normal_md / 100) * 86);
+            color: var(--text_color);
+            // transition: all 360ms ease-in-out;
+        }
+
+        &:hover {
+            svg {
+                color: var(--hover_text_color);
+                fill: var(--text_color);
+            }
+        }
+    }
+
+    .searchBtn {
         position: relative;
         @include flexCenter;
         aspect-ratio: 1 / 1;

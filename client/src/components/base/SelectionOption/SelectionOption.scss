@@ -1,0 +1,17 @@
+option.selectionOption {
+    font-size: $fs_normal_md;
+    font-weight: 600;
+    color: var(--text_color);
+    padding: 0.2em 0.8em;
+
+    border: 2px solid $gray_color;
+    border-radius: $distance_md;
+    background-color: var(--out_focus_gray);
+
+    transition: all 360ms ease-in-out;
+
+    &:hover {
+        color: var(--hover_text_color);
+        background-color: var(--in_focus_gray);
+    }
+}

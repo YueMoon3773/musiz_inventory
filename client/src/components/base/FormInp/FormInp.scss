@@ -1,0 +1,26 @@
+.formInp {
+    @include flexCenter;
+    font-size: $fs_normal_md;
+    color: var(--text_color);
+    gap: clamp(10px, 1.6em, 16px);
+
+    input {
+        font-size: $fs_normal_md;
+        letter-spacing: 0.02em;
+        color: var(--text_color);
+        padding: 0.3em 0.6em;
+        // min-width: clamp(260px, 2.6em, 300px);
+        min-width: 260px;
+
+        background-color: transparent;
+        border: 2px solid var(--out_focus_gray);
+        border-radius: $distance_md;
+        outline: none;
+
+        transition: all 360ms ease-in-out;
+
+        &:focus {
+            border-color: var(--in_focus_gray);
+        }
+    }
+}

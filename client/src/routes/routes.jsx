@@ -1,5 +1,6 @@
 import App from '../App';
 import ErrorPage from '../components/pages/ErrorPage/ErrorPage';
+import CreateEditSong from '../components/pages/CreateEditSong/CreateEditSong';
 
 const routes = [
     {
@@ -9,8 +10,8 @@ const routes = [
         // element: <ErrorPage />,
     },
     {
-        // path: '/profile/:name?',
-        // element: <Profile />,
+        path: '/create_song',
+        element: <CreateEditSong />,
     },
 ];
 

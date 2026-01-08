@@ -65,6 +65,7 @@
         }
 
         td > * > .disc {
+            animation-delay: 660ms;
             animation: disc_spin 2.6s linear infinite;
 
             svg {
@@ -77,28 +78,18 @@
                 background-color: var(--bg_color);
 
                 &.editBtn {
-                    border-color: $green_color;
+                    border-color: $light_green_color;
 
                     &:hover {
-                        background-color: $green_color;
-                        color: var(--hover_text_color);
-
-                        svg {
-                            color: var(--hover_text_color);
-                        }
+                        background-color: $light_green_color;
                     }
                 }
 
                 &.deleteBtn {
-                    border-color: $red_color;
+                    border-color: $light_red_color;
 
                     &:hover {
-                        background-color: $red_color;
-                        color: var(--hover_text_color);
-
-                        svg {
-                            color: var(--hover_text_color);
-                        }
+                        background-color: $light_red_color;
                     }
                 }
             }
