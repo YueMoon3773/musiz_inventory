@@ -83,7 +83,7 @@ function App() {
                 </thead>
                 <tbody>
                     {test.map((item, index) => {
-                        return <InventoryItem key={index} data={item}></InventoryItem>;
+                        return <InventoryItem key={index} inventoryType="songs" data={item}></InventoryItem>;
                     })}
                 </tbody>
             </table>

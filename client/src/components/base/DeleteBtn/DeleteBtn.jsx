@@ -4,7 +4,7 @@ import pageStyles from '../../../styles/modules/basePageStyles.module.scss';
 
 const DeleteBtn = () => {
     return (
-        <button className={`deleteBtn ${pageStyles.mainBtn}`}>
+        <button className={`${pageStyles.mainBtn} ${pageStyles.deleteBtn}`}>
             <DeleteIcon></DeleteIcon>
             Delete
         </button>

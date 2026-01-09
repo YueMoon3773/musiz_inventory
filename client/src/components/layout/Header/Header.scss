@@ -41,6 +41,8 @@
     @include flexCenter;
     font-size: $fs_normal_md;
     font-weight: 500;
+
+    padding: 0.46em 0.16em;
     gap: clamp(4px, 0.4em, 8px);
     color: var(--text_color);
     transition: all 360ms ease-in-out;

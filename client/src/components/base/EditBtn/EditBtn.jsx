@@ -4,7 +4,7 @@ import pageStyles from '../../../styles/modules/basePageStyles.module.scss';
 
 const EditBtn = () => {
     return (
-        <button className={`editBtn ${pageStyles.mainBtn}`}>
+        <button className={`${pageStyles.mainBtn} ${pageStyles.editBtn}`}>
             <EditIcon></EditIcon>
             Edit
         </button>

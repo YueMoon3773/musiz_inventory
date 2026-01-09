@@ -2,6 +2,7 @@ option.selectionOption {
     font-size: $fs_normal_md;
     font-weight: 600;
     color: var(--text_color);
+    text-transform: capitalize;
     padding: 0.2em 0.8em;
 
     border: 2px solid $gray_color;

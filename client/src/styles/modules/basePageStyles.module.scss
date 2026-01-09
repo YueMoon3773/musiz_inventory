@@ -55,7 +55,7 @@
 
     border: 2px solid $gray_color;
     border-radius: $distance_lg;
-    background-color: transparent;
+    background-color: var(--bg_color);
 
     cursor: pointer;
     transition: all 360ms ease-in-out;
@@ -69,5 +69,29 @@
     &:hover,
     &:hover svg {
         color: var(--hover_text_color);
+    }
+}
+
+.editBtn {
+    border-color: $light_green_color;
+
+    &:hover {
+        background-color: $light_green_color;
+    }
+}
+
+.deleteBtn {
+    border-color: $light_red_color;
+
+    &:hover {
+        background-color: $light_red_color;
+    }
+}
+
+.submitBtn {
+    border-color: $primary_color;
+
+    &:hover {
+        background-color: $primary_color;
     }
 }

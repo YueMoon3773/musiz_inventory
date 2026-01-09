@@ -10,6 +10,7 @@
     select.selection {
         font-size: $fs_normal_md;
         color: var(--text_color);
+        text-transform: capitalize;
         padding: 0.2em 0.8em;
 
         border: 2px solid $gray_color;

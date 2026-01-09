@@ -11,7 +11,13 @@ const routes = [
     },
     {
         path: '/create_song',
-        element: <CreateEditSong />,
+        element: <CreateEditSong pageType="create" />,
+        errorElement: <ErrorPage />,
+    },
+    {
+        path: '/edit_song',
+        element: <CreateEditSong pageType="edit" />,
+        errorElement: <ErrorPage />,
     },
 ];
 

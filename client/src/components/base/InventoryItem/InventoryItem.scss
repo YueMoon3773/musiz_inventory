@@ -72,27 +72,5 @@
                 transform: scale(1.3);
             }
         }
-
-        td .optBtnsWrapper {
-            button {
-                background-color: var(--bg_color);
-
-                &.editBtn {
-                    border-color: $light_green_color;
-
-                    &:hover {
-                        background-color: $light_green_color;
-                    }
-                }
-
-                &.deleteBtn {
-                    border-color: $light_red_color;
-
-                    &:hover {
-                        background-color: $light_red_color;
-                    }
-                }
-            }
-        }
     }
 }
