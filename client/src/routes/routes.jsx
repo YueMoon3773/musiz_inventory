@@ -1,6 +1,7 @@
 import App from '../App';
 import ErrorPage from '../components/pages/ErrorPage/ErrorPage';
 import CreateEditSong from '../components/pages/CreateEditSong/CreateEditSong';
+import GenresOrArtistsPage from '../components/pages/GenresOrArtistsPage/GenresOrArtistsPage';
 
 const routes = [
     {
@@ -17,6 +18,16 @@ const routes = [
     {
         path: '/edit_song',
         element: <CreateEditSong pageType="edit" />,
+        errorElement: <ErrorPage />,
+    },
+    {
+        path: '/genres',
+        element: <GenresOrArtistsPage pageType="genres" />,
+        errorElement: <ErrorPage />,
+    },
+    {
+        path: '/artists',
+        element: <GenresOrArtistsPage pageType="artists" />,
         errorElement: <ErrorPage />,
     },
 ];
