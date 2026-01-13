@@ -43,7 +43,7 @@ export let songs = [
     { id: 18, song: 'just the way you are' },
     { id: 19, song: 'break free' },
     { id: 20, song: 'bad romance' },
-    { id: 20, song: 'hair' },
+    { id: 21, song: 'hair' },
 ];
 
 export let song_artist = [

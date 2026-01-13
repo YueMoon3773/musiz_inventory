@@ -95,3 +95,19 @@
         background-color: $primary_color;
     }
 }
+
+.btnDisabled {
+    color: $dark_gray_color;
+    svg {
+        color: $dark_gray_color;
+    }
+
+    &:hover {
+        color: $dark_gray_color;
+
+        svg {
+            color: $dark_gray_color;
+        }
+    }
+    cursor: not-allowed;
+}

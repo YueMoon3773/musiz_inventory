@@ -1,0 +1,8 @@
+.errorData {
+    align-self: center;
+    justify-self: center;
+
+    font-size: $fs_normal_lg;
+    color: var(--text_color);
+    transition: all 360ms ease-in-out;
+}

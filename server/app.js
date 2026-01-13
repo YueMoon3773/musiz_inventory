@@ -3,7 +3,7 @@ const path = require('node:path');
 const cors = require('cors');
 require('dotenv').config();
 
-const mainRouter = require('./routes/mainRouter');
+const musizRouter = require('./routes/musizRouter');
 
 const app = express();
 const BE_PORT = process.env.BE_PORT || 6600;
@@ -22,7 +22,7 @@ app.use(express.static(publicPath));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-app.use('/', mainRouter);
+app.use('/', musizRouter);
 
 // Handle Not found Error
 // app.use((err, req, res, next) => {

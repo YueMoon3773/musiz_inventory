@@ -20,14 +20,19 @@ const routes = [
         element: <CreateEditSong pageType="edit" />,
         errorElement: <ErrorPage />,
     },
+    // {
+    //     path: '/genres',
+    //     element: <GenresOrArtistsPage pageType="genres" />,
+    //     errorElement: <ErrorPage />,
+    // },
+    // {
+    //     path: '/artists',
+    //     element: <GenresOrArtistsPage pageType="artists" />,
+    //     errorElement: <ErrorPage />,
+    // },
     {
-        path: '/genres',
-        element: <GenresOrArtistsPage pageType="genres" />,
-        errorElement: <ErrorPage />,
-    },
-    {
-        path: '/artists',
-        element: <GenresOrArtistsPage pageType="artists" />,
+        path: '/:pageType',
+        element: <GenresOrArtistsPage />,
         errorElement: <ErrorPage />,
     },
 ];

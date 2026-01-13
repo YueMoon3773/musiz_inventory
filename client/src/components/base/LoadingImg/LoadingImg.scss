@@ -1,0 +1,10 @@
+.loadingImg {
+    align-self: center;
+    justify-self: center;
+    width: 60%;
+    @include flexCenter;
+
+    img {
+        height: 100%;
+    }
+}

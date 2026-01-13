@@ -34,37 +34,37 @@ const InventoryItem = ({ inventoryType, data }) => {
                     </td>
 
                     <td>
-                        {Array.isArray(data.artist) ? (
-                            data.artist.map((item, index) => {
+                        {Array.isArray(data.artists) ? (
+                            data.artists.map((item, index) => {
                                 return (
-                                    <Link key={index} to={`/artist/${data.artist_id}`}>
+                                    <Link key={index} to={`/artist-details/${data.artist_ids[index]}`}>
                                         {item};
                                     </Link>
                                 );
                             })
                         ) : (
-                            <Link to={`/artist/${data.artist_id}`}>{data.artist}</Link>
+                            <Link to={`/artist-details/${data.artist_ids}`}>{data.artists}</Link>
                         )}
                     </td>
 
                     <td>
-                        {Array.isArray(data.genre) ? (
-                            data.genre.map((item, index) => {
+                        {Array.isArray(data.genres) ? (
+                            data.genres.map((item, index) => {
                                 return (
-                                    <Link key={index} to={`/genre/${data.genre_id}`}>
+                                    <Link key={index} to={`/genre-details/${data.genre_ids[index]}`}>
                                         {item};
                                     </Link>
                                 );
                             })
                         ) : (
-                            <Link to={`/genre/${data.genre_id}`}>{data.genre}</Link>
+                            <Link to={`/genre-details/${data.genre_ids}`}>{data.genres}</Link>
                         )}
                     </td>
 
                     <td>
                         <div className="optBtnsWrapper">
-                            <EditBtn></EditBtn>
-                            <DeleteBtn></DeleteBtn>
+                            <EditBtn isDisabled={!data.is_editable}></EditBtn>
+                            <DeleteBtn isDisabled={!data.is_editable}></DeleteBtn>
                         </div>
                     </td>
                 </>
@@ -88,13 +88,13 @@ const InventoryItem = ({ inventoryType, data }) => {
                                     console.log({ item });
 
                                     return (
-                                        <Link key={index} to={`/artist/${data.id}`}>
+                                        <Link key={index} to={`/artist-details/${data.id}`}>
                                             {item};
                                         </Link>
                                     );
                                 })
                             ) : (
-                                <Link to={`/artist/${data.id}`}>{data.artist}</Link>
+                                <Link to={`/artist-details/${data.id}`}>{data.artist}</Link>
                             )}
                         </td>
                     )}
@@ -106,24 +106,21 @@ const InventoryItem = ({ inventoryType, data }) => {
                                     console.log('here');
 
                                     return (
-                                        <Link key={index} to={`/genre/${data.id}`}>
+                                        <Link key={index} to={`/genre-details/${data.id}`}>
                                             {item};
                                         </Link>
                                     );
                                 })
                             ) : (
-                                // <>
-                                //     <p>here</p>
-                                // </>
-                                <Link to={`/genre/${data.id}`}>{data.genre}</Link>
+                                <Link to={`/genre-details/${data.id}`}>{data.genre}</Link>
                             )}
                         </td>
                     )}
 
                     <td>
                         <div className="optBtnsWrapper">
-                            <EditBtn></EditBtn>
-                            <DeleteBtn></DeleteBtn>
+                            <EditBtn isDisabled={!data.is_editable}></EditBtn>
+                            <DeleteBtn isDisabled={!data.is_editable}></DeleteBtn>
                         </div>
                     </td>
                 </>

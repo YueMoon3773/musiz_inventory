@@ -1,16 +1,16 @@
 import { useState, useEffect } from 'react';
 import { z } from 'zod';
 
-const urlSchema = z.string().url();
+const urlSchema = z.url();
 
 export const useFetchData = (rawUrl) => {
     const [data, setData] = useState(null);
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(true);
 
-    const url = urlSchema.safeParse(rawUrl);
-
     useEffect(() => {
+        const url = urlSchema.safeParse(rawUrl);
+
         if (!url.success) {
             setError(new Error('Invalid URL'));
             return;
@@ -20,8 +20,9 @@ export const useFetchData = (rawUrl) => {
 
         setLoading(true);
         setError(null);
+        setData(null);
 
-        fetch(`${url}`, { mode: 'cors', signal: controller.signal })
+        fetch(`${url.data}`, { mode: 'cors', signal: controller.signal })
             .then((res) => {
                 if (res.ok === false) {
                     throw new Error(`HTTP fetch error ${res.status}`);
@@ -34,10 +35,15 @@ export const useFetchData = (rawUrl) => {
                     setError(err);
                 }
             })
-            .finally(() => setLoading(false));
+            .finally(() => {
+                // setLoading(false);
+                setTimeout(() => {
+                    setLoading(false);
+                }, 300);
+            });
 
         return () => controller.abort();
-    }, [url]);
+    }, [rawUrl]);
 
     // console.log({ data, error, loading });
     return { data, error, loading };

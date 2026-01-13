@@ -3,37 +3,191 @@
 const { Client } = require('pg');
 require('dotenv').config();
 
-const SQL = `
-DROP TABLE IF EXISTS ${process.env.DB_TABLE_NAME};
-
-CREATE TABLE IF NOT EXISTS ${process.env.DB_TABLE_NAME} (
+const createSQL = `
+CREATE TABLE IF NOT EXISTS artists (
     id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-    user_name VARCHAR(30),
-    content VARCHAR(255)
+    artist TEXT NOT NULL,
+    is_editable BOOLEAN NOT NULL DEFAULT TRUE
 );
 
-INSERT INTO ${process.env.DB_TABLE_NAME} (user_name, content) VALUES
-    ('The Joker', 'Why so serious?'),
-    ('T Challa', 'Wakanda Forever!'),
-    ('Dory', 'Just keep swimming'),
-    ('Buzz Lightyear', 'To infinity and beyond!'),
-    ('Captain America', 'Avengers... assemble.'),
-    ('Gollum', 'My precious');
+CREATE TABLE IF NOT EXISTS genres (
+    id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    genre TEXT NOT NULL,
+    is_editable BOOLEAN NOT NULL DEFAULT TRUE
+);
+
+CREATE TABLE IF NOT EXISTS songs (
+    id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    song TEXT NOT NULL,
+    is_editable BOOLEAN NOT NULL DEFAULT TRUE
+);
+
+CREATE TABLE IF NOT EXISTS song_artist (
+    song_id INTEGER NOT NULL,
+    artist_id INTEGER NOT NULL,
+    is_editable BOOLEAN NOT NULL DEFAULT TRUE,
+
+    CONSTRAINT pk_song_artist
+        PRIMARY KEY (song_id, artist_id),
+
+    CONSTRAINT fk_song_artist_song
+        FOREIGN KEY (song_id)
+        REFERENCES songs(id)
+        ON DELETE CASCADE,
+
+    CONSTRAINT fk_song_artist_artist
+        FOREIGN KEY (artist_id)
+        REFERENCES artists(id)
+        ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS song_genre (
+    song_id INTEGER NOT NULL,
+    genre_id INTEGER NOT NULL,
+    is_editable BOOLEAN NOT NULL DEFAULT TRUE,
+
+    CONSTRAINT pk_song_genre
+        PRIMARY KEY (song_id, genre_id),
+
+    CONSTRAINT fk_song_genre_song
+        FOREIGN KEY (song_id)
+        REFERENCES songs(id)
+        ON DELETE CASCADE,
+    
+    CONSTRAINT fk_song_genre_genre
+        FOREIGN KEY (genre_id)
+        REFERENCES genres(id)
+        ON DELETE CASCADE
+);
+`;
+
+const insertSQL = `
+INSERT INTO artists (artist, is_editable) VALUES
+    ('lady gaga', FALSE),
+    ('taylor swift', FALSE),
+    ('sabrina carpenter', FALSE),
+    ('adele', FALSE),
+    ('lana del rey', FALSE),
+    ('bruno mars', FALSE),
+    ('ariana grande', FALSE),
+    ('the weeknd', FALSE),
+    ('chris stapleton', FALSE);
+
+INSERT INTO genres (genre, is_editable) VALUES
+    ('pop', FALSE),
+    ('r&b', FALSE),
+    ('country', FALSE),
+    ('dance-pop', FALSE),
+    ('electro-pop', FALSE),
+    ('disco', FALSE),
+    ('rock', FALSE),
+    ('funk', FALSE),
+    ('soul', FALSE),
+    ('edm', FALSE);
+
+INSERT INTO songs (song, is_editable) VALUES
+    ('born this way', FALSE),
+    ('vanish into you', FALSE),
+    ('die with a smile', FALSE),
+    ('blank space', FALSE),
+    ('red', FALSE),
+    ('save your tears', FALSE),
+    ('twilight zone', FALSE),
+    ('rain on me', FALSE),
+    ('espresso', FALSE),
+    ('manchild', FALSE),
+    ('someone like you', FALSE),
+    ('skyfall', FALSE),
+    ('set the rain to fire', FALSE),
+    ('one last time', FALSE),
+    ('born to die', FALSE),
+    ('summertime sadness', FALSE),
+    ('the lazy song', FALSE),
+    ('just the way you are', FALSE),
+    ('break free', FALSE),
+    ('bad romance', FALSE),
+    ('hair', FALSE),
+    ('easy on me', FALSE);
+
+INSERT INTO song_artist (song_id, artist_id, is_editable) VALUES
+    (1, 1, FALSE),
+    (2, 1, FALSE),
+    (3, 1, FALSE),
+    (3, 6, FALSE),
+    (4, 2, FALSE),
+    (5, 2, FALSE),
+    (6, 7, FALSE),
+    (6, 8, FALSE),
+    (7, 7, FALSE),
+    (8, 1, FALSE),
+    (8, 7, FALSE),
+    (9, 3, FALSE),
+    (10, 3, FALSE),
+    (11, 4, FALSE),
+    (12, 4, FALSE),
+    (13, 4, FALSE),
+    (14, 7, FALSE),
+    (15, 5, FALSE),
+    (16, 5, FALSE),
+    (17, 6, FALSE),
+    (18, 6, FALSE),
+    (19, 7, FALSE),
+    (20, 1, FALSE),
+    (21, 1, FALSE),
+    (22, 4, FALSE),
+    (22, 9, FALSE);
+
+INSERT INTO song_genre (song_id, genre_id, is_editable) VALUES
+    (1, 5, FALSE),
+    (2, 6, FALSE),
+    (2, 7, FALSE),
+    (3, 1, FALSE),
+    (4, 5, FALSE),
+    (5, 3, FALSE),
+    (6, 2, FALSE),
+    (7, 2, FALSE),
+    (8, 4, FALSE),
+    (8, 6, FALSE),
+    (9, 6, FALSE),
+    (9, 8, FALSE),
+    (10, 1, FALSE),
+    (10, 3, FALSE),
+    (11, 9, FALSE),
+    (12, 9, FALSE),
+    (13, 1, FALSE),
+    (14, 10, FALSE),
+    (14, 4, FALSE),
+    (15, 1, FALSE),
+    (15, 7, FALSE),
+    (16, 1, FALSE),
+    (17, 9, FALSE),
+    (18, 1, FALSE),
+    (19, 2, FALSE),
+    (19, 1, FALSE),
+    (20, 4, FALSE),
+    (20, 2, FALSE),
+    (21, 6, FALSE),
+    (21, 7, FALSE),
+    (22, 1, FALSE),
+    (22, 9, FALSE);
 `;
 
 async function main() {
     console.log('PREPARING DB...');
     const client = new Client({
-        // connectionString: `postgresql://${process.env.DB_USER_NAME}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_DATABASE}`,
-        connectionString: `${process.env.DB_URL}`,
+        connectionString: `postgresql://${process.env.DB_USER_NAME}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_DATABASE}`,
+        // connectionString: `${process.env.DB_URL}`,
     });
     console.log('DONE SETTING CONNECTION STRING');
 
     await client.connect();
     console.log('CONNECTED TO DB');
 
-    await client.query(SQL);
-    console.log('CREATED TABLE AND INSERTED DATA');
+    await client.query(createSQL);
+    console.log('CREATED TABLES');
+
+    await client.query(insertSQL);
+    console.log('INSERTED DATA INTO TABLES');
 
     await client.end();
     console.log('DB SET UP DONE');
