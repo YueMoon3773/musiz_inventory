@@ -13,6 +13,9 @@ const DeleteBtn = ({ isDisabled = false }) => {
     return (
         <button
             className={`${pageStyles.mainBtn} ${isDisabled === true ? pageStyles.btnDisabled : pageStyles.deleteBtn}`}
+            onClick={() => {
+                if (isDisabled) return;
+            }}
         >
             <DeleteIcon></DeleteIcon>
             Delete

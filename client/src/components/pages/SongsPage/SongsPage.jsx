@@ -2,21 +2,21 @@ import { z } from 'zod';
 
 import { useBaseBeUrl } from '../../../hooks/useStorage';
 import { useFetchData } from '../../../hooks/useFetchData';
-
-import PageLayout from '../../layout/PageLayout/PageLayout';
-import ControllerSection from '../../layout/ControllerSection/ControllerSection';
-import InventoryItem from '../../base/InventoryItem/InventoryItem';
-import LoadingImg from '../../base/LoadingImg/LoadingImg';
-
 import ValidatedComponent from '../../../utils/validateComponentProps';
-// import pageStyles from '../../../styles/modules/basePageStyles.module.scss';
-import './GenresOrArtistsPage.scss';
 
-const genresOrArtistsPageSchema = z.object({
+import PageLayout from '../../../components/layout/PageLayout/PageLayout';
+import ControllerSection from '../../../components/layout/ControllerSection/ControllerSection';
+import InventoryItem from '../../../components/base/InventoryItem/InventoryItem';
+import LoadingImg from '../../../components/base/LoadingImg/LoadingImg';
+
+// import pageStyles from '../../../styles/modules/basePageStyles.module.scss';
+import './SongsPage.scss';
+
+const songPageSchema = z.object({
     pageType: z.string(),
 });
 
-const GenresOrArtistsPage = ({ pageType }) => {
+const SongsPage = ({ pageType }) => {
     const { baseUrl } = useBaseBeUrl();
     const pageURL = `${baseUrl}/${pageType}`;
     // console.log({ pageURL });
@@ -26,10 +26,7 @@ const GenresOrArtistsPage = ({ pageType }) => {
 
     return (
         <PageLayout>
-            <h2 className="pageTitle">
-                {pageType === 'genres' && 'Genres'}
-                {pageType === 'artists' && 'Artists'}
-            </h2>
+            <h2 className="pageTitle">Songs</h2>
 
             <ControllerSection pageType={pageType}></ControllerSection>
 
@@ -42,14 +39,15 @@ const GenresOrArtistsPage = ({ pageType }) => {
                     <thead>
                         <tr>
                             <th></th>
-                            {pageType === 'genres' && <th>Genre</th>}
-                            {pageType === 'artists' && <th>Artist</th>}
+                            <th>Song title</th>
+                            <th>Artist</th>
+                            <th>Genre</th>
                             <th>Options</th>
                         </tr>
                     </thead>
                     <tbody>
                         {data.beData.map((item, index) => {
-                            return <InventoryItem key={index} inventoryType={pageType} data={item}></InventoryItem>;
+                            return <InventoryItem key={index} inventoryType="songs" data={item}></InventoryItem>;
                         })}
                     </tbody>
                 </table>
@@ -58,5 +56,5 @@ const GenresOrArtistsPage = ({ pageType }) => {
     );
 };
 
-export default ValidatedComponent(GenresOrArtistsPage, genresOrArtistsPageSchema);
-// export default GenresOrArtistsPage;
+// export default SongsPage;
+export default ValidatedComponent(SongsPage, songPageSchema);

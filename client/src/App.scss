@@ -1,83 +1,37 @@
-.controllerWrapper {
-    @include flexCenter;
-    justify-content: space-between;
-}
-
-.leftController {
-    @include flexCenter;
-    gap: clamp(40px, 4.6em, 56px);
-
-    label {
-        @include flexCenter;
-        font-size: $fs_normal_md;
-        color: var(--text_color);
-        font-weight: 500;
-        gap: clamp(6px, 0.6em, 10px);
-
-        transition: all 360ms ease-in-out;
-    }
-}
-
-.filter {
-    font-size: $fs_normal_md;
+.welcomeText,
+.infoText,
+.startText,
+.manualWrapper,
+.manualText {
+    align-self: center;
     color: var(--text_color);
-    padding: 0.2em 0.8em;
-
-    border: 2px solid $gray_color;
-    border-radius: $distance_md;
-    background-color: transparent;
-    outline: none;
-
-    cursor: pointer;
     transition: all 360ms ease-in-out;
 }
 
-.filterOpt {
-    font-size: $fs_normal_md;
-    font-weight: 600;
-    color: var(--text_color);
-    padding: 0.2em 0.8em;
+.welcomeText {
+    font-size: $fs_heading_xl;
+}
 
-    border: 2px solid $gray_color;
-    border-radius: $distance_md;
-    background-color: var(--out_focus_gray);
+.infoText {
+    font-size: $fs_normal_lg;
+}
 
-    transition: all 360ms ease-in-out;
+.startText {
+    font-size: $fs_heading_md;
+}
 
-    &:hover {
-        color: var(--hover_text_color);
-        background-color: var(--in_focus_gray);
+.manualWrapper {
+    @include flexColumn;
+    .manualText {
+        align-self: flex-start;
     }
 }
 
-.rightController {
-    button {
-        &:hover {
-            background-color: $primary_color;
-        }
-    }
-}
+.manualText {
+    font-size: $fs_normal_lg;
 
-.displayTable {
-
-    thead {
-        cursor: default;
-
-        tr,
-        tr > * {
-            font-size: $fs_normal_xl;
-            font-weight: 600;
-            color: var(--text_color);
-            padding: 0.46em 0;
-            transition: all 360ms ease-in-out;
-        }
-    }
-
-    tr td:not(:first-child) {
-        border-left: 1px solid var(--text_color);
-    }
-
-    tr td:last-child {
-        border-right: 1px solid var(--text_color);
+    span {
+        font-size: $fs_normal_xl;
+        font-weight: 800;
     }
 }

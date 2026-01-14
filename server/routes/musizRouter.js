@@ -3,7 +3,7 @@ const musizController = require('../controller/musizController');
 
 const musizRouter = express.Router();
 
-musizRouter.get('/', musizController.songsPageGet);
+musizRouter.get('/songs', musizController.songsPageGet);
 musizRouter.get('/genres', musizController.genresPageGet);
 musizRouter.get('/artists', musizController.artistsPageGet);
 

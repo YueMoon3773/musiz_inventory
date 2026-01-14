@@ -4,6 +4,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router';
 
 import routes from './routes/routes';
 import { ThemeProvider } from './hooks/useTheme.jsx';
+import { BackEndBaseUrlProvider } from './hooks/useStorage.jsx';
 
 import App from './App.jsx';
 
@@ -14,8 +15,10 @@ const router = createBrowserRouter(routes);
 createRoot(document.getElementById('root')).render(
     <StrictMode>
         {/* <App /> */}
-        <ThemeProvider>
-            <RouterProvider router={router} />
-        </ThemeProvider>
+        <BackEndBaseUrlProvider>
+            <ThemeProvider>
+                <RouterProvider router={router} />
+            </ThemeProvider>
+        </BackEndBaseUrlProvider>
     </StrictMode>,
 );

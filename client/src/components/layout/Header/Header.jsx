@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { NavLink } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { z } from 'zod';
 
@@ -38,24 +39,26 @@ const Header = ({ headerShadow }) => {
         <div className={`header ${pageStyles.pageHeader} ${headerShadow === true ? 'showShadow' : ''}`}>
             <div className="headerLeft">
                 <Link to={'/'} className="logoWrapper">
-                    The Musiz Inventory
+                    The Musiz Library
                     <LogoIcon />
                 </Link>
             </div>
 
             <div className="headerMid">
-                <Link to={'/'} className="navLink">
+                <NavLink to="/songs" className={({ isActive }) => `navLink ${isActive ? 'active' : ''}`}>
                     <SongsListIcon className="navLinkIcon"></SongsListIcon>
                     Songs
-                </Link>
-                <Link to={'/genres'} className="navLink">
+                </NavLink>
+
+                <NavLink to="/genres" className={({ isActive }) => `navLink ${isActive ? 'active' : ''}`}>
                     <GenresIcon className="navLinkIcon"></GenresIcon>
                     Genres
-                </Link>
-                <Link to={'/artists'} className="navLink">
+                </NavLink>
+
+                <NavLink to="/artists" className={({ isActive }) => `navLink ${isActive ? 'active' : ''}`}>
                     <ArtistsIcon className="navLinkIcon"></ArtistsIcon>
                     Artists
-                </Link>
+                </NavLink>
             </div>
 
             <div className="headerRight">

@@ -1,0 +1,22 @@
+.displayTable {
+    thead {
+        cursor: default;
+
+        tr,
+        tr > * {
+            font-size: $fs_normal_xl;
+            font-weight: 600;
+            color: var(--text_color);
+            padding: 0.46em 0;
+            transition: all 360ms ease-in-out;
+        }
+    }
+
+    tr td:not(:first-child) {
+        border-left: 1px solid var(--text_color);
+    }
+
+    tr td:last-child {
+        border-right: 1px solid var(--text_color);
+    }
+}

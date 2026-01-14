@@ -1,0 +1,27 @@
+.controllerWrapper {
+    @include flexCenter;
+    justify-content: space-between;
+}
+
+.leftController {
+    @include flexCenter;
+    gap: clamp(40px, 4.6em, 56px);
+
+    label {
+        @include flexCenter;
+        font-size: $fs_normal_md;
+        color: var(--text_color);
+        font-weight: 500;
+        gap: clamp(6px, 0.6em, 10px);
+
+        transition: all 360ms ease-in-out;
+    }
+}
+
+.rightController {
+    button {
+        &:hover {
+            background-color: $primary_color;
+        }
+    }
+}
