@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 import { useBaseBeUrl } from '../../../hooks/useStorage';
-import { useFetchData } from '../../../hooks/useFetchData';
+import { useFetchGetData } from '../../../hooks/useFetchData';
 
 import PageLayout from '../../layout/PageLayout/PageLayout';
 import ControllerSection from '../../layout/ControllerSection/ControllerSection';
@@ -18,10 +18,10 @@ const genresOrArtistsPageSchema = z.object({
 
 const GenresOrArtistsPage = ({ pageType }) => {
     const { baseUrl } = useBaseBeUrl();
-    const pageURL = `${baseUrl}/${pageType}`;
-    // console.log({ pageURL });
+    const beUrl = `${baseUrl}/${pageType}`;
+    // console.log({ beUrl });
 
-    const { data, error, loading } = useFetchData(pageURL);
+    const { data, error, loading } = useFetchGetData(beUrl);
     // console.log({ data, error, loading });
 
     return (

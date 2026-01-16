@@ -9,9 +9,10 @@ const formInpSchema = z.object({
     inpName: z.string(),
     inpState: z.string(),
     inpOnChangeHandler: z.function(),
+    inpOnBlurHandler: z.function(),
 });
 
-const FormInp = ({ inpLabel, inpName, inpState, inpOnChangeHandler }) => {
+const FormInp = ({ inpLabel, inpName, inpState, inpOnChangeHandler, inpOnBlurHandler }) => {
     // console.log({ inpState });
 
     return (
@@ -25,6 +26,7 @@ const FormInp = ({ inpLabel, inpName, inpState, inpOnChangeHandler }) => {
                     inpOnChangeHandler(e.target.value);
                 }}
                 type="text"
+                onBlur={inpOnBlurHandler}
             />
         </label>
     );

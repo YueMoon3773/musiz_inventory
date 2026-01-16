@@ -6,5 +6,7 @@ const musizRouter = express.Router();
 musizRouter.get('/songs', musizController.songsPageGet);
 musizRouter.get('/genres', musizController.genresPageGet);
 musizRouter.get('/artists', musizController.artistsPageGet);
+musizRouter.post('/create-genre', musizController.createGenrePost);
+musizRouter.post('/create-artist', musizController.createArtistPost);
 
 module.exports = musizRouter;

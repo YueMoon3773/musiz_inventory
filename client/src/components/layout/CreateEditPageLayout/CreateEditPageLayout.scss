@@ -1,0 +1,25 @@
+.errorsWrapper {
+    align-self: stretch;
+    transition: all 360ms ease-in-out;
+}
+
+.errorText {
+    font-size: $fs_normal_lg;
+    color: $red_color;
+    cursor: default;
+    transition: all 360ms ease-in-out;
+}
+
+form {
+    align-self: center;
+    width: 60%;
+    @include flexColumn;
+    align-items: start;
+    gap: clamp(30px, 3.6em, 42px);
+
+    .formBtns {
+        align-self: stretch;
+        @include flexCenter;
+        justify-content: space-evenly;
+    }
+}

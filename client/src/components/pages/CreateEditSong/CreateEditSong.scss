@@ -1,13 +1,5 @@
-form {
+.loadingWrapper {
     align-self: center;
-    width: 60%;
-    @include flexColumn;
-    align-items: start;
-    gap: clamp(30px, 3.6em, 42px);
-
-    .formBtns {
-        align-self: stretch;
-        @include flexCenter;
-        justify-content: space-evenly;
-    }
+    width: 30%;
+    @include flexCenter;
 }

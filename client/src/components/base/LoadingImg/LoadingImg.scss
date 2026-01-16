@@ -1,10 +1,11 @@
 .loadingImg {
     align-self: center;
     justify-self: center;
-    width: 60%;
+    width: 30%;
+    aspect-ratio: 1 / 1;
     @include flexCenter;
 
     img {
-        height: 100%;
+        width: 100%;
     }
 }

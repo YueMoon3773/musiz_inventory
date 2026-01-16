@@ -7,14 +7,16 @@ import pageStyles from '../../../styles/modules/basePageStyles.module.scss';
 
 const deleteBtnSchema = z.object({
     isDisabled: z.boolean().default(false),
+    onClickHandler: z.function().optional(),
 });
 
-const DeleteBtn = ({ isDisabled = false }) => {
+const DeleteBtn = ({ isDisabled = false, onClickHandler }) => {
     return (
         <button
             className={`${pageStyles.mainBtn} ${isDisabled === true ? pageStyles.btnDisabled : pageStyles.deleteBtn}`}
             onClick={() => {
                 if (isDisabled) return;
+                onClickHandler();
             }}
         >
             <DeleteIcon></DeleteIcon>

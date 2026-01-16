@@ -1,60 +1,138 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { z } from 'zod';
 
-import PageLayout from '../../layout/PageLayout/PageLayout';
-import FormInp from '../../base/FormInp/FormInp';
+import { useFetchGetData } from '../../../hooks/useFetchData';
+import { useBaseBeUrl } from '../../../hooks/useStorage';
+import ValidatedComponent from '../../../utils/validateComponentProps';
+
+import ErrorPage from '../ErrorPage/ErrorPage';
+import CreateEditPageLayout from '../../layout/CreateEditPageLayout/CreateEditPageLayout';
+import LoadingImg from '../../base/LoadingImg/LoadingImg';
 import Selection from '../../base/Selection/Selection';
-import SubmitBtn from '../../base/SubmitBtn/SubmitBtn';
-import DeleteBtn from '../../base/DeleteBtn/DeleteBtn';
 
-import { artists, genres } from '../../../db/db';
-
-import pageStyles from '../../../styles/modules/basePageStyles.module.scss';
 import './CreateEditSong.scss';
 
-const CreateEditSong = ({ pageType }) => {
-    const [songTitle, setSongTitle] = useState('');
+const createEditSongSchema = z.object({
+    pageType: z.string(),
+    target: z.string(),
+});
+
+const CreateEditSong = ({ pageType, target }) => {
+    const inpLabel = (text) => String(text).charAt(0).toUpperCase() + String(text).slice(1);
+    const { baseUrl } = useBaseBeUrl();
+    const artistsUrl = `${baseUrl}/artists`;
+    const genresUrl = `${baseUrl}/genres`;
+
+    const [inpValue, setInpValue] = useState('');
+    const [inpError, setInpError] = useState(null);
+    const [isInpInteracted, setIsInpInteracted] = useState(false);
+    const [genreSelectionValue, setGenreSelectionValue] = useState(null);
+    const [artistSelectionValue, setArtistSelectionValue] = useState(null);
+
+    const { data: artistsData, error: artistsError, loading: artistsLoading } = useFetchGetData(artistsUrl);
+    const { data: genresData, error: genresError, loading: genresLoading } = useFetchGetData(genresUrl);
+    // console.log({ artistsData });
+    // console.log({ genresData });
+
+    useEffect(() => {
+        if (artistsData === null || genresData === null) {
+            return;
+        }
+
+        setGenreSelectionValue(artistsData !== null ? artistsData.beData[0].artist : null);
+        setArtistSelectionValue(genresData !== null ? genresData.beData[0].genre : null);
+    }, [artistsData, genresData]);
+
+    const formInpSchema = z
+        .string()
+        .min(2, `${inpLabel(target)} name must be at least 2 characters.`)
+        .max(30, `${inpLabel(target)} name must be shorter than 30 characters.`)
+        .regex(
+            /^[a-zA-Z0-9_!@#$%^&*()\-\+= ]+$/,
+            'Only letters, numbers, underscores, parentheses and mathematical/logical operators allowed',
+        );
 
     const handleChangeSongTitle = (inpValue) => {
         // console.log({ inpValue });
-        setSongTitle(inpValue);
+        setInpValue(inpValue);
+
+        const result = formInpSchema.safeParse(inpValue);
+        // console.log(result);
+
+        setInpError(result.success ? null : result.error.issues[0].message);
+    };
+
+    const handleOnBlurInp = () => {
+        setIsInpInteracted(true);
+    };
+
+    const handleGenreSelectionOnChange = (selectionValue) => {
+        setGenreSelectionValue(selectionValue);
+    };
+
+    const handleArtistSelectionOnChange = (selectionValue) => {
+        setArtistSelectionValue(selectionValue);
+    };
+
+    const handleSubmitBtn = async (e) => {
+        e.preventDefault();
+        console.log({ inpValue });
+        console.log({ genreSelectionValue });
+        console.log({ artistSelectionValue });
+
+        if (inpError !== null) return;
     };
 
     return (
-        <PageLayout>
-            <h2 className="pageTitle">
-                {pageType === 'create' && 'Create new song'}
-                {pageType === 'edit' && 'Edit song'}
-            </h2>
-
-            <form action="">
-                <FormInp
-                    inpLabel={'Song title: '}
-                    inpName={'songTitle'}
-                    inpState={songTitle}
-                    inpOnChangeHandler={handleChangeSongTitle}
-                ></FormInp>
-
-                <Selection
-                    selectionLabel={'Artist'}
-                    selectionId={'artists'}
-                    selectionType={'artists'}
-                    selectionOptsList={artists}
-                ></Selection>
-
-                <Selection
-                    selectionLabel={'Genre'}
-                    selectionId={'genres'}
-                    selectionType={'genres'}
-                    selectionOptsList={genres}
-                ></Selection>
-
-                <div className="formBtns">
-                    <SubmitBtn></SubmitBtn>
-                    {pageType === 'edit' && <DeleteBtn></DeleteBtn>}
-                </div>
-            </form>
-        </PageLayout>
+        <>
+            {artistsLoading === false &&
+            genresLoading === false &&
+            artistsError !== null &&
+            genresError !== null &&
+            artistsData === null &&
+            genresData === null ? (
+                <ErrorPage errorText="Can not retrieve data, please try again later!"></ErrorPage>
+            ) : (
+                <CreateEditPageLayout
+                    pageType={pageType}
+                    target={target}
+                    inpValue={inpValue}
+                    handleChangeInpValue={handleChangeSongTitle}
+                    handleOnBlurInp={handleOnBlurInp}
+                    inpError={inpError}
+                    isInpInteracted={isInpInteracted}
+                    handleSubmitBtn={handleSubmitBtn}
+                >
+                    <>
+                        {artistsLoading === true && genresLoading === true && (
+                            <div className="loadingWrapper">
+                                <LoadingImg></LoadingImg>
+                            </div>
+                        )}
+                        {artistsLoading === false && artistsError === null && artistsData !== null && (
+                            <Selection
+                                selectionLabel={'Artist'}
+                                selectionId={'artists'}
+                                selectionType={'artists'}
+                                selectionOptsList={artistsData.beData}
+                                selectionOnChangeHandle={handleArtistSelectionOnChange}
+                            ></Selection>
+                        )}
+                        {genresLoading === false && genresError === null && genresData !== null && (
+                            <Selection
+                                selectionLabel={'Genre'}
+                                selectionId={'genres'}
+                                selectionType={'genres'}
+                                selectionOptsList={genresData.beData}
+                                selectionOnChangeHandle={handleGenreSelectionOnChange}
+                            ></Selection>
+                        )}
+                    </>
+                </CreateEditPageLayout>
+            )}
+        </>
     );
 };
 
-export default CreateEditSong;
+// export default CreateEditSong;
+export default ValidatedComponent(CreateEditSong, createEditSongSchema);

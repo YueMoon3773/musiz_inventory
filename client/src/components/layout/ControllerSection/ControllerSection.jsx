@@ -1,4 +1,4 @@
-import { useParams, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { z } from 'zod';
 
 import ValidatedComponent from '../../../utils/validateComponentProps';
@@ -17,8 +17,6 @@ const ControllerSection = ({ pageType }) => {
     const sortField = ['Song title', 'Artist', 'Genre'];
     const sortOrder = ['Ascending (Low to High)', 'Descending (High to Low)'];
     const navigate = useNavigate();
-    // const { pageType } = useParams();
-    // console.log(pageType);
 
     return (
         <div className="controllerWrapper">
@@ -31,6 +29,7 @@ const ControllerSection = ({ pageType }) => {
                         selectionId={'sortField'}
                         selectionType={'sortField'}
                         selectionOptsList={sortField}
+                        selectionOnChangeHandle={() => {}}
                     ></Selection>
                 )}
 
@@ -39,10 +38,20 @@ const ControllerSection = ({ pageType }) => {
                     selectionId={'sortOrder'}
                     selectionType={'sortOrder'}
                     selectionOptsList={sortOrder}
+                    selectionOnChangeHandle={() => {}}
                 ></Selection>
             </div>
             <div className="rightController">
-                <button className={`${pageStyles.mainBtn}`} onClick={() => navigate('/create_song')}>
+                <button
+                    className={`${pageStyles.mainBtn}`}
+                    onClick={() =>
+                        navigate(
+                            `/create-${pageType === 'songs' ? 'song' : ''}${pageType === 'genres' ? 'genre' : ''}${
+                                pageType === 'artists' ? 'artist' : ''
+                            }`,
+                        )
+                    }
+                >
                     <AddIcon></AddIcon> Add new
                     {pageType === 'songs' && ' song'}
                     {pageType === 'genres' && ' genre'}

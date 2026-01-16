@@ -3,7 +3,7 @@ import { z } from 'zod';
 
 const urlSchema = z.url();
 
-export const useFetchData = (rawUrl) => {
+export const useFetchGetData = (rawUrl) => {
     const [data, setData] = useState(null);
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(true);

@@ -2,6 +2,7 @@ import App from '../App';
 import ErrorPage from '../components/pages/ErrorPage/ErrorPage';
 import SongsPage from '../components/pages/SongsPage/SongsPage';
 import CreateEditSong from '../components/pages/CreateEditSong/CreateEditSong';
+import CreateEditGenreArtist from '../components/pages/CreateEditGenreArtist/CreateEditGenreArtist';
 import GenresOrArtistsPage from '../components/pages/GenresOrArtistsPage/GenresOrArtistsPage';
 
 const routes = [
@@ -17,16 +18,6 @@ const routes = [
         errorElement: <ErrorPage />,
     },
     {
-        path: '/create_song',
-        element: <CreateEditSong pageType="create" />,
-        errorElement: <ErrorPage />,
-    },
-    {
-        path: '/edit_song',
-        element: <CreateEditSong pageType="edit" />,
-        errorElement: <ErrorPage />,
-    },
-    {
         path: '/genres',
         element: <GenresOrArtistsPage pageType="genres" />,
         errorElement: <ErrorPage />,
@@ -36,11 +27,36 @@ const routes = [
         element: <GenresOrArtistsPage pageType="artists" />,
         errorElement: <ErrorPage />,
     },
-    // {
-    //     path: '/:pageType',
-    //     element: <GenresOrArtistsPage />,
-    //     errorElement: <ErrorPage />,
-    // },
+    {
+        path: '/create-song',
+        element: <CreateEditSong pageType="create" target="song" />,
+        errorElement: <ErrorPage />,
+    },
+    {
+        path: '/edit-song',
+        element: <CreateEditSong pageType="edit" target="song" />,
+        errorElement: <ErrorPage />,
+    },
+    {
+        path: '/create-genre',
+        element: <CreateEditGenreArtist pageType="create" target="genre" />,
+        errorElement: <ErrorPage />,
+    },
+    {
+        path: '/edit-genre',
+        element: <CreateEditGenreArtist pageType="edit" target="genre" />,
+        errorElement: <ErrorPage />,
+    },
+    {
+        path: '/create-artist',
+        element: <CreateEditGenreArtist pageType="create" target="artist" />,
+        errorElement: <ErrorPage />,
+    },
+    {
+        path: '/edit-artist',
+        element: <CreateEditGenreArtist pageType="edit" target="artist" />,
+        errorElement: <ErrorPage />,
+    },
 ];
 
 export default routes;

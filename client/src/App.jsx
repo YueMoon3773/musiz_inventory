@@ -1,27 +1,8 @@
-import { useState, useEffect, useContext, createContext } from 'react';
-import { useNavigate } from 'react-router-dom';
-// import ''
-
-import { useFetchData } from './hooks/useFetchData';
-
 import PageLayout from './components/layout/PageLayout/PageLayout';
-// import Selection from './components/base/Selection/Selection';
-import ControllerSection from './components/layout/ControllerSection/ControllerSection';
-import InventoryItem from './components/base/InventoryItem/InventoryItem';
-import LoadingImg from './components/base/LoadingImg/LoadingImg';
-// import { AddIcon } from './assets/svg/svgIcons';
 
-import SongsPage from './components/pages/SongsPage/SongsPage';
-
-// import pageStyles from './styles/modules/basePageStyles.module.scss';
 import './App.scss';
 
-const songsPageURL = 'http://localhost:6600/';
-
 function App() {
-    // const navigate = useNavigate();
-    // const { data, error, loading } = useFetchData(songsPageURL);
-    // // console.log({ data, error, loading });
     return (
         <PageLayout>
             <h1 className="welcomeText">Welcome to Musiz Library</h1>

@@ -6,7 +6,7 @@ import routes from './routes/routes';
 import { ThemeProvider } from './hooks/useTheme.jsx';
 import { BackEndBaseUrlProvider } from './hooks/useStorage.jsx';
 
-import App from './App.jsx';
+// import App from './App.jsx';
 
 import './index.scss';
 

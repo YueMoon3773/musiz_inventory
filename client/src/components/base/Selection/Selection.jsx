@@ -11,13 +11,26 @@ const selectionSchema = z.object({
     selectionId: z.string(),
     selectionType: z.string(),
     selectionOptsList: z.any().array(),
+    selectionOnChangeHandle: z.function(),
 });
 
-const Selection = ({ selectionLabel, selectionId, selectionType, selectionOptsList }) => {
+const Selection = ({ selectionLabel, selectionId, selectionType, selectionOptsList, selectionOnChangeHandle }) => {
+    // selectionOnChangeHandle(selectionOptsList[0]);
+    // console.log(selectionOptsList[0]);
+
     return (
         <label htmlFor={selectionId} className="selectionLabel">
             {selectionLabel}
-            <select name={selectionId} id={selectionId} className="selection">
+            <select
+                name={selectionId}
+                id={selectionId}
+                className="selection"
+                onChange={(e) => {
+                    // console.log(selectionId + ' ' + e.target.value);
+                    selectionOnChangeHandle(e.target.value);
+                }}
+                defaultValue={selectionOptsList[0]}
+            >
                 {(selectionType === 'sortField' || selectionType === 'sortOrder') &&
                     selectionOptsList.map((item, index) => {
                         return (
