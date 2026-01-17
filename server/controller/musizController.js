@@ -38,7 +38,7 @@ const songsPageGet = async (req, res) => {
 
 const genresPageGet = async (req, res) => {
     const beData = await db.getAllGenres();
-    console.log(beData);
+    // console.log(beData);
     res.json({ beData });
 };
 
@@ -81,10 +81,32 @@ const createArtistPost = [
     },
 ];
 
+const createSongPost = [
+    songValidator,
+    genreValidator,
+    artistValidator,
+    async (req, res) => {
+        const errors = validationResult(req);
+
+        if (!errors.isEmpty()) {
+            return res.status(404).json({
+                errors: errors.array(),
+            });
+        }
+
+        const { song: songName, genre: genreName, artist: artistName } = matchedData(req);
+
+        // console.log({ songName, genreName, artistName });
+        db.insertNewSongAndItsRelationship(songName, artistName, genreName);
+        res.json({ ok: true });
+    },
+];
+
 module.exports = {
     songsPageGet,
     genresPageGet,
     artistsPageGet,
     createGenrePost,
     createArtistPost,
+    createSongPost,
 };

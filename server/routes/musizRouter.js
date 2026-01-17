@@ -8,5 +8,6 @@ musizRouter.get('/genres', musizController.genresPageGet);
 musizRouter.get('/artists', musizController.artistsPageGet);
 musizRouter.post('/create-genre', musizController.createGenrePost);
 musizRouter.post('/create-artist', musizController.createArtistPost);
+musizRouter.post('/create-song', musizController.createSongPost);
 
 module.exports = musizRouter;

@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { z } from 'zod';
 
 import { useFetchGetData } from '../../../hooks/useFetchData';
@@ -18,8 +19,10 @@ const createEditSongSchema = z.object({
 });
 
 const CreateEditSong = ({ pageType, target }) => {
+    const navigate = useNavigate();
     const inpLabel = (text) => String(text).charAt(0).toUpperCase() + String(text).slice(1);
     const { baseUrl } = useBaseBeUrl();
+    const beUrl = `${baseUrl}/${pageType}-${target}`;
     const artistsUrl = `${baseUrl}/artists`;
     const genresUrl = `${baseUrl}/genres`;
 
@@ -39,8 +42,8 @@ const CreateEditSong = ({ pageType, target }) => {
             return;
         }
 
-        setGenreSelectionValue(artistsData !== null ? artistsData.beData[0].artist : null);
-        setArtistSelectionValue(genresData !== null ? genresData.beData[0].genre : null);
+        setArtistSelectionValue(artistsData !== null ? artistsData.beData[0].artist : null);
+        setGenreSelectionValue(genresData !== null ? genresData.beData[0].genre : null);
     }, [artistsData, genresData]);
 
     const formInpSchema = z
@@ -76,11 +79,35 @@ const CreateEditSong = ({ pageType, target }) => {
 
     const handleSubmitBtn = async (e) => {
         e.preventDefault();
-        console.log({ inpValue });
-        console.log({ genreSelectionValue });
-        console.log({ artistSelectionValue });
+        console.log({ inpValue, genreSelectionValue, artistSelectionValue });
+        console.log(
+            JSON.stringify({
+                song: inpValue.toLowerCase(),
+                genre: genreSelectionValue,
+                artist: artistSelectionValue,
+            }),
+        );
 
         if (inpError !== null) return;
+
+        const res = await fetch(beUrl, {
+            mode: 'cors',
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                song: inpValue.toLowerCase(),
+                genre: genreSelectionValue,
+                artist: artistSelectionValue,
+            }),
+        });
+
+        const data = res.json();
+
+        if (res.ok === false) {
+            throw new Error(data.errors?.[0]?.msg || 'Request failed');
+        }
+
+        // navigate(`/${target}s`);
     };
 
     return (
