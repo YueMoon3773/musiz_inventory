@@ -109,13 +109,13 @@ const insertNewSongAndItsRelationship = async (songName, artistName, genreName) 
 	`,
         [genreName],
     );
-    await pool.query(
-        `
-		INSERT INTO songs (song, is_editable) VALUES
-			($1, TRUE);
-    `,
-        [songName],
-    );
+    // await pool.query(
+    //     `
+	// 	INSERT INTO songs (song, is_editable) VALUES
+	// 		($1, TRUE);
+    // `,
+    //     [songName],
+    // );
 
     const { rows: newlyAddedSongId } = await pool.query(`
 		SELECT id FROM songs ORDER BY id DESC LIMIT 1;
@@ -128,21 +128,21 @@ const insertNewSongAndItsRelationship = async (songName, artistName, genreName) 
     console.log({ newlyAddedSongId });
     console.log(newlyAddedSongId[0].id);
 
-    await pool.query(
-        `
-    	INSERT INTO song_artist (song_id, artist_id, is_editable) VALUES
-    		($1, $2, TRUE);
-    `,
-        [newlyAddedSongId[0].id, artistId[0].id],
-    );
+    // await pool.query(
+    //     `
+    // 	INSERT INTO song_artist (song_id, artist_id, is_editable) VALUES
+    // 		($1, $2, TRUE);
+    // `,
+    //     [newlyAddedSongId[0].id, artistId[0].id],
+    // );
 
-    await pool.query(
-        `
-		INSERT INTO song_genre (song_id, genre_id, is_editable) VALUES
-			($1, $2, TRUE);
-	`,
-        [newlyAddedSongId[0].id, genreId[0].id],
-    );
+    // await pool.query(
+    //     `
+	// 	INSERT INTO song_genre (song_id, genre_id, is_editable) VALUES
+	// 		($1, $2, TRUE);
+	// `,
+    //     [newlyAddedSongId[0].id, genreId[0].id],
+    // );
 };
 
 module.exports = {

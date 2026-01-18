@@ -14,7 +14,8 @@ const DeleteBtn = ({ isDisabled = false, onClickHandler }) => {
     return (
         <button
             className={`${pageStyles.mainBtn} ${isDisabled === true ? pageStyles.btnDisabled : pageStyles.deleteBtn}`}
-            onClick={() => {
+            onClick={(e) => {
+                e.preventDefault();
                 if (isDisabled) return;
                 onClickHandler();
             }}

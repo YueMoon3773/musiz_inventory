@@ -1,3 +1,8 @@
+.addBtnsWrapper {
+    @include flexCenter;
+    gap: clamp(20px, 3.6em, 42px);
+}
+
 .errorsWrapper {
     align-self: stretch;
     transition: all 360ms ease-in-out;

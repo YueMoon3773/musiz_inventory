@@ -3,6 +3,7 @@ import { z } from 'zod';
 import ValidatedComponent from '../../../utils/validateComponentProps';
 
 import PageLayout from '../../layout/PageLayout/PageLayout';
+import AddBtn from '../../base/AddBtn/AddBtn';
 import FormInp from '../../base/FormInp/FormInp';
 import SubmitBtn from '../../base/SubmitBtn/SubmitBtn';
 import DeleteBtn from '../../base/DeleteBtn/DeleteBtn';
@@ -13,6 +14,8 @@ const createEditPageSchema = z.object({
     pageType: z.string(),
     target: z.string(),
     targetIsEditable: z.boolean().optional(),
+    handleAddArtistBtn: z.function().optional(),
+    handleAddGenreBtn: z.function().optional(),
     inpValue: z.string(),
     handleChangeInpValue: z.function(),
     handleOnBlurInp: z.function(),
@@ -27,6 +30,8 @@ const CreateEditPageLayout = ({
     pageType,
     target,
     targetIsEditable,
+    handleAddArtistBtn,
+    handleAddGenreBtn,
     inpValue,
     handleChangeInpValue,
     handleOnBlurInp,
@@ -44,6 +49,13 @@ const CreateEditPageLayout = ({
                 {pageType === 'create' && `Create new ${target}`}
                 {pageType === 'edit' && `Edit ${target}`}
             </h2>
+
+            {target === 'song' && (
+                <div className="addBtnsWrapper">
+                    <AddBtn onClickHandler={handleAddArtistBtn}>artist</AddBtn>
+                    <AddBtn onClickHandler={handleAddGenreBtn}>genre</AddBtn>
+                </div>
+            )}
 
             <form action="">
                 <FormInp

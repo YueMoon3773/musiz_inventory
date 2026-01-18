@@ -10,6 +10,7 @@ import ErrorPage from '../ErrorPage/ErrorPage';
 import CreateEditPageLayout from '../../layout/CreateEditPageLayout/CreateEditPageLayout';
 import LoadingImg from '../../base/LoadingImg/LoadingImg';
 import Selection from '../../base/Selection/Selection';
+import DeleteBtn from '../../base/DeleteBtn/DeleteBtn';
 
 import './CreateEditSong.scss';
 
@@ -20,6 +21,11 @@ const createEditSongSchema = z.object({
 
 const CreateEditSong = ({ pageType, target }) => {
     const navigate = useNavigate();
+    // const { numberArtistSelection, increaseArtistNumberSelection, decreaseArtistNumberSelection } =
+    //     useArtistNumberSelection();
+    // const { numberGenreSelection, increaseGenreNumberSelection, decreaseGenreNumberSelection } =
+    //     useGenreNumberSelection();
+
     const inpLabel = (text) => String(text).charAt(0).toUpperCase() + String(text).slice(1);
     const { baseUrl } = useBaseBeUrl();
     const beUrl = `${baseUrl}/${pageType}-${target}`;
@@ -29,13 +35,17 @@ const CreateEditSong = ({ pageType, target }) => {
     const [inpValue, setInpValue] = useState('');
     const [inpError, setInpError] = useState(null);
     const [isInpInteracted, setIsInpInteracted] = useState(false);
-    const [genreSelectionValue, setGenreSelectionValue] = useState(null);
+
+    const [numberArtistSelection, setNumberArtistSelection] = useState(1);
+    const [numberGenreSelection, setNumberGenreSelection] = useState(1);
     const [artistSelectionValue, setArtistSelectionValue] = useState(null);
+    const [genreSelectionValue, setGenreSelectionValue] = useState(null);
 
     const { data: artistsData, error: artistsError, loading: artistsLoading } = useFetchGetData(artistsUrl);
     const { data: genresData, error: genresError, loading: genresLoading } = useFetchGetData(genresUrl);
     // console.log({ artistsData });
     // console.log({ genresData });
+    console.log({ numberArtistSelection, numberGenreSelection });
 
     useEffect(() => {
         if (artistsData === null || genresData === null) {
@@ -67,6 +77,32 @@ const CreateEditSong = ({ pageType, target }) => {
 
     const handleOnBlurInp = () => {
         setIsInpInteracted(true);
+    };
+
+    const handleAddArtistBtn = () => {
+        // increaseArtistNumberSelection();
+        setNumberArtistSelection((prev) => prev + 1);
+    };
+
+    const handleDeleteArtistBtn = () => {
+        // decreaseArtistNumberSelection();
+        setNumberArtistSelection((prev) => {
+            if (prev - 1 === 0) return 1;
+            return prev - 1;
+        });
+    };
+
+    const handleAddGenreBtn = () => {
+        // increaseGenreNumberSelection();
+        setNumberGenreSelection((prev) => prev + 1);
+    };
+
+    const handleDeleteGenreBtn = () => {
+        // decreaseGenreNumberSelection();
+        setNumberGenreSelection((prev) => {
+            if (prev - 1 === 0) return 1;
+            return prev - 1;
+        });
     };
 
     const handleGenreSelectionOnChange = (selectionValue) => {
@@ -124,6 +160,8 @@ const CreateEditSong = ({ pageType, target }) => {
                     pageType={pageType}
                     target={target}
                     inpValue={inpValue}
+                    handleAddArtistBtn={handleAddArtistBtn}
+                    handleAddGenreBtn={handleAddGenreBtn}
                     handleChangeInpValue={handleChangeSongTitle}
                     handleOnBlurInp={handleOnBlurInp}
                     inpError={inpError}
@@ -137,22 +175,66 @@ const CreateEditSong = ({ pageType, target }) => {
                             </div>
                         )}
                         {artistsLoading === false && artistsError === null && artistsData !== null && (
-                            <Selection
-                                selectionLabel={'Artist'}
-                                selectionId={'artists'}
-                                selectionType={'artists'}
-                                selectionOptsList={artistsData.beData}
-                                selectionOnChangeHandle={handleArtistSelectionOnChange}
-                            ></Selection>
+                            <>
+                                {numberArtistSelection === 1 && (
+                                    <Selection
+                                        selectionLabel={'Artist'}
+                                        selectionId={'artists'}
+                                        selectionType={'artists'}
+                                        selectionOptsList={artistsData.beData}
+                                        selectionOnChangeHandle={handleArtistSelectionOnChange}
+                                    ></Selection>
+                                )}
+                                {numberArtistSelection > 1 && (
+                                    <div className="selectionsWrapper">
+                                        {[...Array(numberArtistSelection)].map((_, index) => {
+                                            return (
+                                                <div key={index}>
+                                                    <Selection
+                                                        selectionLabel={`Artist ${index + 1}`}
+                                                        selectionId={'artists'}
+                                                        selectionType={'artists'}
+                                                        selectionOptsList={artistsData.beData}
+                                                        selectionOnChangeHandle={handleArtistSelectionOnChange}
+                                                    ></Selection>
+                                                    <DeleteBtn onClickHandler={handleDeleteArtistBtn}></DeleteBtn>
+                                                </div>
+                                            );
+                                        })}
+                                    </div>
+                                )}
+                            </>
                         )}
                         {genresLoading === false && genresError === null && genresData !== null && (
-                            <Selection
-                                selectionLabel={'Genre'}
-                                selectionId={'genres'}
-                                selectionType={'genres'}
-                                selectionOptsList={genresData.beData}
-                                selectionOnChangeHandle={handleGenreSelectionOnChange}
-                            ></Selection>
+                            <>
+                                {numberGenreSelection === 1 && (
+                                    <Selection
+                                        selectionLabel={'Genre'}
+                                        selectionId={'genres'}
+                                        selectionType={'genres'}
+                                        selectionOptsList={genresData.beData}
+                                        selectionOnChangeHandle={handleGenreSelectionOnChange}
+                                    ></Selection>
+                                )}
+                                {numberGenreSelection > 1 && (
+                                    <div className="selectionsWrapper">
+                                        {[...Array(numberGenreSelection)].map((_, index) => {
+                                            return (
+                                                <div key={index}>
+                                                    <Selection
+                                                        selectionLabel={`Genre ${index + 1}`}
+                                                        selectionId={'genres'}
+                                                        selectionType={'genres'}
+                                                        selectionOptsList={genresData.beData}
+                                                        selectionOnChangeHandle={handleGenreSelectionOnChange}
+                                                    ></Selection>
+                                                    <DeleteBtn onClickHandler={handleDeleteGenreBtn}></DeleteBtn>
+                                                </div>
+                                            );
+                                        })}
+                                    </div>
+                                )}
+                            </>
                         )}
                     </>
                 </CreateEditPageLayout>

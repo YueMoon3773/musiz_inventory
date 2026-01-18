@@ -89,6 +89,14 @@
 }
 
 .submitBtn {
+    border-color: $green_color;
+
+    &:hover {
+        background-color: $green_color;
+    }
+}
+
+.addBtn {
     border-color: $primary_color;
 
     &:hover {

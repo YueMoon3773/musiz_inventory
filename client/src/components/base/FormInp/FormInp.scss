@@ -2,6 +2,7 @@
     @include flexCenter;
     // align-items: stretch;
     font-size: $fs_normal_md;
+    font-weight: 500;
     color: var(--text_color);
     gap: clamp(10px, 1.6em, 16px);
 

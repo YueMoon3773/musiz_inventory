@@ -13,7 +13,8 @@ const EditBtn = ({ isDisabled = false }) => {
     return (
         <button
             className={`${pageStyles.mainBtn} ${isDisabled === true ? pageStyles.btnDisabled : pageStyles.editBtn}`}
-            onClick={() => {
+            onClick={(e) => {
+                e.preventDefault();
                 if (isDisabled) return;
             }}
         >

@@ -3,10 +3,9 @@ import { z } from 'zod';
 
 import ValidatedComponent from '../../../utils/validateComponentProps';
 
-import { AddIcon } from '../../../assets/svg/svgIcons';
+import AddBtn from '../../base/AddBtn/AddBtn';
 import Selection from '../../base/Selection/Selection';
 
-import pageStyles from '../../../styles/modules/basePageStyles.module.scss';
 import './ControllerSection.scss';
 
 const controllerSectionSchema = z.object({
@@ -42,9 +41,8 @@ const ControllerSection = ({ pageType }) => {
                 ></Selection>
             </div>
             <div className="rightController">
-                <button
-                    className={`${pageStyles.mainBtn}`}
-                    onClick={() =>
+                <AddBtn
+                    onClickHandler={(e) =>
                         navigate(
                             `/create-${pageType === 'songs' ? 'song' : ''}${pageType === 'genres' ? 'genre' : ''}${
                                 pageType === 'artists' ? 'artist' : ''
@@ -52,11 +50,10 @@ const ControllerSection = ({ pageType }) => {
                         )
                     }
                 >
-                    <AddIcon></AddIcon> Add new
                     {pageType === 'songs' && ' song'}
                     {pageType === 'genres' && ' genre'}
                     {pageType === 'artists' && ' artist'}
-                </button>
+                </AddBtn>
             </div>
         </div>
     );

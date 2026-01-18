@@ -3,3 +3,14 @@
     width: 30%;
     @include flexCenter;
 }
+
+.selectionsWrapper {
+    width: 100%;
+    @include flexColumn;
+    gap: clamp(16px, 2em, 24px);
+
+    div {
+        @include flexCenter;
+        justify-content: space-between;
+    }
+}
