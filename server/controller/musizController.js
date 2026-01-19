@@ -96,9 +96,11 @@ const createSongPost = [
 
         const { song: songName, genre: genreName, artist: artistName } = matchedData(req);
 
-        // console.log({ songName, genreName, artistName });
-        db.insertNewSongAndItsRelationship(songName, artistName, genreName);
+        console.log({ songName, genreName, artistName });
+        // genreName.forEach((item) => console.log(item.value));
+        // db.insertNewSongAndItsSingleRelationship(songName, artistName, genreName);
         res.json({ ok: true });
+        // res.json({ ok: true, songName, genreName, artistName });
     },
 ];
 

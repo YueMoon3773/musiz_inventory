@@ -64,7 +64,7 @@ const InventoryItem = ({ inventoryType, data }) => {
                     <td>
                         <div className="optBtnsWrapper">
                             <EditBtn isDisabled={!data.is_editable}></EditBtn>
-                            <DeleteBtn isDisabled={!data.is_editable}></DeleteBtn>
+                            <DeleteBtn targetId={data.id} isDisabled={!data.is_editable}></DeleteBtn>
                         </div>
                     </td>
                 </>
@@ -120,7 +120,7 @@ const InventoryItem = ({ inventoryType, data }) => {
                     <td>
                         <div className="optBtnsWrapper">
                             <EditBtn isDisabled={!data.is_editable}></EditBtn>
-                            <DeleteBtn isDisabled={!data.is_editable}></DeleteBtn>
+                            <DeleteBtn targetId={data.id} isDisabled={!data.is_editable}></DeleteBtn>
                         </div>
                     </td>
                 </>

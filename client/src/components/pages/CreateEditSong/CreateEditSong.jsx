@@ -19,12 +19,20 @@ const createEditSongSchema = z.object({
     target: z.string(),
 });
 
+const filterToGetUniqueArray = (arr) => {
+    const seen = new Set();
+
+    const uniqueArray = arr.filter((item) => {
+        if (seen.has(item.value)) return false;
+        seen.add(item.value);
+        return true;
+    });
+
+    return uniqueArray;
+};
+
 const CreateEditSong = ({ pageType, target }) => {
     const navigate = useNavigate();
-    // const { numberArtistSelection, increaseArtistNumberSelection, decreaseArtistNumberSelection } =
-    //     useArtistNumberSelection();
-    // const { numberGenreSelection, increaseGenreNumberSelection, decreaseGenreNumberSelection } =
-    //     useGenreNumberSelection();
 
     const inpLabel = (text) => String(text).charAt(0).toUpperCase() + String(text).slice(1);
     const { baseUrl } = useBaseBeUrl();
@@ -36,24 +44,29 @@ const CreateEditSong = ({ pageType, target }) => {
     const [inpError, setInpError] = useState(null);
     const [isInpInteracted, setIsInpInteracted] = useState(false);
 
-    const [numberArtistSelection, setNumberArtistSelection] = useState(1);
-    const [numberGenreSelection, setNumberGenreSelection] = useState(1);
-    const [artistSelectionValue, setArtistSelectionValue] = useState(null);
-    const [genreSelectionValue, setGenreSelectionValue] = useState(null);
+    const [defaultArtistSelectionValue, setDefaultArtistSelectionValue] = useState('');
+    const [artistSelectionValue, setArtistSelectionValue] = useState([]);
+
+    const [defaultGenreSelectionValue, setDefaultGenreSelectionValue] = useState('');
+    const [genreSelectionValue, setGenreSelectionValue] = useState([]);
 
     const { data: artistsData, error: artistsError, loading: artistsLoading } = useFetchGetData(artistsUrl);
     const { data: genresData, error: genresError, loading: genresLoading } = useFetchGetData(genresUrl);
     // console.log({ artistsData });
     // console.log({ genresData });
-    console.log({ numberArtistSelection, numberGenreSelection });
 
     useEffect(() => {
         if (artistsData === null || genresData === null) {
             return;
         }
+        const defaultArtistValue = artistsData.beData[0].artist;
+        const defaultGenreValue = genresData.beData[0].genre;
 
-        setArtistSelectionValue(artistsData !== null ? artistsData.beData[0].artist : null);
-        setGenreSelectionValue(genresData !== null ? genresData.beData[0].genre : null);
+        setDefaultArtistSelectionValue(defaultArtistValue);
+        setDefaultGenreSelectionValue(defaultGenreValue);
+
+        setArtistSelectionValue([{ id: 1, value: defaultArtistValue }]);
+        setGenreSelectionValue([{ id: 1, value: defaultGenreValue }]);
     }, [artistsData, genresData]);
 
     const formInpSchema = z
@@ -80,47 +93,61 @@ const CreateEditSong = ({ pageType, target }) => {
     };
 
     const handleAddArtistBtn = () => {
-        // increaseArtistNumberSelection();
-        setNumberArtistSelection((prev) => prev + 1);
+        const nextArtistId = artistSelectionValue[artistSelectionValue.length - 1].id + 1;
+        setArtistSelectionValue((prev) => [...prev, { id: nextArtistId, value: defaultArtistSelectionValue }]);
     };
 
-    const handleDeleteArtistBtn = () => {
-        // decreaseArtistNumberSelection();
-        setNumberArtistSelection((prev) => {
-            if (prev - 1 === 0) return 1;
-            return prev - 1;
+    const handleArtistSelectionOnChange = (id, selectionValue) => {
+        setArtistSelectionValue((prev) => {
+            return prev.map((item) => {
+                if (item.id !== Number(id)) return item;
+                return { id: Number(id), value: selectionValue };
+            });
+        });
+    };
+
+    const handleDeleteArtistBtn = (id) => {
+        setArtistSelectionValue((prev) => {
+            return prev.filter((item) => {
+                if (item.id !== Number(id)) return true;
+                return false;
+            });
         });
     };
 
     const handleAddGenreBtn = () => {
-        // increaseGenreNumberSelection();
-        setNumberGenreSelection((prev) => prev + 1);
+        const nextGenreId = genreSelectionValue[genreSelectionValue.length - 1].id + 1;
+        setGenreSelectionValue((prev) => [...prev, { id: nextGenreId, value: defaultGenreSelectionValue }]);
     };
 
-    const handleDeleteGenreBtn = () => {
-        // decreaseGenreNumberSelection();
-        setNumberGenreSelection((prev) => {
-            if (prev - 1 === 0) return 1;
-            return prev - 1;
+    const handleGenreSelectionOnChange = (id, selectionValue) => {
+        setGenreSelectionValue((prev) => {
+            return prev.map((item) => {
+                if (item.id !== Number(id)) return item;
+                return { id: Number(id), value: selectionValue };
+            });
         });
     };
 
-    const handleGenreSelectionOnChange = (selectionValue) => {
-        setGenreSelectionValue(selectionValue);
-    };
-
-    const handleArtistSelectionOnChange = (selectionValue) => {
-        setArtistSelectionValue(selectionValue);
+    const handleDeleteGenreBtn = (id) => {
+        setGenreSelectionValue((prev) => {
+            return prev.filter((item) => {
+                if (item.id !== Number(id)) return true;
+                return false;
+            });
+        });
     };
 
     const handleSubmitBtn = async (e) => {
         e.preventDefault();
         console.log({ inpValue, genreSelectionValue, artistSelectionValue });
+        const artistValues = filterToGetUniqueArray(artistSelectionValue);
+        const genreValues = filterToGetUniqueArray(genreSelectionValue);
         console.log(
             JSON.stringify({
                 song: inpValue.toLowerCase(),
-                genre: genreSelectionValue,
-                artist: artistSelectionValue,
+                genre: genreValues,
+                artist: artistValues,
             }),
         );
 
@@ -132,8 +159,8 @@ const CreateEditSong = ({ pageType, target }) => {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 song: inpValue.toLowerCase(),
-                genre: genreSelectionValue,
-                artist: artistSelectionValue,
+                genre: genreValues,
+                artist: artistValues,
             }),
         });
 
@@ -142,6 +169,8 @@ const CreateEditSong = ({ pageType, target }) => {
         if (res.ok === false) {
             throw new Error(data.errors?.[0]?.msg || 'Request failed');
         }
+
+        // console.log({ res });
 
         // navigate(`/${target}s`);
     };
@@ -176,28 +205,33 @@ const CreateEditSong = ({ pageType, target }) => {
                         )}
                         {artistsLoading === false && artistsError === null && artistsData !== null && (
                             <>
-                                {numberArtistSelection === 1 && (
+                                {artistSelectionValue.length === 1 && (
                                     <Selection
                                         selectionLabel={'Artist'}
-                                        selectionId={'artists'}
+                                        selectionId={`artists_${artistSelectionValue[0].id}`}
+                                        selectionValue={artistSelectionValue[0].value}
                                         selectionType={'artists'}
                                         selectionOptsList={artistsData.beData}
                                         selectionOnChangeHandle={handleArtistSelectionOnChange}
                                     ></Selection>
                                 )}
-                                {numberArtistSelection > 1 && (
+                                {artistSelectionValue.length > 1 && (
                                     <div className="selectionsWrapper">
-                                        {[...Array(numberArtistSelection)].map((_, index) => {
+                                        {artistSelectionValue.map((item, index) => {
                                             return (
                                                 <div key={index}>
                                                     <Selection
-                                                        selectionLabel={`Artist ${index + 1}`}
-                                                        selectionId={'artists'}
+                                                        selectionLabel={`Artist`}
+                                                        selectionId={`artists_${item.id}`}
+                                                        selectionValue={item.value}
                                                         selectionType={'artists'}
                                                         selectionOptsList={artistsData.beData}
                                                         selectionOnChangeHandle={handleArtistSelectionOnChange}
                                                     ></Selection>
-                                                    <DeleteBtn onClickHandler={handleDeleteArtistBtn}></DeleteBtn>
+                                                    <DeleteBtn
+                                                        targetId={item.id}
+                                                        onClickHandler={handleDeleteArtistBtn}
+                                                    ></DeleteBtn>
                                                 </div>
                                             );
                                         })}
@@ -207,28 +241,33 @@ const CreateEditSong = ({ pageType, target }) => {
                         )}
                         {genresLoading === false && genresError === null && genresData !== null && (
                             <>
-                                {numberGenreSelection === 1 && (
+                                {genreSelectionValue.length === 1 && (
                                     <Selection
                                         selectionLabel={'Genre'}
-                                        selectionId={'genres'}
+                                        selectionId={`genres_${genreSelectionValue[0].id}`}
+                                        selectionValue={genreSelectionValue[0].value}
                                         selectionType={'genres'}
                                         selectionOptsList={genresData.beData}
                                         selectionOnChangeHandle={handleGenreSelectionOnChange}
                                     ></Selection>
                                 )}
-                                {numberGenreSelection > 1 && (
+                                {genreSelectionValue.length > 1 && (
                                     <div className="selectionsWrapper">
-                                        {[...Array(numberGenreSelection)].map((_, index) => {
+                                        {genreSelectionValue.map((item, index) => {
                                             return (
                                                 <div key={index}>
                                                     <Selection
-                                                        selectionLabel={`Genre ${index + 1}`}
-                                                        selectionId={'genres'}
+                                                        selectionLabel={`Genre`}
+                                                        selectionId={`genres_${item.id}`}
+                                                        selectionValue={item.value}
                                                         selectionType={'genres'}
                                                         selectionOptsList={genresData.beData}
                                                         selectionOnChangeHandle={handleGenreSelectionOnChange}
                                                     ></Selection>
-                                                    <DeleteBtn onClickHandler={handleDeleteGenreBtn}></DeleteBtn>
+                                                    <DeleteBtn
+                                                        targetId={item.id}
+                                                        onClickHandler={handleDeleteGenreBtn}
+                                                    ></DeleteBtn>
                                                 </div>
                                             );
                                         })}

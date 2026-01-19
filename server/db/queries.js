@@ -95,7 +95,7 @@ const insertNewArtist = async (artistName) => {
     );
 };
 
-const insertNewSongAndItsRelationship = async (songName, artistName, genreName) => {
+const insertNewSongAndItsSingleRelationship = async (songName, artistName, genreName) => {
     console.log({ songName, artistName, genreName });
     const { rows: artistId } = await pool.query(
         `
@@ -109,24 +109,36 @@ const insertNewSongAndItsRelationship = async (songName, artistName, genreName) 
 	`,
         [genreName],
     );
+
+    if (artistId.length === 0 || genreId.length === 0) {
+        throw new Error('Can not find this Artist and Genre.');
+    }
+
     // await pool.query(
     //     `
-	// 	INSERT INTO songs (song, is_editable) VALUES
-	// 		($1, TRUE);
+    // 	INSERT INTO songs (song, is_editable) VALUES
+    // 		($1, TRUE);
     // `,
     //     [songName],
     // );
 
-    const { rows: newlyAddedSongId } = await pool.query(`
-		SELECT id FROM songs ORDER BY id DESC LIMIT 1;
-	`);
+    // const { rows: newlyAddedSongId } = await pool.query(
+    //     `
+    // 	SELECT id FROM songs WHERE song = $1;
+    // `,
+    //     [songName],
+    // );
+
+    // if (newlyAddedSongId.length === 0) {
+    //     throw new Error('Cannot find the newly added song');
+    // }
 
     console.log({ artistId });
     console.log(artistId[0].id);
     console.log({ genreId });
     console.log(genreId[0].id);
-    console.log({ newlyAddedSongId });
-    console.log(newlyAddedSongId[0].id);
+    // console.log({ newlyAddedSongId });
+    // console.log(newlyAddedSongId[0].id);
 
     // await pool.query(
     //     `
@@ -138,9 +150,9 @@ const insertNewSongAndItsRelationship = async (songName, artistName, genreName) 
 
     // await pool.query(
     //     `
-	// 	INSERT INTO song_genre (song_id, genre_id, is_editable) VALUES
-	// 		($1, $2, TRUE);
-	// `,
+    // 	INSERT INTO song_genre (song_id, genre_id, is_editable) VALUES
+    // 		($1, $2, TRUE);
+    // `,
     //     [newlyAddedSongId[0].id, genreId[0].id],
     // );
 };
@@ -154,5 +166,5 @@ module.exports = {
     getDataByCondition,
     insertNewGenre,
     insertNewArtist,
-    insertNewSongAndItsRelationship,
+    insertNewSongAndItsSingleRelationship,
 };

@@ -26,6 +26,7 @@ const ControllerSection = ({ pageType }) => {
                     <Selection
                         selectionLabel={'Sort by'}
                         selectionId={'sortField'}
+                        selectionValue={sortField[0]}
                         selectionType={'sortField'}
                         selectionOptsList={sortField}
                         selectionOnChangeHandle={() => {}}
@@ -35,6 +36,7 @@ const ControllerSection = ({ pageType }) => {
                 <Selection
                     selectionLabel={'Sort direction'}
                     selectionId={'sortOrder'}
+                    selectionValue={sortOrder[0]}
                     selectionType={'sortOrder'}
                     selectionOptsList={sortOrder}
                     selectionOnChangeHandle={() => {}}

@@ -27,6 +27,7 @@ const FormInp = ({ inpLabel, inpName, inpState, inpOnChangeHandler, inpOnBlurHan
                 }}
                 type="text"
                 onBlur={inpOnBlurHandler}
+                required
             />
         </label>
     );
