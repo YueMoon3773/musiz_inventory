@@ -13,6 +13,7 @@ import Selection from '../../base/Selection/Selection';
 import DeleteBtn from '../../base/DeleteBtn/DeleteBtn';
 
 import './CreateEditSong.scss';
+import { da } from 'zod/v4/locales';
 
 const createEditSongSchema = z.object({
     pageType: z.string(),
@@ -22,11 +23,13 @@ const createEditSongSchema = z.object({
 const filterToGetUniqueArray = (arr) => {
     const seen = new Set();
 
-    const uniqueArray = arr.filter((item) => {
+    const filteredArray = arr.filter((item) => {
         if (seen.has(item.value)) return false;
         seen.add(item.value);
         return true;
     });
+
+    const uniqueArray = filteredArray.map((item) => item.value);
 
     return uniqueArray;
 };
@@ -140,39 +143,50 @@ const CreateEditSong = ({ pageType, target }) => {
 
     const handleSubmitBtn = async (e) => {
         e.preventDefault();
-        console.log({ inpValue, genreSelectionValue, artistSelectionValue });
-        const artistValues = filterToGetUniqueArray(artistSelectionValue);
-        const genreValues = filterToGetUniqueArray(genreSelectionValue);
-        console.log(
-            JSON.stringify({
-                song: inpValue.toLowerCase(),
-                genre: genreValues,
-                artist: artistValues,
-            }),
-        );
+        // console.log({ inpValue, genreSelectionValue, artistSelectionValue });
 
-        if (inpError !== null) return;
+        try {
+            const artistValues = filterToGetUniqueArray(artistSelectionValue);
+            const genreValues = filterToGetUniqueArray(genreSelectionValue);
+            console.log({ inpValue, artistValues, genreValues });
 
-        const res = await fetch(beUrl, {
-            mode: 'cors',
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                song: inpValue.toLowerCase(),
-                genre: genreValues,
-                artist: artistValues,
-            }),
-        });
+            const result = formInpSchema.safeParse(inpValue);
+            setInpError(result.success ? null : result.error.issues[0].message);
+            setIsInpInteracted(true);
 
-        const data = res.json();
+            if (!result.success || inpError !== null) {
+                throw new Error('Input value is invalid', { cause: result.error.issues[0].message });
+            }
 
-        if (res.ok === false) {
-            throw new Error(data.errors?.[0]?.msg || 'Request failed');
+            const res = await fetch(beUrl, {
+                mode: 'cors',
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    song: inpValue.toLowerCase(),
+                    genre: genreValues,
+                    artist: artistValues,
+                }),
+            });
+
+            const data = await res.json();
+            // console.log(data.errors);
+
+            if (res.ok === false) {
+                const messages = data.errors
+                    .map((e) => {
+                        return `${e.type}: ${e.msg}
+                In ${e.location}: ${e.path}
+                Received value: ${e.value}
+                `;
+                    })
+                    .join('\n');
+                throw new Error('Failure msg:', { cause: messages });
+            }
+            navigate(`/${target}s`);
+        } catch (err) {
+            throw new Error('Request failed', { cause: err });
         }
-
-        // console.log({ res });
-
-        // navigate(`/${target}s`);
     };
 
     return (

@@ -21,7 +21,7 @@ const GenresOrArtistsPage = ({ pageType }) => {
     const beUrl = `${baseUrl}/${pageType}`;
     // console.log({ beUrl });
 
-    const { data, error, loading } = useFetchGetData(beUrl);
+    let { data, error, loading } = useFetchGetData(beUrl);
     // console.log({ data, error, loading });
 
     return (

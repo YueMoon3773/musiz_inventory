@@ -6,6 +6,8 @@
 
 .selectionsWrapper {
     width: 100%;
+    border-top: 1px solid $gray_color;
+    padding-top: clamp(30px, 3.6em, 42px);
     @include flexColumn;
     gap: clamp(16px, 2em, 24px);
 

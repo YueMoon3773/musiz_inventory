@@ -98,7 +98,7 @@ INSERT INTO songs (song, is_editable) VALUES
     ('manchild', FALSE),
     ('someone like you', FALSE),
     ('skyfall', FALSE),
-    ('set the rain to fire', FALSE),
+    ('set fire to the rain', FALSE),
     ('one last time', FALSE),
     ('born to die', FALSE),
     ('summertime sadness', FALSE),

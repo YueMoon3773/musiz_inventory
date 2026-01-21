@@ -52,23 +52,43 @@ const CreateEditGenreArtist = ({ pageType, target }) => {
 
     const handleSubmitBtn = async (e) => {
         e.preventDefault();
-        console.log({ inpValue });
-        if (inpError !== null) return;
 
-        const res = await fetch(beUrl, {
-            mode: 'cors',
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ [target]: inpValue.toLowerCase() }),
-        });
+        try {
+            // console.log({ inpValue });
 
-        const data = await res.json();
+            const result = formInpSchema.safeParse(inpValue);
+            setInpError(result.success ? null : result.error.issues[0].message);
+            setIsInpInteracted(true);
 
-        if (res.ok === false) {
-            throw new Error(data.errors?.[0]?.msg || 'Request failed');
+            if (!result.success || inpError !== null) {
+                throw new Error('Input value is invalid', { cause: result.error.issues[0].message });
+            }
+
+            const res = await fetch(beUrl, {
+                mode: 'cors',
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ [target]: inpValue.toLowerCase() }),
+            });
+
+            const data = await res.json();
+
+            if (res.ok === false) {
+                const messages = data.errors
+                    .map((e) => {
+                        return `${e.type}: ${e.msg}
+                In ${e.location}: ${e.path}
+                Received value: ${e.value}
+                `;
+                    })
+                    .join('\n');
+                throw new Error('Failure msg:', { cause: messages });
+            }
+
+            navigate(`/${target}s`);
+        } catch (err) {
+            throw new Error('Request failed', { cause: err });
         }
-
-        navigate(`/${target}s`);
     };
 
     return (

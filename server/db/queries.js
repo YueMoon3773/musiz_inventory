@@ -75,86 +75,76 @@ const getAllSongsAndInfo = async () => {
     return rows;
 };
 
-const insertNewGenre = async (genreName) => {
+const insertNewGenre = async (genreValue) => {
     await pool.query(
         `
 	INSERT INTO genres (genre, is_editable) VALUES
 		($1, TRUE);
 `,
-        [genreName],
+        [genreValue],
     );
 };
 
-const insertNewArtist = async (artistName) => {
+const insertNewArtist = async (artistValue) => {
     pool.query(
         `
 	INSERT INTO artists (artist, is_editable) VALUES
 		($1, TRUE);
 	`,
-        [artistName],
+        [artistValue],
     );
 };
 
-const insertNewSongAndItsSingleRelationship = async (songName, artistName, genreName) => {
-    console.log({ songName, artistName, genreName });
-    const { rows: artistId } = await pool.query(
+const insertSongSingleRelationship = async (songId, valueType, ArtistOrGenreValue) => {
+    ArtistOrGenreValue.forEach(async (item) => {
+        const { rows: itemId } = await pool.query(
+            `
+        SELECT id FROM ${valueType}s WHERE ${valueType} = $1;
+    `,
+            [item],
+        );
+        // console.log({ item, itemId });
+
+        if (itemId.length <= 0) {
+            throw new Error(`Cannot find ${valueType}: ${item} in ${valueType}s TABLE.`);
+        }
+
+        await pool.query(
+            `
+        	INSERT INTO song_${valueType} (song_id, ${valueType}_id, is_editable) VALUES
+        		($1, $2, TRUE);
+        `,
+            [songId, itemId[0].id],
+        );
+    });
+};
+
+const insertNewSong = async (songName, artistValue, genreValue) => {
+    console.log({ songName, artistValue, genreValue });
+
+    await pool.query(
         `
-		SELECT id FROM artists WHERE artist = $1;
-	`,
-        [artistName],
+    	INSERT INTO songs (song, is_editable) VALUES
+    		($1, TRUE);
+    `,
+        [songName],
     );
-    const { rows: genreId } = await pool.query(
+    const { rows: newlyAddedSongId } = await pool.query(
         `
-		SELECT id FROM genres WHERE genre = $1;
-	`,
-        [genreName],
+    	SELECT id FROM songs WHERE song = $1;
+    `,
+        [songName],
     );
 
-    if (artistId.length === 0 || genreId.length === 0) {
-        throw new Error('Can not find this Artist and Genre.');
+    if (newlyAddedSongId.length === 0) {
+        throw new Error('Cannot find the newly added song');
     }
 
-    // await pool.query(
-    //     `
-    // 	INSERT INTO songs (song, is_editable) VALUES
-    // 		($1, TRUE);
-    // `,
-    //     [songName],
-    // );
-
-    // const { rows: newlyAddedSongId } = await pool.query(
-    //     `
-    // 	SELECT id FROM songs WHERE song = $1;
-    // `,
-    //     [songName],
-    // );
-
-    // if (newlyAddedSongId.length === 0) {
-    //     throw new Error('Cannot find the newly added song');
-    // }
-
-    console.log({ artistId });
-    console.log(artistId[0].id);
-    console.log({ genreId });
-    console.log(genreId[0].id);
     // console.log({ newlyAddedSongId });
     // console.log(newlyAddedSongId[0].id);
 
-    // await pool.query(
-    //     `
-    // 	INSERT INTO song_artist (song_id, artist_id, is_editable) VALUES
-    // 		($1, $2, TRUE);
-    // `,
-    //     [newlyAddedSongId[0].id, artistId[0].id],
-    // );
-
-    // await pool.query(
-    //     `
-    // 	INSERT INTO song_genre (song_id, genre_id, is_editable) VALUES
-    // 		($1, $2, TRUE);
-    // `,
-    //     [newlyAddedSongId[0].id, genreId[0].id],
-    // );
+    await insertSongSingleRelationship(newlyAddedSongId[0].id, 'artist', artistValue);
+    await insertSongSingleRelationship(newlyAddedSongId[0].id, 'genre', genreValue);
 };
 
 module.exports = {
@@ -166,5 +156,5 @@ module.exports = {
     getDataByCondition,
     insertNewGenre,
     insertNewArtist,
-    insertNewSongAndItsSingleRelationship,
+    insertNewSong,
 };
