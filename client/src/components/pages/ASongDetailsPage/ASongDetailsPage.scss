@@ -1,0 +1,70 @@
+.detailsBody {
+    width: 100%;
+    @include flexColumn;
+    align-items: start;
+    font-size: inherit;
+    transition: all 360ms ease-in-out;
+}
+
+.errorData {
+    align-self: center;
+    justify-self: center;
+
+    font-size: $fs_normal_lg;
+    color: var(--text_color);
+    transition: all 360ms ease-in-out;
+}
+
+.detailsWrapper {
+    align-self: center;
+    min-width: 60%;
+    max-width: 80%;
+
+    @include displayGrid;
+    grid-template-columns: 1fr 9fr;
+    column-gap: clamp(60px, 6.6em, 72px);
+    row-gap: clamp(10px, 1.6em, 22px);
+
+    transition: all 360ms ease-in-out;
+
+    .detailTitle {
+        grid-column: 1 / 2;
+        font-size: $fs_normal_md;
+        color: var(--text_color);
+        transition: all 360ms ease-in-out;
+    }
+
+    .detailInfo {
+        grid-column: 2 / 3;
+
+        p,
+        a {
+            font-size: $fs_normal_md;
+            text-transform: capitalize;
+            // padding: 0.4em 0;
+            color: var(--text_color);
+            transition: all 360ms ease-in-out;
+        }
+
+        a {
+            margin-right: 0.56em;
+        }
+
+        a:hover {
+            color: $dark_blue_color;
+        }
+    }
+}
+
+.detailsController {
+    width: 100%;
+    @include flexCenter;
+    gap: clamp(30px, 3.6em, 36px);
+    margin-top: clamp(50px, 5.6em, 66px);
+
+    p {
+        font-size: $fs_normal_sm;
+        color: var(--text_color);
+        transition: all 360ms ease-in-out;
+    }
+}

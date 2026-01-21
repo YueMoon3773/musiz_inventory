@@ -157,6 +157,12 @@ const createSongPost = [
     },
 ];
 
+const oneSongDetailsGet = async (req, res) => {
+    console.log(req.params.id);
+    const beData = await db.getOneSongAndInfoBySongId(req.params.id);
+    res.json({ beData });
+};
+
 module.exports = {
     songsPageGet,
     genresPageGet,
@@ -164,4 +170,5 @@ module.exports = {
     createGenrePost,
     createArtistPost,
     createSongPost,
+    oneSongDetailsGet,
 };
