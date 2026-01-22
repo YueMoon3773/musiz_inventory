@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { z } from 'zod';
 
 import { useBaseBeUrl } from '../../../hooks/useStorage';
@@ -18,11 +19,38 @@ const genresOrArtistsPageSchema = z.object({
 
 const GenresOrArtistsPage = ({ pageType }) => {
     const { baseUrl } = useBaseBeUrl();
+    // const [data, setData] = useState(null);
+    // const [loading, setLoading] = useState();
+
     const beUrl = `${baseUrl}/${pageType}`;
     // console.log({ beUrl });
 
-    let { data, error, loading } = useFetchGetData(beUrl);
+    let { data, error, loading, refetch } = useFetchGetData(beUrl);
     // console.log({ data, error, loading });
+
+    const handleDeleteArtistGenreBtn = async (targetId) => {
+        const deleteBeUrl = `${baseUrl}/delete-${pageType.slice(0, -1)}/${targetId}`;
+        // console.log([targetId]);
+        // console.log({ deleteBeUrl });
+
+        try {
+            const res = await fetch(deleteBeUrl, {
+                mode: 'cors',
+                method: 'DELETE',
+            });
+            const data = res.json();
+
+            if (res.ok === false) {
+                const message = data.errors.map((e) => e.message).join('\n');
+                throw new Error('Delete request failed', { cause: message });
+            }
+            refetch();
+        } catch (err) {
+            throw new Error('Failed to delete', { err });
+        }
+    };
+
+    
 
     return (
         <PageLayout>
@@ -49,7 +77,15 @@ const GenresOrArtistsPage = ({ pageType }) => {
                     </thead>
                     <tbody>
                         {data.beData.map((item, index) => {
-                            return <InventoryItem key={index} inventoryType={pageType} data={item}></InventoryItem>;
+                            return (
+                                <InventoryItem
+                                    key={index}
+                                    inventoryType={pageType}
+                                    data={item}
+                                    editBtnHandler={() => {}}
+                                    deleteBtnHandler={handleDeleteArtistGenreBtn}
+                                ></InventoryItem>
+                            );
                         })}
                     </tbody>
                 </table>

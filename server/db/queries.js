@@ -1,16 +1,6 @@
 const pool = require('./pool');
 require('dotenv').config();
 
-const getAllData = async () => {
-    const { rows } = await pool.query(`SELECT * FROM ${process.env.DB_TABLE_NAME}`);
-    return rows;
-};
-
-const getDataByCondition = async (condition) => {
-    const { rows } = await pool.query(`SELECT * FROM ${process.env.DB_TABLE_NAME} WHERE id = $1`, [condition]);
-    return rows;
-};
-
 const getAllSongs = async () => {
     const { rows } = await pool.query('SELECT * FROM songs;');
     // console.log(rows);
@@ -170,18 +160,13 @@ const insertSongSingleRelationship = async (songId, valueType, ArtistOrGenreValu
 };
 
 const insertNewSong = async (songName, artistValue, genreValue) => {
-    console.log({ songName, artistValue, genreValue });
+    // console.log({ songName, artistValue, genreValue });
 
-    await pool.query(
-        `
-    	INSERT INTO songs (song, is_editable) VALUES
-    		($1, TRUE);
-    `,
-        [songName],
-    );
     const { rows: newlyAddedSongId } = await pool.query(
         `
-    	SELECT id FROM songs WHERE song = $1;
+    	INSERT INTO songs (song, is_editable) VALUES
+    		($1, TRUE)
+			RETURNING id;
     `,
         [songName],
     );
@@ -197,15 +182,24 @@ const insertNewSong = async (songName, artistValue, genreValue) => {
     await insertSongSingleRelationship(newlyAddedSongId[0].id, 'genre', genreValue);
 };
 
+const deleteGenreOrArtistById = async (target, id) => {
+    await pool.query(
+        `
+		DELETE FROM ${target}s
+		WHERE id = $1;
+	`,
+        [id],
+    );
+};
+
 module.exports = {
-    getAllData,
     getAllSongs,
     getAllSongsAndInfo,
     getOneSongAndInfoBySongId,
     getAllArtists,
     getAllGenres,
-    getDataByCondition,
     insertNewGenre,
     insertNewArtist,
     insertNewSong,
+    deleteGenreOrArtistById,
 };

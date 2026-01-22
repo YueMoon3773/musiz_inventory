@@ -24,6 +24,8 @@ const SongsPage = ({ pageType }) => {
     const { data, error, loading } = useFetchGetData(beUrl);
     // console.log({ data, error, loading });
 
+    const handleDeleteSongBtn = (targetId) => {};
+
     return (
         <PageLayout>
             <h2 className="pageTitle">Songs</h2>
@@ -47,7 +49,15 @@ const SongsPage = ({ pageType }) => {
                     </thead>
                     <tbody>
                         {data.beData.map((item, index) => {
-                            return <InventoryItem key={index} inventoryType="songs" data={item}></InventoryItem>;
+                            return (
+                                <InventoryItem
+                                    key={index}
+                                    inventoryType="songs"
+                                    data={item}
+                                    editBtnHandler={() => {}}
+                                    deleteBtnHandler={handleDeleteSongBtn}
+                                ></InventoryItem>
+                            );
                         })}
                     </tbody>
                 </table>

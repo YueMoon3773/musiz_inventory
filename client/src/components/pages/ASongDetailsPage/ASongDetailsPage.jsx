@@ -18,6 +18,9 @@ const ASongDetailsPage = () => {
     const { data, error, loading } = useFetchGetData(beUrl);
     console.log({ data, error, loading });
 
+    const handleEditBtnClick = () => {};
+    const handleDeleteBtnClick = () => {};
+
     return (
         <PageLayout>
             <h2 className="pageTitle">Song details</h2>
@@ -56,9 +59,13 @@ const ASongDetailsPage = () => {
                             </div>
                         </div>
                         <div className="detailsController">
-                            <EditBtn isDisabled={!data.beData[0].is_editable}></EditBtn>
+                            <EditBtn
+                                isDisabled={!data.beData[0].is_editable}
+                                onClickHandler={handleEditBtnClick}
+                            ></EditBtn>
                             <DeleteBtn
                                 targetId={data.beData[0].id}
+                                onClickHandler={handleDeleteBtnClick}
                                 isDisabled={!data.beData[0].is_editable}
                             ></DeleteBtn>
                         </div>

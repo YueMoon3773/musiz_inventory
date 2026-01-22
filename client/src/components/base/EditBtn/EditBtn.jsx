@@ -7,15 +7,17 @@ import pageStyles from '../../../styles/modules/basePageStyles.module.scss';
 
 const editBtnSchema = z.object({
     isDisabled: z.boolean().default(false),
+    onClickHandler: z.function().optional(),
 });
 
-const EditBtn = ({ isDisabled = false }) => {
+const EditBtn = ({ isDisabled = false, onClickHandler }) => {
     return (
         <button
             className={`${pageStyles.mainBtn} ${isDisabled === true ? pageStyles.btnDisabled : pageStyles.editBtn}`}
             onClick={(e) => {
                 e.preventDefault();
                 if (isDisabled) return;
+                onClickHandler();
             }}
         >
             <EditIcon></EditIcon>

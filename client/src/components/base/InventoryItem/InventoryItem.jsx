@@ -1,6 +1,8 @@
 import { Link } from 'react-router-dom';
 import { z } from 'zod';
 
+import { useBaseBeUrl } from '../../../hooks/useStorage';
+
 import { MusicTrackIcon, ArtistIcon, GenreIcon } from '../../../assets/svg/svgIcons';
 import EditBtn from '../EditBtn/EditBtn';
 import DeleteBtn from '../DeleteBtn/DeleteBtn';
@@ -11,11 +13,41 @@ import './InventoryItem.scss';
 const inventoryItemSchema = z.object({
     inventoryType: z.string(),
     data: z.looseObject({}),
+    editBtnHandler: z.function(),
+    deleteBtnHandler: z.function(),
 });
 
-const InventoryItem = ({ inventoryType, data }) => {
+const InventoryItem = ({ inventoryType, data, editBtnHandler, deleteBtnHandler }) => {
+    const { baseUrl } = useBaseBeUrl();
+
     // console.log({ inventoryType });
+    // console.log(inventoryType.slice(0, -1));
     // console.log({ data });
+
+    // const handleDeleteArtistGenreBtn = async (targetId) => {
+    //     console.log([targetId]);
+    //     const beUrl = `${baseUrl}/delete-${inventoryType.slice(0, -1)}/${targetId}`;
+    //     console.log({ beUrl });
+
+    //     try {
+    //         const res = await fetch(beUrl, {
+    //             mode: 'cors',
+    //             method: 'DELETE',
+    //         });
+    //         const data = res.json();
+
+    //         if (res.ok === false) {
+    //             const message = data.errors.map((e) => e.message).join('\n');
+    //             throw new Error('Delete request failed', { cause: message });
+    //         }
+
+    //         navigate(`/${inventoryType}`);
+    //     } catch (err) {
+    //         throw new Error('Failed to delete', { err });
+    //     }
+    // };
+
+    // const handleDeleteSongBtn = (targetId) => {};
 
     return (
         <tr className="inventoryItemRow">
@@ -35,13 +67,17 @@ const InventoryItem = ({ inventoryType, data }) => {
 
                     <td>
                         {Array.isArray(data.artists) ? (
-                            data.artists.map((item, index) => {
-                                return (
-                                    <Link key={index} to={`/artist-details/${data.artist_ids[index]}`}>
-                                        {item};
-                                    </Link>
-                                );
-                            })
+                            <>
+                                {data.artists.length <= 0
+                                    ? 'N/a'
+                                    : data.artists.map((item, index) => {
+                                          return (
+                                              <Link key={index} to={`/artist-details/${data.artist_ids[index]}`}>
+                                                  {item};
+                                              </Link>
+                                          );
+                                      })}
+                            </>
                         ) : (
                             <Link to={`/artist-details/${data.artist_ids}`}>{data.artists}</Link>
                         )}
@@ -49,13 +85,17 @@ const InventoryItem = ({ inventoryType, data }) => {
 
                     <td>
                         {Array.isArray(data.genres) ? (
-                            data.genres.map((item, index) => {
-                                return (
-                                    <Link key={index} to={`/genre-details/${data.genre_ids[index]}`}>
-                                        {item};
-                                    </Link>
-                                );
-                            })
+                            <>
+                                {data.genres.length <= 0
+                                    ? 'N/a'
+                                    : data.genres.map((item, index) => {
+                                          return (
+                                              <Link key={index} to={`/genre-details/${data.genre_ids[index]}`}>
+                                                  {item};
+                                              </Link>
+                                          );
+                                      })}
+                            </>
                         ) : (
                             <Link to={`/genre-details/${data.genre_ids}`}>{data.genres}</Link>
                         )}
@@ -64,7 +104,11 @@ const InventoryItem = ({ inventoryType, data }) => {
                     <td>
                         <div className="optBtnsWrapper">
                             <EditBtn isDisabled={!data.is_editable}></EditBtn>
-                            <DeleteBtn targetId={data.id} isDisabled={!data.is_editable}></DeleteBtn>
+                            <DeleteBtn
+                                targetId={data.id}
+                                isDisabled={!data.is_editable}
+                                onClickHandler={deleteBtnHandler}
+                            ></DeleteBtn>
                         </div>
                     </td>
                 </>
@@ -120,7 +164,11 @@ const InventoryItem = ({ inventoryType, data }) => {
                     <td>
                         <div className="optBtnsWrapper">
                             <EditBtn isDisabled={!data.is_editable}></EditBtn>
-                            <DeleteBtn targetId={data.id} isDisabled={!data.is_editable}></DeleteBtn>
+                            <DeleteBtn
+                                targetId={data.id}
+                                isDisabled={!data.is_editable}
+                                onClickHandler={deleteBtnHandler}
+                            ></DeleteBtn>
                         </div>
                     </td>
                 </>

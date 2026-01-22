@@ -7,6 +7,9 @@ export const useFetchGetData = (rawUrl) => {
     const [data, setData] = useState(null);
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [refreshKey, setRefreshKey] = useState(0);
+
+    const refetch = () => setRefreshKey((prev) => prev + 1);
 
     useEffect(() => {
         const url = urlSchema.safeParse(rawUrl);
@@ -43,8 +46,8 @@ export const useFetchGetData = (rawUrl) => {
             });
 
         return () => controller.abort();
-    }, [rawUrl]);
+    }, [rawUrl, refreshKey]);
 
     // console.log({ data, error, loading });
-    return { data, error, loading };
+    return { data, error, loading, refetch };
 };

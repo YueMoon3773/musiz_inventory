@@ -79,21 +79,33 @@ const artistValidator = [
 ];
 
 const songsPageGet = async (req, res) => {
-    const beData = await db.getAllSongsAndInfo();
-    // console.log({ beData });
-    res.json({ beData });
+    try {
+        const beData = await db.getAllSongsAndInfo();
+        // console.log({ beData });
+        res.json({ beData });
+    } catch (err) {
+        res.json({ ok: false, errors: err });
+    }
 };
 
 const genresPageGet = async (req, res) => {
-    const beData = await db.getAllGenres();
-    // console.log(beData);
-    res.json({ beData });
+    try {
+        const beData = await db.getAllGenres();
+        // console.log(beData);
+        res.json({ beData });
+    } catch (err) {
+        res.json({ ok: false, errors: err });
+    }
 };
 
 const artistsPageGet = async (req, res) => {
-    const beData = await db.getAllArtists();
-    // console.log(beData);
-    res.json({ beData });
+    try {
+        const beData = await db.getAllArtists();
+        // console.log(beData);
+        res.json({ beData });
+    } catch (err) {
+        res.json({ ok: false, errors: err });
+    }
 };
 
 const createGenrePost = [
@@ -102,13 +114,18 @@ const createGenrePost = [
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
             return res.status(404).json({
+                ok: false,
                 errors: errors.array(),
             });
         }
         const { genre: genreValue } = matchedData(req);
-        console.log({ genreValue });
-        db.insertNewGenre(genreValue);
-        res.json({ ok: true });
+        // console.log({ genreValue });
+        try {
+            await db.insertNewGenre(genreValue);
+            res.json({ ok: true });
+        } catch (err) {
+            res.json({ ok: false });
+        }
     },
 ];
 
@@ -119,13 +136,19 @@ const createArtistPost = [
 
         if (!errors.isEmpty()) {
             return res.status(404).json({
+                ok: false,
                 errors: errors.array(),
             });
         }
 
         const { artist: artistValue } = matchedData(req);
-        db.insertNewArtist(artistValue);
-        res.json({ ok: true });
+
+        try {
+            await db.insertNewArtist(artistValue);
+            res.json({ ok: true });
+        } catch (err) {
+            res.json({ ok: false, errors: err });
+        }
     },
 ];
 
@@ -137,8 +160,6 @@ const createSongPost = [
         const errors = validationResult(req);
 
         if (!errors.isEmpty()) {
-            console.log(errors.array());
-
             return res.status(404).json({
                 ok: false,
                 errors: errors.array(),
@@ -149,18 +170,44 @@ const createSongPost = [
         const genreValue = normalizeArray(genre);
         const artistValue = normalizeArray(artist);
 
-        console.log({ songName, genreValue, artistValue });
-
-        db.insertNewSong(songName, artistValue, genreValue);
-        res.json({ ok: true });
-        // res.json({ ok: true, songName, genreValue, artistValue });
+        // console.log({ songName, genreValue, artistValue });
+        try {
+            await db.insertNewSong(songName, artistValue, genreValue);
+            res.json({ ok: true });
+        } catch (err) {
+            res.status(500).json({
+                ok: false,
+                errors: err,
+            });
+        }
     },
 ];
 
 const oneSongDetailsGet = async (req, res) => {
-    console.log(req.params.id);
-    const beData = await db.getOneSongAndInfoBySongId(req.params.id);
-    res.json({ beData });
+    try {
+        const beData = await db.getOneSongAndInfoBySongId(req.params.id);
+        res.json({ beData });
+    } catch (err) {
+        res.json({ ok: false, errors: err });
+    }
+};
+
+const genreDelete = async (req, res) => {
+    try {
+        await db.deleteGenreOrArtistById('genre', Number(req.params.id));
+        res.json({ ok: true });
+    } catch (err) {
+        res.json({ ok: false, errors: err });
+    }
+};
+
+const artistDelete = async (req, res) => {
+    try {
+        await db.deleteGenreOrArtistById('artist', Number(req.params.id));
+        res.json({ ok: true });
+    } catch (err) {
+        res.json({ ok: false, errors: err });
+    }
 };
 
 module.exports = {
@@ -171,4 +218,6 @@ module.exports = {
     createArtistPost,
     createSongPost,
     oneSongDetailsGet,
+    genreDelete,
+    artistDelete,
 };

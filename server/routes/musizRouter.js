@@ -12,5 +12,7 @@ musizRouter.post('/create-artist', musizController.createArtistPost);
 musizRouter.post('/create-song', musizController.createSongPost);
 
 musizRouter.get('/song-details/:id', musizController.oneSongDetailsGet);
+musizRouter.delete('/delete-genre/:id', musizController.genreDelete);
+musizRouter.delete('/delete-artist/:id', musizController.artistDelete);
 
 module.exports = musizRouter;
