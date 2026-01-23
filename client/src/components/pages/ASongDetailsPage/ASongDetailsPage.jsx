@@ -16,7 +16,7 @@ const ASongDetailsPage = () => {
     const beUrl = `${baseUrl}/song-details/${id}`;
 
     const { data, error, loading } = useFetchGetData(beUrl);
-    console.log({ data, error, loading });
+    // console.log({ data, error, loading });
 
     const handleEditBtnClick = () => {};
     const handleDeleteBtnClick = () => {};

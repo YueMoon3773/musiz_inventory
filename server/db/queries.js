@@ -192,6 +192,16 @@ const deleteGenreOrArtistById = async (target, id) => {
     );
 };
 
+const deleteSongById = async (id) => {
+    await pool.query(
+        `
+		DELETE FROM songs
+		WHERE id = $1;
+	`,
+        [id],
+    );
+};
+
 module.exports = {
     getAllSongs,
     getAllSongsAndInfo,
@@ -202,4 +212,5 @@ module.exports = {
     insertNewArtist,
     insertNewSong,
     deleteGenreOrArtistById,
+    deleteSongById,
 };

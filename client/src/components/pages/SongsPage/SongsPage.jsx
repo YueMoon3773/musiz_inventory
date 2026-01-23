@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import { z } from 'zod';
 
 import { useBaseBeUrl } from '../../../hooks/useStorage';
@@ -17,14 +18,34 @@ const songPageSchema = z.object({
 });
 
 const SongsPage = ({ pageType }) => {
+    const navigate = useNavigate();
     const { baseUrl } = useBaseBeUrl();
     const beUrl = `${baseUrl}/${pageType}`;
+    const { data, error, loading, refetch } = useFetchGetData(beUrl);
     // console.log({ beUrl });
-
-    const { data, error, loading } = useFetchGetData(beUrl);
     // console.log({ data, error, loading });
 
-    const handleDeleteSongBtn = (targetId) => {};
+    const handleDeleteSongBtn = async (targetId) => {
+        const deleteUrl = `${baseUrl}/delete-song/${targetId}`;
+
+        try {
+            const res = await fetch(deleteUrl, {
+                mode: 'cors',
+                method: 'DELETE',
+            });
+
+            const data = await res.json();
+
+            if (res.of == false) {
+                const message = data.errors.map((e) => e.message).join('\n');
+                throw new Error('Delete request failed', { cause: message });
+            }
+
+            refetch();
+        } catch (err) {
+            throw new Error('Failed to delete', { err });
+        }
+    };
 
     return (
         <PageLayout>

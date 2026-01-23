@@ -210,6 +210,15 @@ const artistDelete = async (req, res) => {
     }
 };
 
+const songDelete = async (req, res) => {
+    try {
+        (await db, db.deleteSongById(Number(req.params.id)));
+        res.json({ ok: true });
+    } catch (err) {
+        res.json({ ok: false, errors: err });
+    }
+};
+
 module.exports = {
     songsPageGet,
     genresPageGet,
@@ -220,4 +229,5 @@ module.exports = {
     oneSongDetailsGet,
     genreDelete,
     artistDelete,
+    songDelete,
 };

@@ -6,10 +6,6 @@
         width: 6%;
     }
 
-    & > *:last-child {
-        width: 24%;
-    }
-
     td {
         height: 100%;
         height: clamp(56px, 5.6em, 60px);
@@ -19,6 +15,11 @@
 
     td:not(:nth-child(1)) {
         padding-left: clamp(10px, 1.6rem, 20px);
+    }
+
+    & > *:last-child {
+        width: 20%;
+        padding-left: 0 !important;
     }
 
     td > a {
@@ -59,7 +60,7 @@
     td .optBtnsWrapper {
         width: 100%;
         @include flexCenter;
-        gap: clamp(30px, 3.6em, 36px);
+        gap: clamp(26px, 3em, 36px);
 
         p {
             font-size: $fs_normal_sm;

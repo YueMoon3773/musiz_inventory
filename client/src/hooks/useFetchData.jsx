@@ -7,12 +7,18 @@ export const useFetchGetData = (rawUrl) => {
     const [data, setData] = useState(null);
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [urlToFetch, setUrlToFetch] = useState(rawUrl);
     const [refreshKey, setRefreshKey] = useState(0);
 
     const refetch = () => setRefreshKey((prev) => prev + 1);
+    const newFetchUrl = (newUrl) => setUrlToFetch(newUrl);
 
     useEffect(() => {
-        const url = urlSchema.safeParse(rawUrl);
+        setUrlToFetch(rawUrl);
+    }, [rawUrl]);
+
+    useEffect(() => {
+        const url = urlSchema.safeParse(urlToFetch);
 
         if (!url.success) {
             setError(new Error('Invalid URL'));
@@ -46,8 +52,7 @@ export const useFetchGetData = (rawUrl) => {
             });
 
         return () => controller.abort();
-    }, [rawUrl, refreshKey]);
+    }, [urlToFetch, refreshKey]);
 
-    // console.log({ data, error, loading });
-    return { data, error, loading, refetch };
+    return { data, error, loading, refetch, newFetchUrl };
 };

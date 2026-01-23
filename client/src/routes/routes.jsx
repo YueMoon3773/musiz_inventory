@@ -34,7 +34,7 @@ const routes = [
         errorElement: <ErrorPage />,
     },
     {
-        path: '/edit-song',
+        path: '/edit-song/:id',
         element: <CreateEditSong pageType="edit" target="song" />,
         errorElement: <ErrorPage />,
     },

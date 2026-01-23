@@ -34,7 +34,7 @@ const filterToGetUniqueArray = (arr) => {
     return uniqueArray;
 };
 
-const CreateEditSong = ({ pageType, target }) => {
+const CreateSong = ({ pageType, target }) => {
     const navigate = useNavigate();
 
     const inpLabel = (text) => String(text).charAt(0).toUpperCase() + String(text).slice(1);
@@ -294,6 +294,12 @@ const CreateEditSong = ({ pageType, target }) => {
             )}
         </>
     );
+};
+
+const CreateEditSong = ({ pageType, target }) => {
+    if (pageType === 'create') {
+        return <CreateSong pageType={pageType} target={target}></CreateSong>;
+    }
 };
 
 // export default CreateEditSong;

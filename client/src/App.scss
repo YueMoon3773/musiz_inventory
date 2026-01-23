@@ -22,6 +22,7 @@
 
 .manualWrapper {
     @include flexColumn;
+    gap: clamp(10px, 1.6em, 20px);
     .manualText {
         align-self: flex-start;
     }

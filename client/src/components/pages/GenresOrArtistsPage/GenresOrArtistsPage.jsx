@@ -19,13 +19,10 @@ const genresOrArtistsPageSchema = z.object({
 
 const GenresOrArtistsPage = ({ pageType }) => {
     const { baseUrl } = useBaseBeUrl();
-    // const [data, setData] = useState(null);
-    // const [loading, setLoading] = useState();
 
     const beUrl = `${baseUrl}/${pageType}`;
+    const { data, error, loading, refetch } = useFetchGetData(beUrl);
     // console.log({ beUrl });
-
-    let { data, error, loading, refetch } = useFetchGetData(beUrl);
     // console.log({ data, error, loading });
 
     const handleDeleteArtistGenreBtn = async (targetId) => {
@@ -38,7 +35,7 @@ const GenresOrArtistsPage = ({ pageType }) => {
                 mode: 'cors',
                 method: 'DELETE',
             });
-            const data = res.json();
+            const data = await res.json();
 
             if (res.ok === false) {
                 const message = data.errors.map((e) => e.message).join('\n');
@@ -49,8 +46,6 @@ const GenresOrArtistsPage = ({ pageType }) => {
             throw new Error('Failed to delete', { err });
         }
     };
-
-    
 
     return (
         <PageLayout>

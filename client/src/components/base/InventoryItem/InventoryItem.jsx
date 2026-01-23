@@ -1,8 +1,6 @@
 import { Link } from 'react-router-dom';
 import { z } from 'zod';
 
-import { useBaseBeUrl } from '../../../hooks/useStorage';
-
 import { MusicTrackIcon, ArtistIcon, GenreIcon } from '../../../assets/svg/svgIcons';
 import EditBtn from '../EditBtn/EditBtn';
 import DeleteBtn from '../DeleteBtn/DeleteBtn';
@@ -18,36 +16,7 @@ const inventoryItemSchema = z.object({
 });
 
 const InventoryItem = ({ inventoryType, data, editBtnHandler, deleteBtnHandler }) => {
-    const { baseUrl } = useBaseBeUrl();
 
-    // console.log({ inventoryType });
-    // console.log(inventoryType.slice(0, -1));
-    // console.log({ data });
-
-    // const handleDeleteArtistGenreBtn = async (targetId) => {
-    //     console.log([targetId]);
-    //     const beUrl = `${baseUrl}/delete-${inventoryType.slice(0, -1)}/${targetId}`;
-    //     console.log({ beUrl });
-
-    //     try {
-    //         const res = await fetch(beUrl, {
-    //             mode: 'cors',
-    //             method: 'DELETE',
-    //         });
-    //         const data = res.json();
-
-    //         if (res.ok === false) {
-    //             const message = data.errors.map((e) => e.message).join('\n');
-    //             throw new Error('Delete request failed', { cause: message });
-    //         }
-
-    //         navigate(`/${inventoryType}`);
-    //     } catch (err) {
-    //         throw new Error('Failed to delete', { err });
-    //     }
-    // };
-
-    // const handleDeleteSongBtn = (targetId) => {};
 
     return (
         <tr className="inventoryItemRow">
