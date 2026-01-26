@@ -1,4 +1,4 @@
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams, useNavigate } from 'react-router-dom';
 
 import { useFetchGetData } from '../../../hooks/useFetchData';
 import { useBaseBeUrl } from '../../../hooks/useStorage';
@@ -11,6 +11,7 @@ import LoadingImg from '../../base/LoadingImg/LoadingImg';
 import './ASongDetailsPage.scss';
 
 const ASongDetailsPage = () => {
+    const navigate = useNavigate();
     const { id } = useParams();
     const { baseUrl } = useBaseBeUrl();
     const beUrl = `${baseUrl}/song-details/${id}`;
@@ -18,8 +19,31 @@ const ASongDetailsPage = () => {
     const { data, error, loading } = useFetchGetData(beUrl);
     // console.log({ data, error, loading });
 
-    const handleEditBtnClick = () => {};
-    const handleDeleteBtnClick = () => {};
+    const handleEditBtnClick = (targetId) => {
+        navigate(`${baseUrl}/edit-song/${targetId}`);
+    };
+
+    const handleDeleteBtnClick = async (targetId) => {
+        const deleteUrl = `${baseUrl}/delete-song/${targetId}`;
+
+        try {
+            const res = await fetch(deleteUrl, {
+                mode: 'cors',
+                method: 'DELETE',
+            });
+
+            const data = await res.json();
+
+            if (res.ok == false) {
+                const message = data.errors.map((e) => e.message).join('\n');
+                throw new Error('Delete request failed', { cause: message });
+            }
+
+            navigate(`${baseUrl}/songs`);
+        } catch (err) {
+            throw new Error('Failed to delete', { err });
+        }
+    };
 
     return (
         <PageLayout>
@@ -60,6 +84,7 @@ const ASongDetailsPage = () => {
                         </div>
                         <div className="detailsController">
                             <EditBtn
+                                targetId={data.beData[0].id}
                                 isDisabled={!data.beData[0].is_editable}
                                 onClickHandler={handleEditBtnClick}
                             ></EditBtn>

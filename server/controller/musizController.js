@@ -6,8 +6,26 @@ const normalizeArray = (value) => {
     if (typeof value === 'string') {
         return [value.trim()];
     }
+    if (typeof value[0] === 'string') {
+        return value.map((item) => item.trim());
+    }
+    if (typeof value[0] === 'object') {
+        return value.map((item) => {
+            return { ...item, value: item.value.trim() };
+        });
+    }
+};
 
-    return value.map((item) => item.trim());
+const getDeletedArtistOrGenreItems = (originArr, newArr, arrType) => {
+    const seen = new Set();
+    newArr.forEach((item) => {
+        if (typeof item[`${arrType}_id`] === 'number' && !seen.has(item[`${arrType}_id`])) {
+            seen.add(item[`${arrType}_id`]);
+        }
+    });
+
+    const deletedItems = originArr.filter((item) => !seen.has(item));
+    return deletedItems;
 };
 
 const songValidator = [
@@ -20,8 +38,27 @@ const songValidator = [
         .withMessage('Song name must be between 2 and 30 characters.'),
 ];
 
+const songIdValidator = [
+    body('songId')
+        .not()
+        .isEmpty()
+        .withMessage('Song id must be provided.')
+        .isNumeric()
+        .withMessage('Song id must be a number'),
+];
+
+const originalArtistIdsValidator = [
+    body('originalArtistIds').isArray({ min: 1 }).withMessage('Original artist ids must be an array'),
+    body('originalArtistIds.*').isNumeric().withMessage('Original artist id element must be a number'),
+];
+
+const originalGenreIdsValidator = [
+    body('originalGenreIds').isArray({ min: 1 }).withMessage('Original genre ids must be an array'),
+    body('originalGenreIds.*').isNumeric().withMessage('Original genre id element must be a number'),
+];
+
 const genreValidator = [
-    body('genre').custom((value) => {
+    body('genres').custom((value) => {
         // in case genre is bland string from inp
         if (typeof value === 'string') {
             if (value.trim().length < 2 || value.trim().length > 30) {
@@ -36,11 +73,15 @@ const genreValidator = [
             }
 
             value.forEach((item) => {
-                if (typeof item !== 'string') {
-                    throw new Error('Invalid genre elements. Genre elements must be string');
-                } else if (item.trim().length < 2 || item.trim().length > 30) {
-                    throw new Error('Genre name must be between 2 and 30 characters.');
-                }
+                if (typeof item === 'string') {
+                    if (item.trim().length < 2 || item.trim().length > 30) {
+                        throw new Error('Genre name must be between 2 and 30 characters.');
+                    }
+                } else if (typeof item === 'object' && item !== null && typeof item.value === 'string') {
+                    if (item.value.trim().length < 2 || item.value.trim().length > 30) {
+                        throw new Error('Genre name must be between 2 and 30 characters.');
+                    }
+                } else throw new Error('Invalid genre elements. Genre elements must be string or object');
             });
             return true;
         }
@@ -50,7 +91,7 @@ const genreValidator = [
 ];
 
 const artistValidator = [
-    body('artist').custom((value) => {
+    body('artists').custom((value) => {
         // in case genre is bland string from inp
         if (typeof value === 'string') {
             if (value.trim().length < 2 || value.trim().length > 30) {
@@ -65,11 +106,15 @@ const artistValidator = [
             }
 
             value.forEach((item) => {
-                if (typeof item !== 'string') {
-                    throw new Error('Invalid artist elements. Artist elements must be a ');
-                } else if (item.trim().length < 2 || item.trim().length > 30) {
-                    throw new Error('Artist name must be between 2 and 30 characters.');
-                }
+                if (typeof item === 'string') {
+                    if (item.trim().length < 2 || item.trim().length > 30) {
+                        throw new Error('Artist name must be between 2 and 30 characters.');
+                    }
+                } else if (typeof item === 'object' && item !== null && typeof item.value === 'string') {
+                    if (item.value.trim().length < 2 || item.value.trim().length > 30) {
+                        throw new Error('Artist name must be between 2 and 30 characters.');
+                    }
+                } else throw new Error('Invalid artist elements. Artist elements must be string or object');
             });
             return true;
         }
@@ -166,11 +211,11 @@ const createSongPost = [
             });
         }
 
-        const { song: songName, genre, artist } = matchedData(req);
-        const genreValue = normalizeArray(genre);
-        const artistValue = normalizeArray(artist);
+        const { song: songName, genres, artists } = matchedData(req);
+        const genreValue = normalizeArray(genres);
+        const artistValue = normalizeArray(artists);
 
-        // console.log({ songName, genreValue, artistValue });
+        console.log({ songName, genreValue, artistValue });
         try {
             await db.insertNewSong(songName, artistValue, genreValue);
             res.json({ ok: true });
@@ -212,12 +257,58 @@ const artistDelete = async (req, res) => {
 
 const songDelete = async (req, res) => {
     try {
-        (await db, db.deleteSongById(Number(req.params.id)));
+        await db.deleteSongById(Number(req.params.id));
         res.json({ ok: true });
     } catch (err) {
         res.json({ ok: false, errors: err });
     }
 };
+
+const editSongPatch = [
+    songValidator,
+    songIdValidator,
+    genreValidator,
+    artistValidator,
+    originalGenreIdsValidator,
+    originalArtistIdsValidator,
+    async (req, res) => {
+        const errors = validationResult(req);
+
+        if (!errors.isEmpty()) {
+            return res.status(404).json({
+                ok: false,
+                errors: errors.array(),
+            });
+        }
+
+        const { songId, song: songName, genres, artists, originalGenreIds, originalArtistIds } = matchedData(req);
+        const genreValue = normalizeArray(genres);
+        const artistValue = normalizeArray(artists);
+        const deletedGenreIds = getDeletedArtistOrGenreItems(originalGenreIds, genreValue, 'genre');
+        const deletedArtistIds = getDeletedArtistOrGenreItems(originalArtistIds, artistValue, 'artist');
+
+        console.log({ songId, songName, genreValue, artistValue, originalGenreIds, originalArtistIds });
+        console.log({ deletedGenreIds, deletedArtistIds });
+
+        try {
+            db.updateSongAndAllRelationships(
+                songId,
+                songName,
+                artistValue,
+                deletedArtistIds,
+                genreValue,
+                deletedGenreIds,
+            );
+
+            res.json({ ok: true });
+        } catch (err) {
+            res.status(500).json({
+                ok: false,
+                errors: err,
+            });
+        }
+    },
+];
 
 module.exports = {
     songsPageGet,
@@ -230,4 +321,5 @@ module.exports = {
     genreDelete,
     artistDelete,
     songDelete,
+    editSongPatch,
 };

@@ -135,33 +135,34 @@ const insertNewArtist = async (artistValue) => {
     );
 };
 
-const insertSongSingleRelationship = async (songId, valueType, ArtistOrGenreValue) => {
-    ArtistOrGenreValue.forEach(async (item) => {
-        const { rows: itemId } = await pool.query(
-            `
-        SELECT id FROM ${valueType}s WHERE ${valueType} = $1;
-    `,
-            [item],
-        );
-        // console.log({ item, itemId });
+const getArtistOrGenreIdByItsValue = async (valueType, itemValue) => {
+    const { rows } = await pool.query(
+        `
+        	SELECT id FROM ${valueType}s WHERE ${valueType} = $1;
+    	`,
+        [itemValue],
+    );
+    return rows;
+};
 
-        if (itemId.length <= 0) {
-            throw new Error(`Cannot find ${valueType}: ${item} in ${valueType}s TABLE.`);
-        }
+const insertSongSingleRelationship = async (songId, valueType, itemValue) => {
+    const itemValueId = await getArtistOrGenreIdByItsValue(valueType, itemValue);
+    // console.log({ itemValue, itemValueId });
 
-        await pool.query(
-            `
+    if (itemValueId.length <= 0) {
+        throw new Error(`Cannot find ${valueType}: ${itemValue} in ${valueType}s TABLE.`);
+    }
+
+    await pool.query(
+        `
         	INSERT INTO song_${valueType} (song_id, ${valueType}_id, is_editable) VALUES
         		($1, $2, TRUE);
         `,
-            [songId, itemId[0].id],
-        );
-    });
+        [songId, itemValueId[0].id],
+    );
 };
 
 const insertNewSong = async (songName, artistValue, genreValue) => {
-    // console.log({ songName, artistValue, genreValue });
-
     const { rows: newlyAddedSongId } = await pool.query(
         `
     	INSERT INTO songs (song, is_editable) VALUES
@@ -178,8 +179,13 @@ const insertNewSong = async (songName, artistValue, genreValue) => {
     // console.log({ newlyAddedSongId });
     // console.log(newlyAddedSongId[0].id);
 
-    await insertSongSingleRelationship(newlyAddedSongId[0].id, 'artist', artistValue);
-    await insertSongSingleRelationship(newlyAddedSongId[0].id, 'genre', genreValue);
+    artistValue.forEach(async (item) => {
+        await insertSongSingleRelationship(newlyAddedSongId[0].id, 'artist', item);
+    });
+
+    genreValue.forEach(async (item) => {
+        await insertSongSingleRelationship(newlyAddedSongId[0].id, 'genre', item);
+    });
 };
 
 const deleteGenreOrArtistById = async (target, id) => {
@@ -202,6 +208,94 @@ const deleteSongById = async (id) => {
     );
 };
 
+const updateSongNameById = async (id, songName) => {
+    await pool.query(
+        `
+		UPDATE songs
+		SET song = $2
+		WHERE id = $1;
+	`,
+        [id, songName],
+    );
+};
+
+const updateSongSingleRelationship = async (songId, valueType, itemToUpdate) => {
+    const itemToUpdateId = await getArtistOrGenreIdByItsValue(valueType, itemToUpdate.value);
+    console.log({ itemToUpdate, itemToUpdateId });
+
+    if (itemToUpdateId.length <= 0) {
+        throw new Error(`Cannot find ${valueType}: ${itemToUpdateId} in ${valueType}s TABLE.`);
+    }
+
+    if (itemToUpdateId[0].id === itemToUpdate.id) return;
+
+    await pool.query(
+        `
+		UPDATE song_${valueType}
+		SET ${valueType}_id = $1
+		WHERE
+			song_id = $2 AND
+			${valueType}_id = $3;
+	`,
+        [itemToUpdateId[0].id, songId, itemToUpdate.id],
+    );
+};
+
+const deleteSongRelationship = async (songId, relationShipId, relationshipType) => {
+    await pool.query(
+        `
+		DELETE FROM song_${relationshipType}
+		WHERE
+			song_id = $1 AND 
+			${relationshipType}_id = $2;
+	`,
+        [songId, relationShipId],
+    );
+};
+
+const updateSongAndAllRelationships = async (
+    songId,
+    songName,
+    artistValue,
+    deletedArtistIds,
+    genreValue,
+    deletedGenreIds,
+) => {
+    await updateSongNameById(songId, songName);
+
+    let relationshipType = '';
+
+    artistValue.forEach(async (item) => {
+        relationshipType = 'artist';
+        if (item[`${relationshipType}_id`] === null) {
+            await insertSongSingleRelationship(songId, relationshipType, item.value);
+        } else if (typeof item[`${relationshipType}_id`] === 'number') {
+            await updateSongSingleRelationship(songId, relationshipType, item);
+        }
+    });
+
+    if (deletedArtistIds.length > 0) {
+        deletedArtistIds.forEach(async (item) => {
+            await deleteSongRelationship(songId, item, relationshipType);
+        });
+    }
+
+    genreValue.forEach(async (item) => {
+        relationshipType = 'genre';
+        if (item[`${relationshipType}_id`] === null) {
+            await insertSongSingleRelationship(songId, relationshipType, item.value);
+        } else if (typeof item[`${relationshipType}_id`] === 'number') {
+            await updateSongSingleRelationship(songId, relationshipType, item);
+        }
+    });
+
+    if (deletedGenreIds.length > 0) {
+        deletedGenreIds.forEach(async (item) => {
+            await deleteSongRelationship(songId, item, relationshipType);
+        });
+    }
+};
+
 module.exports = {
     getAllSongs,
     getAllSongsAndInfo,
@@ -213,4 +307,5 @@ module.exports = {
     insertNewSong,
     deleteGenreOrArtistById,
     deleteSongById,
+    updateSongAndAllRelationships,
 };

@@ -16,8 +16,6 @@ const inventoryItemSchema = z.object({
 });
 
 const InventoryItem = ({ inventoryType, data, editBtnHandler, deleteBtnHandler }) => {
-
-
     return (
         <tr className="inventoryItemRow">
             {inventoryType === 'songs' && (
@@ -72,7 +70,11 @@ const InventoryItem = ({ inventoryType, data, editBtnHandler, deleteBtnHandler }
 
                     <td>
                         <div className="optBtnsWrapper">
-                            <EditBtn isDisabled={!data.is_editable}></EditBtn>
+                            <EditBtn
+                                targetId={data.id}
+                                isDisabled={!data.is_editable}
+                                onClickHandler={editBtnHandler}
+                            ></EditBtn>
                             <DeleteBtn
                                 targetId={data.id}
                                 isDisabled={!data.is_editable}
@@ -132,7 +134,11 @@ const InventoryItem = ({ inventoryType, data, editBtnHandler, deleteBtnHandler }
 
                     <td>
                         <div className="optBtnsWrapper">
-                            <EditBtn isDisabled={!data.is_editable}></EditBtn>
+                            <EditBtn
+                                targetId={data.id}
+                                isDisabled={!data.is_editable}
+                                onClickHandler={editBtnHandler}
+                            ></EditBtn>
                             <DeleteBtn
                                 targetId={data.id}
                                 isDisabled={!data.is_editable}

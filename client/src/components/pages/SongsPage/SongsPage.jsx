@@ -36,7 +36,7 @@ const SongsPage = ({ pageType }) => {
 
             const data = await res.json();
 
-            if (res.of == false) {
+            if (res.ok == false) {
                 const message = data.errors.map((e) => e.message).join('\n');
                 throw new Error('Delete request failed', { cause: message });
             }
@@ -45,6 +45,10 @@ const SongsPage = ({ pageType }) => {
         } catch (err) {
             throw new Error('Failed to delete', { err });
         }
+    };
+
+    const handleEditSongBtn = (targetId) => {
+        navigate(`${baseUrl}/edit-song/${targetId}`);
     };
 
     return (
@@ -75,7 +79,7 @@ const SongsPage = ({ pageType }) => {
                                     key={index}
                                     inventoryType="songs"
                                     data={item}
-                                    editBtnHandler={() => {}}
+                                    editBtnHandler={handleEditSongBtn}
                                     deleteBtnHandler={handleDeleteSongBtn}
                                 ></InventoryItem>
                             );
