@@ -26,7 +26,7 @@ const SongsPage = ({ pageType }) => {
     // console.log({ data, error, loading });
 
     const handleDeleteSongBtn = async (targetId) => {
-        const deleteUrl = `${baseUrl}/delete-song/${targetId}`;
+        const deleteUrl = `${baseUrl}/delete-${pageType.slice(0, -1)}/${targetId}`;
 
         try {
             const res = await fetch(deleteUrl, {
@@ -43,7 +43,7 @@ const SongsPage = ({ pageType }) => {
 
             refetch();
         } catch (err) {
-            throw new Error('Failed to delete', { err });
+            throw new Error('Failed to delete', { cause: err });
         }
     };
 

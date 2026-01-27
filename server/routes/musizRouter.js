@@ -18,6 +18,10 @@ musizRouter.delete('/delete-artist/:id', musizController.artistDelete);
 musizRouter.delete('/delete-song/:id', musizController.songDelete);
 
 musizRouter.get('/edit-song/:id', musizController.oneSongDetailsGet);
-musizRouter.patch('/edit-song/:id',musizController.editSongPatch)
+musizRouter.patch('/edit-song/:id', musizController.editSongPatch);
+musizRouter.get('/edit-genre/:id', musizController.oneGenreDetailsGet);
+musizRouter.patch('/edit-genre/:id', musizController.editGenrePatch);
+musizRouter.get('/edit-artist/:id', musizController.oneArtistDetailsGet);
+musizRouter.patch('/edit-artist/:id', musizController.editArtistPatch);
 
 module.exports = musizRouter;

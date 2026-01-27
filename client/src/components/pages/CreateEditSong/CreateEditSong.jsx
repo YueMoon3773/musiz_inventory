@@ -253,6 +253,7 @@ const EditSong = ({
     pageType,
     target,
     targetId,
+    baseUrl,
     beUrl,
     artistsUrl,
     genresUrl,
@@ -325,8 +326,7 @@ const EditSong = ({
         setGenreSelectionValue(originalGenreValues);
     }, [artistsData, genresData, originalData]);
 
-    const handleSubmitBtn = async (e) => {
-        e.preventDefault();
+    const handleSubmitBtn = async () => {
         // console.log({ originalSongId, inpValue, genreSelectionValue, artistSelectionValue });
 
         try {
@@ -376,6 +376,28 @@ const EditSong = ({
         }
     };
 
+    const handleDeleteBtn = async (targetId) => {
+        const deleteUrl = `${baseUrl}/delete-${target}/${targetId}`;
+
+        try {
+            const res = await fetch(deleteUrl, {
+                mode: 'cors',
+                method: 'DELETE',
+            });
+
+            const data = await res.json();
+
+            if (res.ok == false) {
+                const message = data.errors.map((e) => e.message).join('\n');
+                throw new Error('Delete request failed', { cause: message });
+            }
+
+            navigate(`/${target}s`);
+        } catch (err) {
+            throw new Error('Failed to delete', { cause: err });
+        }
+    };
+
     return (
         <>
             {originalLoading === false &&
@@ -392,6 +414,8 @@ const EditSong = ({
                 <CreateEditPageLayout
                     pageType={pageType}
                     target={target}
+                    targetId={targetId}
+                    targetIsEditable={true}
                     inpValue={inpValue}
                     handleAddArtistBtn={handleAddArtistBtn}
                     handleAddGenreBtn={handleAddGenreBtn}
@@ -400,6 +424,7 @@ const EditSong = ({
                     inpError={inpError}
                     isInpInteracted={isInpInteracted}
                     handleSubmitBtn={handleSubmitBtn}
+                    handleDeleteBtn={handleDeleteBtn}
                 >
                     <>
                         {(originalLoading === true || artistsLoading === true || genresLoading === true) && (
@@ -649,6 +674,7 @@ const CreateEditSong = ({ pageType, target }) => {
                 pageType={pageType}
                 target={target}
                 targetId={Number(id)}
+                baseUrl={baseUrl}
                 beUrl={beUrl}
                 artistsUrl={artistsUrl}
                 genresUrl={genresUrl}

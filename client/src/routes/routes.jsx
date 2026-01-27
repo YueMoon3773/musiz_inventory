@@ -44,7 +44,7 @@ const routes = [
         errorElement: <ErrorPage />,
     },
     {
-        path: '/edit-genre',
+        path: '/edit-genre/:id',
         element: <CreateEditGenreArtist pageType="edit" target="genre" />,
         errorElement: <ErrorPage />,
     },
@@ -54,7 +54,7 @@ const routes = [
         errorElement: <ErrorPage />,
     },
     {
-        path: '/edit-artist',
+        path: '/edit-artist/:id',
         element: <CreateEditGenreArtist pageType="edit" target="artist" />,
         errorElement: <ErrorPage />,
     },

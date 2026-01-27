@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { z } from 'zod';
 
 import { useBaseBeUrl } from '../../../hooks/useStorage';
@@ -10,14 +10,15 @@ import InventoryItem from '../../base/InventoryItem/InventoryItem';
 import LoadingImg from '../../base/LoadingImg/LoadingImg';
 
 import ValidatedComponent from '../../../utils/validateComponentProps';
-// import pageStyles from '../../../styles/modules/basePageStyles.module.scss';
 import './GenresOrArtistsPage.scss';
+import { use } from 'react';
 
 const genresOrArtistsPageSchema = z.object({
     pageType: z.string(),
 });
 
 const GenresOrArtistsPage = ({ pageType }) => {
+    const navigate = useNavigate();
     const { baseUrl } = useBaseBeUrl();
 
     const beUrl = `${baseUrl}/${pageType}`;
@@ -25,9 +26,8 @@ const GenresOrArtistsPage = ({ pageType }) => {
     // console.log({ beUrl });
     // console.log({ data, error, loading });
 
-    const handleDeleteArtistGenreBtn = async (targetId) => {
+    const handleDeleteGenreArtistBtn = async (targetId) => {
         const deleteBeUrl = `${baseUrl}/delete-${pageType.slice(0, -1)}/${targetId}`;
-        // console.log([targetId]);
         // console.log({ deleteBeUrl });
 
         try {
@@ -43,8 +43,14 @@ const GenresOrArtistsPage = ({ pageType }) => {
             }
             refetch();
         } catch (err) {
-            throw new Error('Failed to delete', { err });
+            throw new Error('Failed to delete', { cause: err });
         }
+    };
+
+    const handleEditGenreArtistBtn = async (targetId) => {
+        const editBtnUrl = `${baseUrl}/edit-${pageType.slice(0, -1)}/${targetId}`;
+        // console.log({ editBtnUrl });
+        navigate(editBtnUrl);
     };
 
     return (
@@ -77,8 +83,8 @@ const GenresOrArtistsPage = ({ pageType }) => {
                                     key={index}
                                     inventoryType={pageType}
                                     data={item}
-                                    editBtnHandler={() => {}}
-                                    deleteBtnHandler={handleDeleteArtistGenreBtn}
+                                    editBtnHandler={handleEditGenreArtistBtn}
+                                    deleteBtnHandler={handleDeleteGenreArtistBtn}
                                 ></InventoryItem>
                             );
                         })}

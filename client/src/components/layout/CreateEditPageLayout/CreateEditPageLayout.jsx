@@ -13,6 +13,7 @@ import './CreateEditPageLayout.scss';
 const createEditPageSchema = z.object({
     pageType: z.string(),
     target: z.string(),
+    targetId: z.number().optional(),
     targetIsEditable: z.boolean().optional(),
     handleAddArtistBtn: z.function().optional(),
     handleAddGenreBtn: z.function().optional(),
@@ -29,6 +30,7 @@ const createEditPageSchema = z.object({
 const CreateEditPageLayout = ({
     pageType,
     target,
+    targetId,
     targetIsEditable,
     handleAddArtistBtn,
     handleAddGenreBtn,
@@ -77,7 +79,7 @@ const CreateEditPageLayout = ({
                 <div className="formBtns">
                     <SubmitBtn onClickHandler={handleSubmitBtn}></SubmitBtn>
                     {pageType === 'edit' && targetIsEditable && (
-                        <DeleteBtn onClickHandler={handleDeleteBtn}></DeleteBtn>
+                        <DeleteBtn targetId={targetId} onClickHandler={handleDeleteBtn}></DeleteBtn>
                     )}
                 </div>
             </form>

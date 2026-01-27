@@ -221,7 +221,7 @@ const updateSongNameById = async (id, songName) => {
 
 const updateSongSingleRelationship = async (songId, valueType, itemToUpdate) => {
     const itemToUpdateId = await getArtistOrGenreIdByItsValue(valueType, itemToUpdate.value);
-    console.log({ itemToUpdate, itemToUpdateId });
+    // console.log({ itemToUpdate, itemToUpdateId });
 
     if (itemToUpdateId.length <= 0) {
         throw new Error(`Cannot find ${valueType}: ${itemToUpdateId} in ${valueType}s TABLE.`);
@@ -296,6 +296,29 @@ const updateSongAndAllRelationships = async (
     }
 };
 
+const getOneGenreOrArtistDetailsById = async (target, targetId) => {
+    const { rows } = await pool.query(
+        `
+        SELECT * FROM ${target}s
+        WHERE id = $1;
+    `,
+        [targetId],
+    );
+
+    return rows;
+};
+
+const updateGenreOrArtistById = async (target, targetId, targetValue) => {
+    await pool.query(
+        `
+        UPDATE ${target}s
+        SET ${target} = $1
+        WHERE id = $2;
+    `,
+        [targetValue, targetId],
+    );
+};
+
 module.exports = {
     getAllSongs,
     getAllSongsAndInfo,
@@ -308,4 +331,6 @@ module.exports = {
     deleteGenreOrArtistById,
     deleteSongById,
     updateSongAndAllRelationships,
+    getOneGenreOrArtistDetailsById,
+    updateGenreOrArtistById,
 };

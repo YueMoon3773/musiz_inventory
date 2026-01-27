@@ -47,6 +47,24 @@ const songIdValidator = [
         .withMessage('Song id must be a number'),
 ];
 
+const genreIdValidator = [
+    body('genreId')
+        .not()
+        .isEmpty()
+        .withMessage('Genre id must be provided.')
+        .isNumeric()
+        .withMessage('Genre id must be a number'),
+];
+
+const artistIdValidator = [
+    body('artistId')
+        .not()
+        .isEmpty()
+        .withMessage('Artist id must be provided.')
+        .isNumeric()
+        .withMessage('Artist id must be a number'),
+];
+
 const originalArtistIdsValidator = [
     body('originalArtistIds').isArray({ min: 1 }).withMessage('Original artist ids must be an array'),
     body('originalArtistIds.*').isNumeric().withMessage('Original artist id element must be a number'),
@@ -156,6 +174,8 @@ const artistsPageGet = async (req, res) => {
 const createGenrePost = [
     genreValidator,
     async (req, res) => {
+        // console.log(req.body);
+
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
             return res.status(404).json({
@@ -163,8 +183,8 @@ const createGenrePost = [
                 errors: errors.array(),
             });
         }
-        const { genre: genreValue } = matchedData(req);
-        // console.log({ genreValue });
+        const { genres: genreValue } = matchedData(req);
+        console.log({ genreValue });
         try {
             await db.insertNewGenre(genreValue);
             res.json({ ok: true });
@@ -186,7 +206,7 @@ const createArtistPost = [
             });
         }
 
-        const { artist: artistValue } = matchedData(req);
+        const { artists: artistValue } = matchedData(req);
 
         try {
             await db.insertNewArtist(artistValue);
@@ -287,8 +307,8 @@ const editSongPatch = [
         const deletedGenreIds = getDeletedArtistOrGenreItems(originalGenreIds, genreValue, 'genre');
         const deletedArtistIds = getDeletedArtistOrGenreItems(originalArtistIds, artistValue, 'artist');
 
-        console.log({ songId, songName, genreValue, artistValue, originalGenreIds, originalArtistIds });
-        console.log({ deletedGenreIds, deletedArtistIds });
+        // console.log({ songId, songName, genreValue, artistValue, originalGenreIds, originalArtistIds });
+        // console.log({ deletedGenreIds, deletedArtistIds });
 
         try {
             db.updateSongAndAllRelationships(
@@ -310,6 +330,76 @@ const editSongPatch = [
     },
 ];
 
+const oneGenreDetailsGet = async (req, res) => {
+    try {
+        const beData = await db.getOneGenreOrArtistDetailsById('genre', req.params.id);
+        res.json({ ok: true, beData });
+    } catch (err) {
+        res.json({ ok: false, errors: err });
+    }
+};
+
+const editGenrePatch = [
+    genreIdValidator,
+    genreValidator,
+    async (req, res) => {
+        const errors = validationResult(req);
+
+        if (!errors.isEmpty()) {
+            res.status(404).json({
+                ok: false,
+                errors: errors.array(),
+            });
+        }
+
+        const { genreId, genres } = matchedData(req);
+        // console.log({ genreId, genres });
+
+        try {
+            db.updateGenreOrArtistById('genre', genreId, genres);
+            res.json({ ok: true });
+        } catch (err) {
+            res.json({ ok: false, errors: err });
+        }
+    },
+];
+
+const oneArtistDetailsGet = async (req, res) => {
+    try {
+        const beData = await db.getOneGenreOrArtistDetailsById('artist', req.params.id);
+        console.log({ beData });
+
+        res.json({ ok: true, beData });
+    } catch (err) {
+        res.json({ ok: false, errors: err });
+    }
+};
+
+const editArtistPatch = [
+    artistIdValidator,
+    artistValidator,
+    async (req, res) => {
+        const errors = validationResult(req);
+
+        if (!errors.isEmpty()) {
+            res.status(404).json({
+                ok: false,
+                errors: errors.array(),
+            });
+        }
+
+        const { artistId, artists } = matchedData(req);
+        // console.log({ artistId, artists });
+
+        try {
+            db.updateGenreOrArtistById('artist', artistId, artists);
+            res.json({ ok: true });
+        } catch (err) {
+            res.json({ ok: false, errors: err });
+        }
+    },
+];
+
 module.exports = {
     songsPageGet,
     genresPageGet,
@@ -322,4 +412,8 @@ module.exports = {
     artistDelete,
     songDelete,
     editSongPatch,
+    oneGenreDetailsGet,
+    editGenrePatch,
+    oneArtistDetailsGet,
+    editArtistPatch,
 };

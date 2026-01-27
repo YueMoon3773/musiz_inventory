@@ -11,7 +11,13 @@ const submitBtnSchema = z.object({
 
 const SubmitBtn = ({ onClickHandler }) => {
     return (
-        <button className={`${pageStyles.mainBtn} ${pageStyles.submitBtn}`} onClick={(e) => onClickHandler(e)}>
+        <button
+            className={`${pageStyles.mainBtn} ${pageStyles.submitBtn}`}
+            onClick={(e) => {
+                e.preventDefault();
+                onClickHandler();
+            }}
+        >
             <SubmitIcon></SubmitIcon>
             Submit
         </button>
