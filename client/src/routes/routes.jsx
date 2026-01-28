@@ -5,6 +5,7 @@ import CreateEditSong from '../components/pages/CreateEditSong/CreateEditSong';
 import CreateEditGenreArtist from '../components/pages/CreateEditGenreArtist/CreateEditGenreArtist';
 import GenresOrArtistsPage from '../components/pages/GenresOrArtistsPage/GenresOrArtistsPage';
 import ASongDetailsPage from '../components/pages/ASongDetailsPage/ASongDetailsPage';
+import SongsByGenreOrArtistDetailsPage from '../components/pages/SongsByGenreOrArtistDetailsPage/SongsByGenreOrArtistDetailsPage';
 
 const routes = [
     {
@@ -61,6 +62,16 @@ const routes = [
     {
         path: '/song-details/:id',
         element: <ASongDetailsPage />,
+        errorElement: <ErrorPage />,
+    },
+    {
+        path: '/genre-details/:id',
+        element: <SongsByGenreOrArtistDetailsPage target="genre" />,
+        errorElement: <ErrorPage />,
+    },
+    {
+        path: '/artist-details/:id',
+        element: <SongsByGenreOrArtistDetailsPage target="artist" />,
         errorElement: <ErrorPage />,
     },
 ];

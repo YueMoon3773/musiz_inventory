@@ -160,7 +160,6 @@ INSERT INTO song_genre (song_id, genre_id, is_editable) VALUES
     (14, 10, FALSE),
     (14, 4, FALSE),
     (15, 1, FALSE),
-    (15, 7, FALSE),
     (16, 1, FALSE),
     (17, 9, FALSE),
     (18, 1, FALSE),

@@ -398,7 +398,7 @@ const editGenrePatch = [
 const oneArtistDetailsGet = async (req, res) => {
     try {
         const beData = await db.getOneGenreOrArtistDetailsById('artist', req.params.id);
-        console.log({ beData });
+        // console.log({ beData });
 
         res.json({ ok: true, beData });
     } catch (err) {
@@ -431,6 +431,28 @@ const editArtistPatch = [
     },
 ];
 
+const songsByGenreGet = async (req, res) => {
+    try {
+        const beData = await db.getAllSongsByGenreOrArtist('genre', req.params.id);
+        // console.log({ beData });
+
+        res.json({ ok: true, beData });
+    } catch (err) {
+        res.json({ ok: false, errors: err });
+    }
+};
+
+const songsByArtisteGet = async (req, res) => {
+    try {
+        const beData = await db.getAllSongsByGenreOrArtist('artist', req.params.id);
+        // console.log({ beData });
+
+        res.json({ ok: true, beData });
+    } catch (err) {
+        res.json({ ok: false, errors: err });
+    }
+};
+
 module.exports = {
     songsPageGet,
     genresPageGet,
@@ -447,4 +469,6 @@ module.exports = {
     editGenrePatch,
     oneArtistDetailsGet,
     editArtistPatch,
+    songsByGenreGet,
+    songsByArtisteGet,
 };
