@@ -704,5 +704,4 @@ const CreateEditSong = ({ pageType, target }) => {
     }
 };
 
-// export default CreateEditSong;
 export default ValidatedComponent(CreateEditSong, createEditSongSchema);

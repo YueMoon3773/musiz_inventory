@@ -25,5 +25,4 @@ const AddBtn = ({ onClickHandler, children }) => {
     );
 };
 
-// export default AddBtn;
 export default ValidatedComponent(AddBtn, addBtnSchema);

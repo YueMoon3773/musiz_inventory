@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { z } from 'zod';
 
@@ -11,7 +12,6 @@ import LoadingImg from '../../base/LoadingImg/LoadingImg';
 
 import ValidatedComponent from '../../../utils/validateComponentProps';
 import './GenresOrArtistsPage.scss';
-import { use } from 'react';
 
 const genresOrArtistsPageSchema = z.object({
     pageType: z.string(),
@@ -20,11 +20,22 @@ const genresOrArtistsPageSchema = z.object({
 const GenresOrArtistsPage = ({ pageType }) => {
     const navigate = useNavigate();
     const { baseUrl } = useBaseBeUrl();
-
     const beUrl = `${baseUrl}/${pageType}`;
-    const { data, error, loading, refetch } = useFetchGetData(beUrl);
+
+    const [sortOrderValue, setSortOrderValue] = useState(null);
+    const { data, error, loading, refetch, newFetchUrl } = useFetchGetData(beUrl);
     // console.log({ beUrl });
     // console.log({ data, error, loading });
+    // console.log({ sortOrderValue });
+
+    useEffect(() => {
+        // if ( sortOrderValue === null) return;
+
+        const sortUrl = `${beUrl}?orderDirection=${sortOrderValue}`;
+        // console.log({ sortUrl });
+
+        newFetchUrl(sortUrl);
+    }, [sortOrderValue]);
 
     const handleDeleteGenreArtistBtn = async (targetId) => {
         const deleteBeUrl = `${baseUrl}/delete-${pageType.slice(0, -1)}/${targetId}`;
@@ -53,6 +64,10 @@ const GenresOrArtistsPage = ({ pageType }) => {
         navigate(editBtnUrl);
     };
 
+    const handleSortOrderChange = async (value) => {
+        setSortOrderValue(value);
+    };
+
     return (
         <PageLayout>
             <h2 className="pageTitle">
@@ -60,7 +75,7 @@ const GenresOrArtistsPage = ({ pageType }) => {
                 {pageType === 'artists' && 'Artists'}
             </h2>
 
-            <ControllerSection pageType={pageType}></ControllerSection>
+            <ControllerSection pageType={pageType} sortOrderOnChangeHandler={handleSortOrderChange}></ControllerSection>
 
             {loading === true && <LoadingImg></LoadingImg>}
             {loading === false && error !== null && data === null && (
@@ -96,4 +111,3 @@ const GenresOrArtistsPage = ({ pageType }) => {
 };
 
 export default ValidatedComponent(GenresOrArtistsPage, genresOrArtistsPageSchema);
-// export default GenresOrArtistsPage;

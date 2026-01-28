@@ -34,4 +34,3 @@ const FormInp = ({ inpLabel, inpName, inpState, inpOnChangeHandler, inpOnBlurHan
 };
 
 export default ValidatedComponent(FormInp, formInpSchema);
-// export default FormInp;

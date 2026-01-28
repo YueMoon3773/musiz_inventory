@@ -141,9 +141,30 @@ const artistValidator = [
     }),
 ];
 
+const queryOrderTypes = {
+    null: 'default',
+    undefined: 'default',
+    song: 's.song',
+    artist: 'a.artists',
+    genre: 'g.genres',
+};
+
+const queryOrderDirections = {
+    null: 'default',
+    undefined: 'default',
+    asc: 'ASC',
+    desc: 'DESC',
+};
+
 const songsPageGet = async (req, res) => {
+    const { orderType, orderDirection } = req.query;
+    const queryOrderType = queryOrderTypes[orderType];
+    const queryOrderDirection = queryOrderDirections[orderDirection];
+    // console.log({ orderType, orderDirection });
+    // console.log({ queryOrderType, queryOrderDirection });
+
     try {
-        const beData = await db.getAllSongsAndInfo();
+        const beData = await db.getAllSongsAndInfo(queryOrderType, queryOrderDirection);
         // console.log({ beData });
         res.json({ beData });
     } catch (err) {
@@ -152,8 +173,13 @@ const songsPageGet = async (req, res) => {
 };
 
 const genresPageGet = async (req, res) => {
+    const { orderDirection } = req.query;
+    const queryOrderDirection = queryOrderDirections[orderDirection];
+    // console.log({ orderDirection });
+    // console.log({ queryOrderDirection });
+
     try {
-        const beData = await db.getAllGenres();
+        const beData = await db.getAllGenres(queryOrderDirection);
         // console.log(beData);
         res.json({ beData });
     } catch (err) {
@@ -162,8 +188,13 @@ const genresPageGet = async (req, res) => {
 };
 
 const artistsPageGet = async (req, res) => {
+    const { orderDirection } = req.query;
+    const queryOrderDirection = queryOrderDirections[orderDirection];
+    // console.log({ orderDirection });
+    // console.log({ queryOrderDirection });
+
     try {
-        const beData = await db.getAllArtists();
+        const beData = await db.getAllArtists(queryOrderDirection);
         // console.log(beData);
         res.json({ beData });
     } catch (err) {

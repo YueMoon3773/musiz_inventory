@@ -10,11 +10,20 @@ import './ControllerSection.scss';
 
 const controllerSectionSchema = z.object({
     pageType: z.string().nullable(),
+    sortFieldOnChangeHandler: z.function().optional(),
+    sortOrderOnChangeHandler: z.function(),
 });
 
-const ControllerSection = ({ pageType }) => {
-    const sortField = ['Song title', 'Artist', 'Genre'];
-    const sortOrder = ['Ascending (Low to High)', 'Descending (High to Low)'];
+const ControllerSection = ({ pageType, sortFieldOnChangeHandler, sortOrderOnChangeHandler }) => {
+    const sortField = [
+        { value: 'song', text: 'Song title' },
+        { value: 'artist', text: 'Artist' },
+        { value: 'genre', text: 'Genre' },
+    ];
+    const sortOrder = [
+        { value: 'asc', text: 'Ascending (Low to High)' },
+        { value: 'desc', text: 'Descending (High to Low)' },
+    ];
     const navigate = useNavigate();
 
     return (
@@ -26,20 +35,18 @@ const ControllerSection = ({ pageType }) => {
                     <Selection
                         selectionLabel={'Sort by'}
                         selectionId={'sortField'}
-                        selectionValue={sortField[0]}
                         selectionType={'sortField'}
                         selectionOptsList={sortField}
-                        selectionOnChangeHandle={() => {}}
+                        selectionOnChangeHandle={sortFieldOnChangeHandler}
                     ></Selection>
                 )}
 
                 <Selection
                     selectionLabel={'Sort direction'}
                     selectionId={'sortOrder'}
-                    selectionValue={sortOrder[0]}
                     selectionType={'sortOrder'}
                     selectionOptsList={sortOrder}
-                    selectionOnChangeHandle={() => {}}
+                    selectionOnChangeHandle={sortOrderOnChangeHandler}
                 ></Selection>
             </div>
             <div className="rightController">
@@ -61,5 +68,4 @@ const ControllerSection = ({ pageType }) => {
     );
 };
 
-// export default ControllerSection;
 export default ValidatedComponent(ControllerSection, controllerSectionSchema);

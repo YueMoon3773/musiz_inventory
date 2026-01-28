@@ -24,5 +24,4 @@ const SubmitBtn = ({ onClickHandler }) => {
     );
 };
 
-// export default SubmitBtn;
 export default ValidatedComponent(SubmitBtn, submitBtnSchema);

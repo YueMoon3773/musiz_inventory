@@ -87,5 +87,4 @@ const CreateEditPageLayout = ({
     );
 };
 
-// export default CreateEditPage;
 export default ValidatedComponent(CreateEditPageLayout, createEditPageSchema);

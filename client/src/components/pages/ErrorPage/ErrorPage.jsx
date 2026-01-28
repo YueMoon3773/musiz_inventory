@@ -23,5 +23,4 @@ const ErrorPage = ({ errorText }) => {
     );
 };
 
-// export default ErrorPage;
 export default ValidatedComponent(ErrorPage, errorPageSchema);

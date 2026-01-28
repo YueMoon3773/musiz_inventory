@@ -277,5 +277,4 @@ const CreateEditGenreArtist = ({ pageType, target }) => {
     }
 };
 
-// export default CreateEditGenreArtist;
 export default ValidatedComponent(CreateEditGenreArtist, createEditGenreArtistSchema);

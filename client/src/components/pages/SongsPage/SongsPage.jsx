@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { z } from 'zod';
 
@@ -10,7 +11,6 @@ import ControllerSection from '../../../components/layout/ControllerSection/Cont
 import InventoryItem from '../../../components/base/InventoryItem/InventoryItem';
 import LoadingImg from '../../../components/base/LoadingImg/LoadingImg';
 
-// import pageStyles from '../../../styles/modules/basePageStyles.module.scss';
 import './SongsPage.scss';
 
 const songPageSchema = z.object({
@@ -21,9 +21,23 @@ const SongsPage = ({ pageType }) => {
     const navigate = useNavigate();
     const { baseUrl } = useBaseBeUrl();
     const beUrl = `${baseUrl}/${pageType}`;
-    const { data, error, loading, refetch } = useFetchGetData(beUrl);
+
+    const [sortFieldValue, setSortFieldValue] = useState(null);
+    const [sortOrderValue, setSortOrderValue] = useState(null);
+    const { data, error, loading, refetch, newFetchUrl } = useFetchGetData(beUrl);
+
     // console.log({ beUrl });
     // console.log({ data, error, loading });
+    // console.log({ sortFieldValue, sortOrderValue });
+
+    useEffect(() => {
+        // if (sortFieldValue === null || sortOrderValue === null) return;
+
+        const sortUrl = `${beUrl}?orderType=${sortFieldValue}&orderDirection=${sortOrderValue}`;
+        // console.log({ sortUrl });
+
+        newFetchUrl(sortUrl);
+    }, [sortFieldValue, sortOrderValue]);
 
     const handleDeleteSongBtn = async (targetId) => {
         const deleteUrl = `${baseUrl}/delete-${pageType.slice(0, -1)}/${targetId}`;
@@ -51,11 +65,23 @@ const SongsPage = ({ pageType }) => {
         navigate(`${baseUrl}/edit-song/${targetId}`);
     };
 
+    const handleSortFieldChange = async (value) => {
+        setSortFieldValue(value);
+    };
+
+    const handleSortOrderChange = async (value) => {
+        setSortOrderValue(value);
+    };
+
     return (
         <PageLayout>
             <h2 className="pageTitle">Songs</h2>
 
-            <ControllerSection pageType={pageType}></ControllerSection>
+            <ControllerSection
+                pageType={pageType}
+                sortFieldOnChangeHandler={handleSortFieldChange}
+                sortOrderOnChangeHandler={handleSortOrderChange}
+            ></ControllerSection>
 
             {loading === true && <LoadingImg></LoadingImg>}
             {loading === false && error !== null && data === null && (
@@ -91,5 +117,4 @@ const SongsPage = ({ pageType }) => {
     );
 };
 
-// export default SongsPage;
 export default ValidatedComponent(SongsPage, songPageSchema);
