@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { z } from 'zod';
 
@@ -7,7 +6,6 @@ import { useFetchGetData } from '../../../hooks/useFetchData';
 import ValidatedComponent from '../../../utils/validateComponentProps';
 
 import PageLayout from '../../../components/layout/PageLayout/PageLayout';
-import ControllerSection from '../../../components/layout/ControllerSection/ControllerSection';
 import InventoryItem from '../../../components/base/InventoryItem/InventoryItem';
 import LoadingImg from '../../../components/base/LoadingImg/LoadingImg';
 
@@ -21,10 +19,10 @@ const SongsByGenreOrArtistDetailsPage = ({ target }) => {
     const { baseUrl } = useBaseBeUrl();
     const beUrl = `${baseUrl}/${target}-details/${id}`;
 
-    const { data, error, loading, refetch, newFetchUrl } = useFetchGetData(beUrl);
+    const { data, error, loading, refetch } = useFetchGetData(beUrl);
 
-    console.log({ beUrl, id });
-    console.log({ data, error, loading });
+    // console.log({ beUrl, id });
+    // console.log({ data, error, loading });
 
     const handleDeleteSongBtn = async (targetId) => {
         const deleteUrl = `${baseUrl}/delete-song/${targetId}`;

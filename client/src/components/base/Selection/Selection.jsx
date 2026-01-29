@@ -9,12 +9,20 @@ import './Selection.scss';
 const selectionSchema = z.object({
     selectionLabel: z.string(),
     selectionId: z.string(),
+    selectionValue: z.string().optional(),
     selectionType: z.string(),
     selectionOptsList: z.any().array(),
     selectionOnChangeHandle: z.function(),
 });
 
-const Selection = ({ selectionLabel, selectionId, selectionType, selectionOptsList, selectionOnChangeHandle }) => {
+const Selection = ({
+    selectionLabel,
+    selectionId,
+    selectionValue,
+    selectionType,
+    selectionOptsList,
+    selectionOnChangeHandle,
+}) => {
     // selectionOnChangeHandle(selectionOptsList[0]);
     // console.log(selectionOptsList[0]);
 
@@ -27,8 +35,13 @@ const Selection = ({ selectionLabel, selectionId, selectionType, selectionOptsLi
                 className="selection"
                 onChange={(e) => {
                     // console.log(selectionId + ' ' + e.target.value);
-                    selectionOnChangeHandle(e.target.value);
+                    if (selectionType === 'sortField' || selectionType === 'sortOrder') {
+                        selectionOnChangeHandle(e.target.value);
+                    } else {
+                        selectionOnChangeHandle(selectionId.split('_')[1], e.target.value);
+                    }
                 }}
+                value={(selectionLabel !== 'Artist' || selectionLabel !== 'Genre') && selectionValue}
             >
                 {(selectionType === 'sortField' || selectionType === 'sortOrder') &&
                     selectionOptsList.map((item, index) => {

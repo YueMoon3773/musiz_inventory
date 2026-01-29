@@ -1,4 +1,3 @@
-import React from 'react';
 import { z } from 'zod';
 
 import { ClearInpIcon, SearchIcon } from '../../../assets/svg/svgIcons';
@@ -11,6 +10,7 @@ const searchInpSchema = z.object({
     searchInpState: z.string(),
     searchInpOnChangeHandler: z.function(),
     clearSearchInpHandler: z.function(),
+    handleSearch: z.function(),
 });
 
 const SearchInp = ({
@@ -19,6 +19,7 @@ const SearchInp = ({
     searchInpState,
     searchInpOnChangeHandler,
     clearSearchInpHandler,
+    handleSearch,
 }) => {
     return (
         <div className="searchInpWrapper">
@@ -31,6 +32,12 @@ const SearchInp = ({
                 onChange={(e) => {
                     searchInpOnChangeHandler(e.target.value);
                 }}
+                onKeyDown={(e) => {
+                    e.preventDefault;
+                    if (e.key === 'Enter') {
+                        handleSearch();
+                    }
+                }}
             />
             <button
                 className="clearSearchBtn"
@@ -42,7 +49,7 @@ const SearchInp = ({
             >
                 <ClearInpIcon></ClearInpIcon>
             </button>
-            <button type="submit" className="searchBtn">
+            <button type="submit" className="searchBtn" onClick={handleSearch}>
                 <SearchIcon />
             </button>
         </div>

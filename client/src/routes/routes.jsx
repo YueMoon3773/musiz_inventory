@@ -15,6 +15,12 @@ const routes = [
         // element: <ErrorPage />,
     },
     {
+        path: '/not-found',
+        element: <ErrorPage />,
+        errorElement: <ErrorPage />,
+        // element: <ErrorPage />,
+    },
+    {
         path: '/songs',
         element: <SongsPage pageType="songs" />,
         errorElement: <ErrorPage />,

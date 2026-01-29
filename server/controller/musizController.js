@@ -156,6 +156,8 @@ const queryOrderDirections = {
     desc: 'DESC',
 };
 
+const searchValueValidator = [query('searchValue').isString().trim()];
+
 const songsPageGet = async (req, res) => {
     const { orderType, orderDirection } = req.query;
     const queryOrderType = queryOrderTypes[orderType];
@@ -453,6 +455,32 @@ const songsByArtisteGet = async (req, res) => {
     }
 };
 
+const searchGet = [
+    searchValueValidator,
+    async (req, res) => {
+        const errors = validationResult(req);
+
+        if (!errors.isEmpty()) {
+            res.json({
+                ok: false,
+                errors: errors.array(),
+            });
+        }
+
+        const { searchValue } = matchedData(req);
+        console.log({ searchValue });
+
+        try {
+            const beData = await db.searchSongOrGenreOrArtist(searchValue);
+            console.log(beData);
+
+            res.json({ ok: true, beData });
+        } catch (err) {
+            res.json({ ok: false, errors: err });
+        }
+    },
+];
+
 module.exports = {
     songsPageGet,
     genresPageGet,
@@ -471,4 +499,5 @@ module.exports = {
     editArtistPatch,
     songsByGenreGet,
     songsByArtisteGet,
+    searchGet,
 };

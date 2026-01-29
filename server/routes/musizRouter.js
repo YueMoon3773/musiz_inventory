@@ -26,4 +26,6 @@ musizRouter.patch('/edit-genre/:id', musizController.editGenrePatch);
 musizRouter.get('/edit-artist/:id', musizController.oneArtistDetailsGet);
 musizRouter.patch('/edit-artist/:id', musizController.editArtistPatch);
 
+musizRouter.get('/search', musizController.searchGet);
+
 module.exports = musizRouter;

@@ -419,6 +419,60 @@ const getAllSongsByGenreOrArtist = async (targetType, targetId) => {
     return rows;
 };
 
+const searchSongOrGenreOrArtist = async (searchValue) => {
+    let rows;
+
+    const songSearchResult = await pool.query(
+        `
+        SELECT * FROM songs
+        WHERE song = $1;
+    `,
+        [searchValue],
+    );
+
+    if (songSearchResult.rowCount !== 0) {
+        rows = songSearchResult.rows;
+        return {
+            target: 'song',
+            data: rows,
+        };
+    }
+
+    const artistSearchResult = await pool.query(
+        `
+        SELECT * FROM artists
+        WHERE artist = $1;
+    `,
+        [searchValue],
+    );
+
+    if (artistSearchResult.rowCount !== 0) {
+        rows = artistSearchResult.rows;
+        return {
+            target: 'artist',
+            data: rows,
+        };
+    }
+
+    const genreSearchResult = await pool.query(
+        `
+        SELECT * FROM genres
+        WHERE genre = $1;
+    `,
+        [searchValue],
+    );
+
+    if (genreSearchResult.rowCount !== 0) {
+        rows = genreSearchResult.rows;
+        return {
+            target: 'genre',
+            data: rows,
+        };
+    }
+
+    return null;
+};
+
 module.exports = {
     getAllSongs,
     getAllSongsAndInfo,
@@ -434,4 +488,5 @@ module.exports = {
     getOneGenreOrArtistDetailsById,
     updateGenreOrArtistById,
     getAllSongsByGenreOrArtist,
+    searchSongOrGenreOrArtist,
 };

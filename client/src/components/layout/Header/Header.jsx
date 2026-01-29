@@ -1,9 +1,11 @@
 import { useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { z } from 'zod';
 
 import { useTheme } from '../../../hooks/useTheme';
+import { useBaseBeUrl } from '../../../hooks/useStorage';
+import { useFetchGetData } from '../../../hooks/useFetchData';
 import ValidatedComponent from '../../../utils/validateComponentProps';
 
 import {
@@ -18,12 +20,15 @@ import SearchInp from '../../base/SearchInp/SearchInp';
 
 import pageStyles from '../../../styles/modules/basePageStyles.module.scss';
 import './Header.scss';
+import { use } from 'react';
 
 const headerSchema = z.object({
     headerShadow: z.boolean(),
 });
 
 const Header = ({ headerShadow }) => {
+    const navigate = useNavigate();
+    const { baseUrl } = useBaseBeUrl();
     const { theme, toggleTheme } = useTheme();
     const [searchText, setSearchText] = useState('');
 
@@ -33,6 +38,35 @@ const Header = ({ headerShadow }) => {
 
     const clearSearchInpHandler = () => {
         setSearchText('');
+    };
+
+    const handleSearch = async () => {
+        const searchUrl = `${baseUrl}/search?searchValue=${searchText.toLowerCase()}`;
+        let navigateUrl;
+
+        try {
+            const res = await fetch(searchUrl, {
+                mode: 'cors',
+                method: 'GET',
+            });
+
+            const data = await res.json();
+            console.log(data);
+
+            if (res.ok === false) {
+                throw new Error("Can't search", { cause: data.errors });
+            }
+
+            if (data.beData === null) {
+                navigateUrl = `${baseUrl}/not-found`;
+            } else {
+                navigateUrl = `${baseUrl}/${data.beData.target}-details/${data.beData.data[0].id}`;
+            }
+            console.log({ navigateUrl });
+            navigate(navigateUrl);
+        } catch (err) {
+            throw new Error('Request failed', { cause: err });
+        }
     };
 
     return (
@@ -68,6 +102,7 @@ const Header = ({ headerShadow }) => {
                     searchInpState={searchText}
                     searchInpOnChangeHandler={handleChangeSearchText}
                     clearSearchInpHandler={clearSearchInpHandler}
+                    handleSearch={handleSearch}
                 />
                 <button className="themeBtn" onClick={toggleTheme}>
                     {theme === 'light' && <LightModeIcon></LightModeIcon>}

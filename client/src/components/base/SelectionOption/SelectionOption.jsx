@@ -13,10 +13,12 @@ const SelectionOption = ({ selectionType, data }) => {
     // console.log({ selectionType, data });
 
     return (
-        <option className="selectionOption" value={data.value}>
-            {/* {(selectionType === 'sortField' || selectionType === 'sortOrder') && data}
-            {(selectionType === 'artists' || selectionType === 'genres') && data} */}
-            {data.text}
+        <option
+            className="selectionOption"
+            value={selectionType === 'genres' || selectionType === 'artists' ? data : data.value}
+        >
+            {selectionType === 'genres' || selectionType === 'artists' ? data : data.text}
+            {/* {data.text} */}
         </option>
     );
 };

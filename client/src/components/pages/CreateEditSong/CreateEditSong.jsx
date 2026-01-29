@@ -19,6 +19,49 @@ const createEditSongSchema = z.object({
     target: z.string(),
 });
 
+const bannedNames = [
+    'nicki',
+    'ni cki',
+    'n icki',
+    'n i c ki',
+    'n i c k i',
+    'nic ki',
+    'minaj',
+    'm ina j',
+    'm in a j',
+    'm i n a j',
+    'mi naj',
+    'min aj',
+    'nickiminaj',
+    'nicki',
+    'nickj',
+    'njckj',
+    'minaj',
+    'mjnaj',
+    'onika tanya maraj-petty',
+    'onika tanya nicki maraj-petty',
+    'onika tanya nicki maraj petty',
+    'onika tanya nicki maraj',
+    'onika tanya nicki minaj',
+    'onika tanya maraj petty',
+    'onika tanya petty',
+    'onika tanya',
+    'onikatanyapetty',
+    'onika petty',
+    'onikatanyamarajpetty',
+    'onikatanyamaraj-petty',
+    'onika maraj',
+    'onikamaraj',
+    'maraj',
+    'onika tanya maraj',
+    'maraj-petty',
+    'maraj',
+    'marajpetty',
+    'barbs',
+];
+
+const bannedNamesRegex = new RegExp(`\\b(${bannedNames.join('|')})\\b`, 'i');
+
 const filterToGetUniqueArray = (pageType, type, arr) => {
     const seen = new Set();
 
@@ -94,8 +137,7 @@ const CreateSong = ({
         setGenreSelectionValue([{ id: 1, value: defaultGenreValue }]);
     }, [artistsData, genresData]);
 
-    const handleSubmitBtn = async (e) => {
-        e.preventDefault();
+    const handleSubmitBtn = async () => {
         // console.log({ inpValue, genreSelectionValue, artistSelectionValue });
 
         try {
@@ -535,6 +577,7 @@ const CreateEditSong = ({ pageType, target }) => {
         .string()
         .min(2, `${inpLabel(target)} name must be at least 2 characters.`)
         .max(30, `${inpLabel(target)} name must be shorter than 30 characters.`)
+        .refine((val) => !bannedNamesRegex.test(val), { message: 'Nicku Ma gAj is restricted. F*ck nucku!' })
         .regex(
             /^[a-zA-Z0-9_!@#$%^&*()\-\+= ]+$/,
             'Only letters, numbers, underscores, parentheses and mathematical/logical operators allowed',
