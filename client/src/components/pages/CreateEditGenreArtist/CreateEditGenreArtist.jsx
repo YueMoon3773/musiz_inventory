@@ -150,7 +150,7 @@ const EditGenreArtist = ({
     // console.log(fetchUrl);
 
     const { data, error, loading } = useFetchGetData(fetchUrl);
-    console.log({ data, error, loading });
+    // console.log({ data, error, loading });
 
     useEffect(() => {
         if (data === null) return;

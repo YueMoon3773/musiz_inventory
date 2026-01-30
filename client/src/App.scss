@@ -36,3 +36,92 @@
         font-weight: 800;
     }
 }
+
+// MEDIA RESPONSIVE
+@media (max-width: 1200px) {
+    .header {
+        gap: clamp(20px, 3.6em, 50px);
+        .logoWrapper {
+            span {
+                font-size: $fs_normal_sm;
+            }
+
+            svg {
+                // display: none;
+            }
+        }
+
+        .headerMid {
+            .navLink {
+                font-size: $fs_normal_sm;
+
+                svg {
+                    height: $fs_normal_md;
+                }
+            }
+        }
+
+        .headerRight {
+            gap: clamp(14px, 2rem, 24px);
+        }
+
+        .searchInpWrapper {
+            input {
+                min-width: 14rem;
+                max-width: 24rem;
+                font-size: $fs_normal_sm;
+                padding: 0.36em 0.46em;
+            }
+
+            .clearSearchBtn {
+                svg {
+                    height: calc(($fs_normal_md / 100) * 72);
+                }
+            }
+
+            .searchBtn {
+                svg {
+                    height: $fs_normal_xl;
+                }
+            }
+        }
+    }
+
+    .controllerWrapper {
+        .leftController {
+            gap: clamp(20px, 2.6em, 36px);
+            label {
+                font-size: $fs_normal_sm;
+                gap: clamp(4px, 0.46em, 6px);
+            }
+        }
+    }
+
+    select.selection {
+        font-size: $fs_normal_sm !important;
+        padding: 0.16em 0.66em !important;
+    }
+
+    .inventoryItemRow {
+        td > a {
+            font-size: $fs_normal_sm !important;
+        }
+
+        & > *:last-child {
+            width: 24% !important;
+        }
+
+        td .optBtnsWrapper {
+            padding: 0.6em 0 !important;
+            gap: clamp(10px, 1.4em, 20px) !important;
+        }
+    }
+
+    .formInp,
+    .selectionLabel {
+        font-size: $fs_normal_sm !important;
+        input {
+            font-size: $fs_normal_sm !important;
+        }
+    }
+}

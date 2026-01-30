@@ -22,7 +22,7 @@
     z-index: 100;
     @include flexCenter;
     justify-content: space-between;
-    gap: clamp(50px, 5.6em, 60px);
+    gap: clamp(20px, 5.6em, 60px);
     padding-top: 3.6rem;
     padding-bottom: 3.6rem;
 
@@ -118,4 +118,16 @@
         }
     }
     cursor: not-allowed;
+}
+
+@media (max-width: 1200px) {
+    .pageHeader,
+    .pageContent {
+        padding-left: 4.6rem;
+        padding-right: 4.6rem;
+    }
+
+    .mainBtn {
+        font-size: $fs_normal_sm;
+    }
 }

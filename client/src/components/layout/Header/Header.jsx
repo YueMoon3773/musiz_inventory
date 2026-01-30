@@ -51,7 +51,7 @@ const Header = ({ headerShadow }) => {
             });
 
             const data = await res.json();
-            console.log(data);
+            // console.log(data);
 
             if (res.ok === false) {
                 throw new Error("Can't search", { cause: data.errors });
@@ -62,7 +62,7 @@ const Header = ({ headerShadow }) => {
             } else {
                 navigateUrl = `${baseUrl}/${data.beData.target}-details/${data.beData.data[0].id}`;
             }
-            console.log({ navigateUrl });
+            // console.log({ navigateUrl });
             navigate(navigateUrl);
         } catch (err) {
             throw new Error('Request failed', { cause: err });
@@ -73,7 +73,7 @@ const Header = ({ headerShadow }) => {
         <div className={`header ${pageStyles.pageHeader} ${headerShadow === true ? 'showShadow' : ''}`}>
             <div className="headerLeft">
                 <Link to={'/'} className="logoWrapper">
-                    The Musiz Library
+                    <span>The Musiz Library</span>
                     <LogoIcon />
                 </Link>
             </div>
