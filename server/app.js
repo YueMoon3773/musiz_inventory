@@ -8,7 +8,7 @@ const musizRouter = require('./routes/musizRouter');
 const app = express();
 const BE_PORT = process.env.BE_PORT || 6600;
 const corsOptions = {
-    origin: ['http://localhost:3300', 'http://127.0.0.1:3300'],
+    origin: [`${process.env.FE_URL}`],
 };
 
 // Set up to communicate with FE
