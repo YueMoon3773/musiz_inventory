@@ -180,7 +180,7 @@ ON CONFLICT (song_id, genre_id) DO NOTHING;
 
 async function populateDb() {
     const ssl = process.env.DB_CA
-        ? { require: true, rejectUnauthorized: true, ca: process.env.DB_CA }
+        ? { require: true, rejectUnauthorized: true, ca: process.env.DB_CA.replace(/\\n/g, '\n') }
         : { require: true, rejectUnauthorized: false };
 
     console.log('PREPARING DB...');
