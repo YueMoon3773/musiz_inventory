@@ -17,7 +17,6 @@ const corsOptions = {
 const setupDB = async () => {
     if (process.env.POPULATE_DB === 'true') {
         try {
-            console.log('DB_URL:', process.env.DB_URL);
             console.log('STARTING SETUP DB');
             await populateDb();
             console.log('SETUP DB DONE');
