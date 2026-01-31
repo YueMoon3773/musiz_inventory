@@ -8,7 +8,7 @@ const populateDb = require('./db/populateDb');
 const musizRouter = require('./routes/musizRouter');
 
 const app = express();
-const BE_PORT = process.env.BE_PORT || 6600;
+const BE_PORT = process.env.PORT || 6600;
 const corsOptions = {
     origin: [`${process.env.FE_URL}`],
 };
@@ -17,6 +17,7 @@ const corsOptions = {
 const setupDB = async () => {
     if (process.env.POPULATE_DB === 'true') {
         try {
+            console.log('DB_URL:', process.env.DB_URL);
             console.log('STARTING SETUP DB');
             await populateDb();
             console.log('SETUP DB DONE');
