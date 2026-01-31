@@ -1,5 +1,6 @@
 #! /usr/bin/env node
 
+const fs = require('fs');
 const { Client } = require('pg');
 require('dotenv').config();
 
@@ -179,14 +180,17 @@ ON CONFLICT (song_id, genre_id) DO NOTHING;
 `;
 
 async function populateDb() {
-    const ssl = process.env.DB_CA
-        ? { require: true, rejectUnauthorized: true, ca: process.env.DB_CA.replace(/\\n/g, '\n') }
-        : { require: true, rejectUnauthorized: false };
+    // const ssl = process.env.DB_CA
+    //     ? { require: true, rejectUnauthorized: true, ca: process.env.DB_CA.replace(/\\n/g, '\n') }
+    //     : { require: true, rejectUnauthorized: false };
 
     console.log('PREPARING DB...');
     const client = new Client({
         connectionString: `${process.env.DB_URL}`,
-        ssl,
+        ssl: {
+            rejectUnauthorized: true,
+            ca: fs.readFileSync('./ca.pem').toString(),
+        },
     });
     console.log('DONE SETTING CONNECTION STRING');
 
