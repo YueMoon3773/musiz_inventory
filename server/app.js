@@ -28,7 +28,7 @@ const setupDB = async () => {
     }
 };
 
-setupDB();
+// setupDB();
 
 // Set up to communicate with FE
 app.use(cors(corsOptions));
