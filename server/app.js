@@ -21,8 +21,10 @@ const setupDB = async () => {
             await populateDb();
             console.log('SETUP DB DONE');
         } catch (err) {
-            console.log('SETUP DB FAILED');
+            console.log('SETUP DB FAILED', err);
         }
+    } else {
+        console.log('POPULATE_DB not enabled - skipping DB population.');
     }
 };
 
@@ -53,7 +55,14 @@ app.use((req, res) => {
     res.status(404).render('404', { pageTitle: 'Error' });
 });
 
-app.listen(BE_PORT, (err) => {
-    if (err) console.log(err);
-    console.log(`Server's listening on PORT: ${process.env.BE_PORT}`);
-});
+// app.listen(BE_PORT, (err) => {
+//     if (err) console.log(err);
+//     console.log(`Server's listening on PORT: ${BE_PORT}`);
+// });
+(async () => {
+    await setupDB();
+    app.listen(BE_PORT, (err) => {
+        if (err) console.error(err);
+        console.log(`Server's listening on PORT: ${BE_PORT}`);
+    });
+})();
