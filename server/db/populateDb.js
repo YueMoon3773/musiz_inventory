@@ -74,8 +74,7 @@ INSERT INTO artists (artist, is_editable) VALUES
     ('bruno mars', FALSE),
     ('ariana grande', FALSE),
     ('the weeknd', FALSE),
-    ('chris stapleton', FALSE)
-ON CONFLICT (artist) DO NOTHING;
+    ('chris stapleton', FALSE);
 
 INSERT INTO genres (genre, is_editable) VALUES
     ('pop', FALSE),
@@ -87,8 +86,7 @@ INSERT INTO genres (genre, is_editable) VALUES
     ('rock', FALSE),
     ('funk', FALSE),
     ('soul', FALSE),
-    ('edm', FALSE)
-ON CONFLICT (genre) DO NOTHING;
+    ('edm', FALSE);
 
 INSERT INTO songs (song, is_editable) VALUES
     ('born this way', FALSE),
@@ -112,8 +110,7 @@ INSERT INTO songs (song, is_editable) VALUES
     ('break free', FALSE),
     ('bad romance', FALSE),
     ('hair', FALSE),
-    ('easy on me', FALSE)
-ON CONFLICT (song) DO NOTHING;
+    ('easy on me', FALSE);
 
 INSERT INTO song_artist (song_id, artist_id, is_editable) VALUES
     (1, 1, FALSE),
@@ -141,8 +138,7 @@ INSERT INTO song_artist (song_id, artist_id, is_editable) VALUES
     (20, 1, FALSE),
     (21, 1, FALSE),
     (22, 4, FALSE),
-    (22, 9, FALSE)
-ON CONFLICT (song_id, artist_id) DO NOTHING;
+    (22, 9, FALSE);
 
 INSERT INTO song_genre (song_id, genre_id, is_editable) VALUES
     (1, 5, FALSE),
@@ -175,8 +171,7 @@ INSERT INTO song_genre (song_id, genre_id, is_editable) VALUES
     (21, 6, FALSE),
     (21, 7, FALSE),
     (22, 1, FALSE),
-    (22, 9, FALSE)
-ON CONFLICT (song_id, genre_id) DO NOTHING;
+    (22, 9, FALSE);
 `;
 
 async function populateDb() {
