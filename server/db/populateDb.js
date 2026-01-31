@@ -73,7 +73,8 @@ INSERT INTO artists (artist, is_editable) VALUES
     ('bruno mars', FALSE),
     ('ariana grande', FALSE),
     ('the weeknd', FALSE),
-    ('chris stapleton', FALSE);
+    ('chris stapleton', FALSE)
+ON CONFLICT (artist) DO NOTHING;
 
 INSERT INTO genres (genre, is_editable) VALUES
     ('pop', FALSE),
@@ -85,7 +86,8 @@ INSERT INTO genres (genre, is_editable) VALUES
     ('rock', FALSE),
     ('funk', FALSE),
     ('soul', FALSE),
-    ('edm', FALSE);
+    ('edm', FALSE)
+ON CONFLICT (genre) DO NOTHING;
 
 INSERT INTO songs (song, is_editable) VALUES
     ('born this way', FALSE),
@@ -109,7 +111,8 @@ INSERT INTO songs (song, is_editable) VALUES
     ('break free', FALSE),
     ('bad romance', FALSE),
     ('hair', FALSE),
-    ('easy on me', FALSE);
+    ('easy on me', FALSE)
+ON CONFLICT (song) DO NOTHING;
 
 INSERT INTO song_artist (song_id, artist_id, is_editable) VALUES
     (1, 1, FALSE),
@@ -137,7 +140,8 @@ INSERT INTO song_artist (song_id, artist_id, is_editable) VALUES
     (20, 1, FALSE),
     (21, 1, FALSE),
     (22, 4, FALSE),
-    (22, 9, FALSE);
+    (22, 9, FALSE)
+ON CONFLICT (song_id, artist_id) DO NOTHING;
 
 INSERT INTO song_genre (song_id, genre_id, is_editable) VALUES
     (1, 5, FALSE),
@@ -170,10 +174,11 @@ INSERT INTO song_genre (song_id, genre_id, is_editable) VALUES
     (21, 6, FALSE),
     (21, 7, FALSE),
     (22, 1, FALSE),
-    (22, 9, FALSE);
+    (22, 9, FALSE)
+ON CONFLICT (song_id, genre_id) DO NOTHING;
 `;
 
-async function main() {
+async function populateDb() {
     console.log('PREPARING DB...');
     const client = new Client({
         connectionString: `${process.env.DB_URL}`,
@@ -193,4 +198,5 @@ async function main() {
     console.log('DB SET UP DONE');
 }
 
-main();
+// populateDb();
+module.exports = populateDb;

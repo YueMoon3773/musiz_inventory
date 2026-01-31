@@ -3,6 +3,8 @@ const path = require('node:path');
 const cors = require('cors');
 require('dotenv').config();
 
+const populateDb = require('./db/populateDb');
+
 const musizRouter = require('./routes/musizRouter');
 
 const app = express();
@@ -10,6 +12,21 @@ const BE_PORT = process.env.BE_PORT || 6600;
 const corsOptions = {
     origin: [`${process.env.FE_URL}`],
 };
+
+// Populate DB
+const setupDB = async () => {
+    if (process.env.POPULATE_DB === 'true') {
+        try {
+            console.log('STARTING SETUP DB');
+            await populateDb();
+            console.log('SETUP DB DONE');
+        } catch (err) {
+            console.log('SETUP DB FAILED');
+        }
+    }
+};
+
+setupDB();
 
 // Set up to communicate with FE
 app.use(cors(corsOptions));
