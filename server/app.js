@@ -9,8 +9,19 @@ const musizRouter = require('./routes/musizRouter');
 
 const app = express();
 const BE_PORT = process.env.PORT || 6600;
+
+const allowedOrigins = ['http://localhost:3300', 'http://127.0.0.1:3300', `${process.env.FE_URL}`].filter(Boolean);
 const corsOptions = {
-    origin: [`${process.env.FE_URL}`, 'http://localhost:3300'],
+    origin: (origin, callback) => {
+        // allow non-browser requests (Postman, server-to-server)
+        if (!origin) return callback(null, true);
+
+        if (allowedOrigins.includes(origin)) {
+            return callback(null, true);
+        }
+
+        return callback(new Error(`CORS blocked: ${origin}`));
+    },
 };
 
 // Populate DB
