@@ -26,8 +26,8 @@ const SongsPage = ({ pageType }) => {
     const [sortOrderValue, setSortOrderValue] = useState(null);
     const { data, error, loading, refetch, newFetchUrl } = useFetchGetData(beUrl);
 
-    console.log({ beUrl });
-    console.log({ data, error, loading });
+    // console.log({ beUrl });
+    // console.log({ data, error, loading });
     // console.log({ sortFieldValue, sortOrderValue });
 
     useEffect(() => {

@@ -45,10 +45,10 @@ export const useFetchGetData = (rawUrl) => {
                 }
             })
             .finally(() => {
-                // setLoading(false);
-                setTimeout(() => {
-                    setLoading(false);
-                }, 160);
+                setLoading(false);
+                // setTimeout(() => {
+                //     setLoading(false);
+                // }, 160);
             });
 
         return () => controller.abort();

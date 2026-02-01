@@ -10,7 +10,7 @@ const musizRouter = require('./routes/musizRouter');
 const app = express();
 const BE_PORT = process.env.PORT || 6600;
 const corsOptions = {
-    origin: [`${process.env.FE_URL}`, ' http://localhost:3300'],
+    origin: [`${process.env.FE_URL}`, 'http://localhost:3300'],
 };
 
 // Populate DB
