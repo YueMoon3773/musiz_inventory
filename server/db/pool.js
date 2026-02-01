@@ -2,15 +2,10 @@
 const { Pool } = require('pg');
 require('dotenv').config();
 
-// const ssl = process.env.DB_CA
-//     ? { require: true, rejectUnauthorized: true, ca: process.env.DB_CA.replace(/\\n/g, '\n') }
-//     : { require: true, rejectUnauthorized: false };
-
 const pool = new Pool({
     connectionString: `${process.env.DB_URL}`,
     ssl: {
         rejectUnauthorized: false,
-        // ca: fs.readFileSync('./ca.pem').toString(),
     },
     keepAlive: true,
     max: 20,

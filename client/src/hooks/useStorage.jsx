@@ -1,9 +1,10 @@
-import { useState, useContext, createContext } from 'react';
+import { useContext, createContext } from 'react';
 
 const BackEndBaseUrlContext = createContext(null);
 
 export const BackEndBaseUrlProvider = ({ children }) => {
-    const baseUrl = 'http://localhost:6600';
+    // const baseUrl = 'http://localhost:6600';
+    const baseUrl = 'https://musiz-inventory.onrender.com';
 
     return <BackEndBaseUrlContext.Provider value={{ baseUrl }}>{children}</BackEndBaseUrlContext.Provider>;
 };

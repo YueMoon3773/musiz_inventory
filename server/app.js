@@ -10,7 +10,7 @@ const musizRouter = require('./routes/musizRouter');
 const app = express();
 const BE_PORT = process.env.PORT || 6600;
 const corsOptions = {
-    origin: [`${process.env.FE_URL}`],
+    origin: [`${process.env.FE_URL}`, ' http://localhost:3300'],
 };
 
 // Populate DB
@@ -28,7 +28,9 @@ const setupDB = async () => {
     }
 };
 
-// setupDB();
+(async () => {
+    await setupDB();
+})();
 
 // Set up to communicate with FE
 app.use(cors(corsOptions));
@@ -55,14 +57,7 @@ app.use((req, res) => {
     res.status(404).render('404', { pageTitle: 'Error' });
 });
 
-// app.listen(BE_PORT, (err) => {
-//     if (err) console.log(err);
-//     console.log(`Server's listening on PORT: ${BE_PORT}`);
-// });
-(async () => {
-    await setupDB();
-    app.listen(BE_PORT, (err) => {
-        if (err) console.error(err);
-        console.log(`Server's listening on PORT: ${BE_PORT}`);
-    });
-})();
+app.listen(BE_PORT, (err) => {
+    if (err) console.log(err);
+    console.log(`Server's listening on PORT: ${BE_PORT}`);
+});
