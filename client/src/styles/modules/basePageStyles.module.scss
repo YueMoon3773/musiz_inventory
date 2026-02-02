@@ -131,3 +131,21 @@
         font-size: $fs_normal_sm;
     }
 }
+
+@media (max-width: 820px) {
+    .pageHeader,
+    .pageContent {
+        padding-left: 1.4rem;
+        padding-right: 1.4rem;
+    }
+
+    .mainBtn {
+        font-size: $fs_normal_ssm;
+        padding: 0.2em 0.24em;
+        border-radius: calc($distance_lg / 100 * 80);
+
+        svg {
+            height: $fs_normal_sm;
+        }
+    }
+}

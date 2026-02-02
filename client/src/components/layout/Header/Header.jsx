@@ -5,7 +5,7 @@ import { z } from 'zod';
 
 import { useTheme } from '../../../hooks/useTheme';
 import { useBaseBeUrl } from '../../../hooks/useStorage';
-import { useFetchGetData } from '../../../hooks/useFetchData';
+// import { useFetchGetData } from '../../../hooks/useFetchData';
 import ValidatedComponent from '../../../utils/validateComponentProps';
 
 import {
@@ -20,7 +20,6 @@ import SearchInp from '../../base/SearchInp/SearchInp';
 
 import pageStyles from '../../../styles/modules/basePageStyles.module.scss';
 import './Header.scss';
-import { use } from 'react';
 
 const headerSchema = z.object({
     headerShadow: z.boolean(),

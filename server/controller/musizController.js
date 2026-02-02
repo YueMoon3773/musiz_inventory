@@ -481,6 +481,10 @@ const searchGet = [
     },
 ];
 
+const checkPageHealth = async (req, res) => {
+    res.status(200).send('ok');
+};
+
 module.exports = {
     songsPageGet,
     genresPageGet,
@@ -500,4 +504,5 @@ module.exports = {
     songsByGenreGet,
     songsByArtisteGet,
     searchGet,
+    checkPageHealth,
 };
