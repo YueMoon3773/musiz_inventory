@@ -18,10 +18,16 @@ export const useFetchGetData = (rawUrl) => {
     }, [rawUrl]);
 
     useEffect(() => {
+        if (!urlToFetch) {
+            // setLoading(false);
+            return;
+        }
+
         const url = urlSchema.safeParse(urlToFetch);
 
         if (!url.success) {
             setError(new Error('Invalid URL'));
+            setLoading(false);
             return;
         }
 
@@ -29,7 +35,7 @@ export const useFetchGetData = (rawUrl) => {
 
         setLoading(true);
         setError(null);
-        setData(null);
+        // setData(null);
 
         fetch(`${url.data}`, { mode: 'cors', signal: controller.signal })
             .then((res) => {
@@ -38,18 +44,22 @@ export const useFetchGetData = (rawUrl) => {
                 }
                 return res.json();
             })
-            .then((res) => setData(res))
+            .then((res) => {
+                setData(res);
+                setLoading(false);
+            })
             .catch((err) => {
                 if (err.name !== 'AbortError') {
                     setError(err);
+                    setLoading(false);
                 }
-            })
-            .finally(() => {
-                setLoading(false);
-                // setTimeout(() => {
-                //     setLoading(false);
-                // }, 160);
             });
+        // .finally(() => {
+        //     setLoading(false);
+        //     // setTimeout(() => {
+        //     //     setLoading(false);
+        //     // }, 160);
+        // });
 
         return () => controller.abort();
     }, [urlToFetch, refreshKey]);
