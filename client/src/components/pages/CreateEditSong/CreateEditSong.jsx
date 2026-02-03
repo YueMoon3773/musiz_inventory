@@ -374,7 +374,7 @@ const EditSong = ({
         try {
             const artistValues = filterToGetUniqueArray(pageType, 'artist', artistSelectionValue);
             const genreValues = filterToGetUniqueArray(pageType, 'genre', genreSelectionValue);
-            console.log({ originalSongId, inpValue, artistValues, genreValues, originalGenreIds, originalArtistIds });
+            // console.log({ originalSongId, inpValue, artistValues, genreValues, originalGenreIds, originalArtistIds });
 
             const result = formInpSchema.safeParse(inpValue);
             setInpError(result.success ? null : result.error.issues[0].message);

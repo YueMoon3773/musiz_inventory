@@ -35,7 +35,7 @@ export const useFetchGetData = (rawUrl) => {
 
         setLoading(true);
         setError(null);
-        // setData(null);
+        setData(null);
 
         fetch(`${url.data}`, { mode: 'cors', signal: controller.signal })
             .then((res) => {

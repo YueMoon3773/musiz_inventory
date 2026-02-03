@@ -100,7 +100,7 @@ const InventoryItem = ({ inventoryType, data, editBtnHandler, deleteBtnHandler }
                         <td>
                             {Array.isArray(data) ? (
                                 data.map((item, index) => {
-                                    console.log({ item });
+                                    // console.log({ item });
 
                                     return (
                                         <Link key={index} to={`/artist-details/${data.id}`}>
@@ -118,8 +118,6 @@ const InventoryItem = ({ inventoryType, data, editBtnHandler, deleteBtnHandler }
                         <td>
                             {Array.isArray(data) ? (
                                 data.map((item, index) => {
-                                    console.log('here');
-
                                     return (
                                         <Link key={index} to={`/genre-details/${data.id}`}>
                                             {item};

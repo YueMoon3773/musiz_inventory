@@ -217,7 +217,7 @@ const createGenrePost = [
             });
         }
         const { genres: genreValue } = matchedData(req);
-        console.log({ genreValue });
+        // console.log({ genreValue });
         try {
             await db.insertNewGenre(genreValue);
             res.json({ ok: true });
@@ -268,7 +268,7 @@ const createSongPost = [
         const genreValue = normalizeArray(genres);
         const artistValue = normalizeArray(artists);
 
-        console.log({ songName, genreValue, artistValue });
+        // console.log({ songName, genreValue, artistValue });
         try {
             await db.insertNewSong(songName, artistValue, genreValue);
             res.json({ ok: true });
@@ -344,7 +344,7 @@ const editSongPatch = [
         // console.log({ deletedGenreIds, deletedArtistIds });
 
         try {
-            db.updateSongAndAllRelationships(
+            await db.updateSongAndAllRelationships(
                 songId,
                 songName,
                 artistValue,
@@ -389,7 +389,7 @@ const editGenrePatch = [
         // console.log({ genreId, genres });
 
         try {
-            db.updateGenreOrArtistById('genre', genreId, genres);
+            await db.updateGenreOrArtistById('genre', genreId, genres);
             res.json({ ok: true });
         } catch (err) {
             res.json({ ok: false, errors: err });
@@ -425,7 +425,7 @@ const editArtistPatch = [
         // console.log({ artistId, artists });
 
         try {
-            db.updateGenreOrArtistById('artist', artistId, artists);
+            await db.updateGenreOrArtistById('artist', artistId, artists);
             res.json({ ok: true });
         } catch (err) {
             res.json({ ok: false, errors: err });
@@ -468,11 +468,11 @@ const searchGet = [
         }
 
         const { searchValue } = matchedData(req);
-        console.log({ searchValue });
+        // console.log({ searchValue });
 
         try {
             const beData = await db.searchSongOrGenreOrArtist(searchValue);
-            console.log(beData);
+            // console.log(beData);
 
             res.json({ ok: true, beData });
         } catch (err) {
